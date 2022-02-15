@@ -1,0 +1,9 @@
+.oa-wrapper{
+    min-height: 95vh;
+    color:#5B5A99;
+    font-size: 4em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

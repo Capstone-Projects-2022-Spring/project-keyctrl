@@ -1,0 +1,56 @@
+.titlebar {
+  padding: 0px;
+  min-height: 5vh;
+  background: linear-gradient(to left, #201D47, #18163d);
+}
+
+.titlebar .drag-region {
+  width: 100%;
+  height: 100%;
+  -webkit-app-region: drag;
+}
+
+.window-controls{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.button{
+    padding-right: 4px;
+    padding-left: 4px;
+    color: white;
+    -webkit-app-region: no-drag;
+    font-size: large;
+}
+
+.button:hover{
+    cursor: pointer;
+    background: #c7c7ea2f;
+}
+
+.close{
+    padding-right: 4px;
+    padding-left: 4px;
+    color: white;
+    -webkit-app-region: no-drag;
+    font-size: large;
+}
+
+.close:hover{
+    cursor: pointer;
+    background: rgb(255, 83, 83);
+}
+
+.login-button{
+    color: #75749C;
+    margin-top: 5px;
+    margin-right: 5px;
+    -webkit-app-region: no-drag;
+}
+
+.login-button:hover{
+    color: #50E3C2;
+    cursor: pointer;
+    transition: .25s;
+}

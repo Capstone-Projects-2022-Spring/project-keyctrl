@@ -1,0 +1,168 @@
+.keyboard-base{
+    background: linear-gradient(241.25deg, rgba(41, 39, 85, 0.35) 4.4%, rgba(41, 39, 84, 0.78) 61.77%, rgba(27, 24, 66, 0.35) 119.94%);
+    box-shadow: 0px 51px 69px rgba(23, 18, 43, 0.585739);
+    backdrop-filter: blur(23px);
+    border-radius: 10px;
+    padding: 1%;
+    width: 60%;
+    height: fit-content;
+}
+
+.missed-key{
+    position: fixed;
+    z-index: 100;
+}
+
+.keyboard-img{
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+.key{
+    position: absolute;
+    height: 15%;
+    width: 6%;
+    z-index: 1;
+}
+
+.key1{
+    position: absolute;
+    height: 15%;
+    width: 6%;
+    z-index: 100;
+}
+
+.key1:hover{
+    cursor: pointer;
+}
+
+#q{
+    left: 13.25%;
+    top: 27.5%;
+}
+
+#w{
+    left: 19.5%;
+    top: 27.5%;
+}
+
+#e{
+    left: 25.5%;
+    top: 27.5%;
+}
+
+#r{
+    left: 31.5%;
+    top: 27.5%;
+}
+
+#t{
+    left: 38%;
+    top: 27.5%;
+}
+
+#y{
+    left: 44%;
+    top: 27.5%;
+}
+
+#u{
+    left: 50%;
+    top: 27.5%;
+}
+
+#i{
+    left: 56%;
+    top: 27.5%;
+}
+
+#o{
+    left: 62.5%;
+    top: 27.5%;
+}
+
+#p{
+    left: 68.5%;
+    top: 27.5%;
+}
+
+#a{
+    left: 15%;
+    top: 43%;
+}
+
+#s{
+    left: 21%;
+    top: 43%;
+}
+
+#d{
+    left: 27%;
+    top: 43%;
+}
+
+#f{
+    left: 33%;
+    top: 43%;
+}
+
+#g{
+    left: 39.5%;
+    top: 43%;
+}
+
+#h{
+    left: 45.5%;
+    top: 43%;
+}
+
+#j{
+    left: 51.5%;
+    top: 43%;
+}
+
+#k{
+    left: 58%;
+    top: 43%;
+}
+
+#l{
+    left: 64%;
+    top: 43%;
+}
+
+#z{
+    left: 18%;
+    top: 58%;
+}
+
+#x{
+    left: 24%;
+    top: 58%;
+}
+
+#c{
+    left: 30%;
+    top: 58%;
+}
+
+#v{
+    left: 36.5%;
+    top: 58%;
+}
+
+#b{
+    left: 42.5%;
+    top: 58%;
+}
+
+#n{
+    left: 48.5%;
+    top: 58%;
+}
+
+#m{
+    left: 54.5%;
+    top: 58%;
+}

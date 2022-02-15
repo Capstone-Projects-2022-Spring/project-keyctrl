@@ -1,0 +1,8 @@
+.tr-base{
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: xxx-large;
+    color: #5B5A99;
+}

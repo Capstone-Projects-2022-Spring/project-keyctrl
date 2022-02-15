@@ -1,0 +1,56 @@
+.base{
+    width: 90%;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    background: none;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #75749C;
+}
+
+.account-photo{
+    background: #75749C;
+    border-radius: 50%;
+}
+
+.account-icon{
+    font-size: 10em;
+}
+
+.account-info{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 5%;
+}
+
+.logout{
+    padding: .5em;
+    border-style: solid;
+    border-color: #75749C;
+    height: auto;
+    border-radius: 2em;
+}
+
+.logout:hover{
+    cursor: pointer;
+    color:#262353;
+    background: #75749C;
+    transition: .15s;
+}
+
+.acc-name{
+    align-self: flex-start;
+    font-size: xx-large;
+    font-weight: 600;
+}
+
+.acc-email{
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+}

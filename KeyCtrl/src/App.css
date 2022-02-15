@@ -1,0 +1,32 @@
+.App {
+  text-align: center;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+}
+
+.App-header {
+
+}
+
+.window{
+  display: flex;
+  flex-direction: row;
+}
+
+.landing{
+  width: 100%;
+}
+
+.task-bar{
+  width: auto;
+  background: #262353;
+}
+
+.main-window{
+  background: radial-gradient(123.22% 129.67% at 100.89% -5.6%, #201D47 0%, #17153A 100%); 
+  min-height: 95vh;
+}

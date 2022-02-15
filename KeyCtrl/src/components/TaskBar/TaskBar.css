@@ -1,0 +1,36 @@
+.tb-wrapper{
+    background: #262353;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.top-group{
+    display: flex;
+    flex-direction: column;
+}
+
+.bottom-group{
+    display: flex;
+    flex-direction: column;
+}
+
+.tb-button{
+    padding-right: 4px;
+    padding-left: 4px;
+    color: #5B5A99;
+    -webkit-app-region: no-drag;
+    font-size: xx-large;
+    padding: 10px;
+}
+
+.tb-button:hover{
+    cursor: pointer;
+}
+
+.tb-button:active{
+    color: #50E3C2;
+    filter: drop-shadow(0px 0px 8px #50E3C2);
+}
