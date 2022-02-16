@@ -1,8 +1,8 @@
 import React from 'react'
 import './Settings.css'
-import ColoredLine from '../ColoredLine/ColoredLine'
-import AccountTile from './AccountTile/AccountTile'
-import SettingsLoginTile from './SettingsLoginTile/SettingsLoginTile'
+import ColoredLine from './ColoredLine'
+import AccountTile from './AccountTile'
+import SettingsLoginTile from './SettingsLoginTile'
 
 const Settings = ({ accountInfo, logout, loggedIn }) => {
     return (

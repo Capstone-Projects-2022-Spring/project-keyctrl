@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import './StatKeyboard.css'
 import Image from "../../../assets/keyboard_shell.png"
-import MissedKey from '../MissedKey/MissedKey';
+import MissedKey from './MissedKey';
 
 const StatKeyboard = ({ letter_misses }) => {
 
