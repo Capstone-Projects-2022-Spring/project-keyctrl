@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import './TypingTest.css'
+import PropTypes from "prop-types"
 import * as api from '../../utils/apiUtils.js'
 
 /**
@@ -164,6 +165,11 @@ const TypingTest = (props) => {
             </div>
         </div>
     )
+}
+
+// Starting to introduce proptypes
+TypingTest.propTypes = {
+    timerActive: PropTypes.bool
 }
 
 export default TypingTest;
