@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: AccountPage/StatKeyboard.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: AccountPage/StatKeyboard.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useEffect, useState} from 'react'
+import './StatKeyboard.css'
+import Image from "../../../assets/keyboard_shell.png"
+import MissedKey from './MissedKey';
+
+/**
+ * @module StatKeyboard
+ * @param {JSON} letter_misses 
+ * @description Keyboard graphic that is displayed showing colored representation of letter misses
+ * @returns Component to be displayed
+ * @example
+ * &lt;StatKeyboard letter_misses={accountInfo.letter_misses} />
+ */
+
+const StatKeyboard = ({ letter_misses }) => {
+
+    var total = null;
+    var max = null;
+    const map = JSON.parse(letter_misses);
+
+    /**
+     * @function calcTotal
+     * @description Finds max missed letter and sorts letter map in decending order
+     */
+    const calcTotal = () => {
+        total = 0;
+        max = Number.MIN_SAFE_INTEGER;
+        Object.keys(map).map(el => {
+            total += map[el];
+            max = (max &lt; map[el]) ? map[el] : max;
+        });
+        //console.log(total);
+    }
+
+    /**
+     * @function getColor
+     * @param {Number} key 
+     * @description Returns color to be displayed for current letter
+     * @returns String HEX color value
+     */
+    const getColor = (key) => {
+
+        const ratio = map[key] / max;
+
+        if (ratio === 1) {
+            return '#f25c54';
+        } else if (ratio >= .50) {
+            return '#FFA34E';
+        } else if (ratio >= .25) {
+            return '#f4845f';
+        } else if (ratio >= .10) {
+            return '#2dc653';
+        } else if (ratio > 0) {
+            return '#6ede8a';
+        } else {
+            return '#92e6a7';
+        }
+
+    }
+
+    calcTotal();
+
+    return (
+        &lt;div className="keyboard-base">
+            &lt;div style={{ backgroundColor: getColor("q") }} className="key" id="q" />
+            &lt;div style={{ backgroundColor: getColor("w") }} className="key" id="w" />
+            &lt;div style={{ backgroundColor: getColor("e") }} className="key" id="e" />
+            &lt;div style={{ backgroundColor: getColor("r") }} className="key" id="r" />
+            &lt;div style={{ backgroundColor: getColor("t") }} className="key" id="t" />
+            &lt;div style={{ backgroundColor: getColor("y") }} className="key" id="y" />
+            &lt;div style={{ backgroundColor: getColor("u") }} className="key" id="u" />
+            &lt;div style={{ backgroundColor: getColor("i") }} className="key" id="i" />
+            &lt;div style={{ backgroundColor: getColor("o") }} className="key" id="o" />
+            &lt;div style={{ backgroundColor: getColor("p") }} className="key" id="p" />
+            &lt;div style={{ backgroundColor: getColor("a") }} className="key" id="a" />
+            &lt;div style={{ backgroundColor: getColor("s") }} className="key" id="s" />
+            &lt;div style={{ backgroundColor: getColor("d") }} className="key" id="d" />
+            &lt;div style={{ backgroundColor: getColor("f") }} className="key" id="f" />
+            &lt;div style={{ backgroundColor: getColor("g") }} className="key" id="g" />
+            &lt;div style={{ backgroundColor: getColor("h") }} className="key" id="h" />
+            &lt;div style={{ backgroundColor: getColor("j") }} className="key" id="j" />
+            &lt;div style={{ backgroundColor: getColor("k") }} className="key" id="k" />
+            &lt;div style={{ backgroundColor: getColor("l") }} className="key" id="l" />
+            &lt;div style={{ backgroundColor: getColor("z") }} className="key" id="z" />
+            &lt;div style={{ backgroundColor: getColor("x") }} className="key" id="x" />
+            &lt;div style={{ backgroundColor: getColor("c") }} className="key" id="c" />
+            &lt;div style={{ backgroundColor: getColor("v") }} className="key" id="v" />
+            &lt;div style={{ backgroundColor: getColor("b") }} className="key" id="b" />
+            &lt;div style={{ backgroundColor: getColor("n") }} className="key" id="n" />
+            &lt;div style={{ backgroundColor: getColor("m") }} className="key" id="m" />
+            &lt;img className="keyboard-img" src={Image} />
+            &lt;div className="key1" id="q" />
+            &lt;div className="key1" id="w" />
+            &lt;div className="key1" id="e" />
+            &lt;div className="key1" id="r" />
+            &lt;div className="key1" id="t" />
+            &lt;div className="key1" id="y" />
+            &lt;div className="key1" id="u" />
+            &lt;div className="key1" id="i" />
+            &lt;div className="key1" id="o" />
+            &lt;div className="key1" id="p" />
+            &lt;div className="key1" id="a" />
+            &lt;div className="key1" id="s" />
+            &lt;div className="key1" id="d" />
+            &lt;div className="key1" id="f" />
+            &lt;div className="key1" id="g" />
+            &lt;div className="key1" id="h" />
+            &lt;div className="key1" id="j" />
+            &lt;div className="key1" id="k" />
+            &lt;div className="key1" id="l" />
+            &lt;div className="key1" id="z" />
+            &lt;div className="key1" id="x" />
+            &lt;div className="key1" id="c" />
+            &lt;div className="key1" id="v" />
+            &lt;div className="key1" id="m" />
+            &lt;div className="key1" id="b" />
+            &lt;div className="key1" id="n" />
+        &lt;/div>
+    )
+}
+
+export default StatKeyboard
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Account.html">Account</a></li><li><a href="module-AccountTile.html">AccountTile</a></li><li><a href="module-ColoredLine.html">ColoredLine</a></li><li><a href="module-MissedKey.html">MissedKey</a></li><li><a href="module-OfflineAccount.html">OfflineAccount</a></li><li><a href="module-Settings.html">Settings</a></li><li><a href="module-SettingsLoginTile.html">SettingsLoginTile</a></li><li><a href="module-SignInModal.html">SignInModal</a></li><li><a href="module-SingleStatDisplay.html">SingleStatDisplay</a></li><li><a href="module-StatKeyboard.html">StatKeyboard</a></li><li><a href="module-TaskBar.html">TaskBar</a></li><li><a href="module-TitleBar.html">TitleBar</a></li><li><a href="module-ToggleSwitch.html">ToggleSwitch</a></li><li><a href="module-TypingTest.html">TypingTest</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Feb 16 2022 21:15:26 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

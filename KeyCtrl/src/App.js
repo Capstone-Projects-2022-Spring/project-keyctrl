@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import TypingTest from './components/TypingTest/TypingTest.js';
-import SignInModal from './components/TitleBar/SignInModal/SignInModal.js';
-import TitleBar from './components/TitleBar/TitleBar.js';
-import TaskBar from './components/TaskBar/TaskBar.js';
+import TypingTest from './components/TypingTestPage/TypingTest.js';
+import SignInModal from './components/Base/TitleBar/SignInModal/SignInModal.js';
+import TitleBar from './components/Base/TitleBar/TitleBar.js';
+import TaskBar from './components/Base/TaskBar/TaskBar.js';
 import './App.css';
-import Account from './components/Account/Account.js';
-import OfflineAccount from './components/Account/OfflineAccount/OfflineAccount.js';
-import Training from './components/Training/Training.js';
-import Settings from './components/Settings/Settings.js';
-import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner.js';
+import Account from './components/AccountPage/Account.js';
+import OfflineAccount from './components/AccountPage/OfflineAccount.js';
+import Training from './components/TrainingPage/Training.js';
+import Settings from './components/SettingsPage/Settings.js';
+import LoadingSpinner from './components/Base/LoadingSpinner/LoadingSpinner.js';
 import * as api from './utils/apiUtils.js'
 import { MdSecurityUpdate } from 'react-icons/md';
 import { Route, Routes } from 'react-router-dom';
