@@ -1,7 +1,16 @@
 import React, {useEffect, useState} from 'react'
-import './StatKeyboard.css'
-import Image from "../../../assets/keyboard_shell.png"
+import '../../styles/StatKeyboard.css'
+import Image from "../../assets/keyboard_shell.png"
 import MissedKey from './MissedKey';
+
+/**
+ * @module StatKeyboard
+ * @param {JSON} letter_misses 
+ * @description Keyboard graphic that is displayed showing colored representation of letter misses
+ * @returns Component to be displayed
+ * @example
+ * <StatKeyboard letter_misses={accountInfo.letter_misses} />
+ */
 
 const StatKeyboard = ({ letter_misses }) => {
 
@@ -9,6 +18,10 @@ const StatKeyboard = ({ letter_misses }) => {
     var max = null;
     const map = JSON.parse(letter_misses);
 
+    /**
+     * @function calcTotal
+     * @description Finds max missed letter and sorts letter map in decending order
+     */
     const calcTotal = () => {
         total = 0;
         max = Number.MIN_SAFE_INTEGER;
@@ -19,6 +32,12 @@ const StatKeyboard = ({ letter_misses }) => {
         //console.log(total);
     }
 
+    /**
+     * @function getColor
+     * @param {Number} key 
+     * @description Returns color to be displayed for current letter
+     * @returns String HEX color value
+     */
     const getColor = (key) => {
 
         const ratio = map[key] / max;

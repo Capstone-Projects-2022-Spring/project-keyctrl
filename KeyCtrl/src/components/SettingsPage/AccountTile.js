@@ -1,6 +1,17 @@
 import React from 'react'
-import './AccountTile.css'
+import '../../styles/AccountTile.css'
 import { MdAccountBox, MdRemoveRedEye } from 'react-icons/md'
+
+/**
+ * @module AccountTile
+ * @param {Object} accountInfo
+ * @param {Function} logout
+ * @description Display of basic account info in a single tile
+ * @returns Component to be displayed
+ * @example
+ * <AccountTile accountInfo={accountInfo} logout={logout} />
+ */
+
 
 const AccountTile = ({ accountInfo, logout }) => {
    console.log("ac: " + accountInfo);

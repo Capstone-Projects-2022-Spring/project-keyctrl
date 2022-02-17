@@ -1,8 +1,20 @@
 import React from 'react'
-import './Settings.css'
+import '../../styles/Settings.css'
 import ColoredLine from './ColoredLine'
 import AccountTile from './AccountTile'
 import SettingsLoginTile from './SettingsLoginTile'
+
+/**
+ * @module Settings
+ * @component Settings
+ * @param {Object} accountInfo
+ * @param {Function} logout
+ * @param {Boolean} loggedIn
+ * @description Settings page that is displayed if an account is logged in
+ * @returns Component to be displayed
+ * @example
+ * <Settings accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />
+ */
 
 const Settings = ({ accountInfo, logout, loggedIn }) => {
     return (

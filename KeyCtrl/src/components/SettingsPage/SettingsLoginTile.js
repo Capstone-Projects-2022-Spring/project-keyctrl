@@ -1,6 +1,15 @@
 import React from 'react'
-import './SettingsLoginTile.css'
+import '../../styles/SettingsLoginTile.css'
 import { MdLock } from 'react-icons/md'
+
+/**
+ * @module SettingsLoginTile
+ * @component SettingsLoginTile
+ * @description Tile to be displayed in the settings page if not logged in
+ * @returns Component to be displayed
+ * @example
+ * <SettingsLoginTile />
+ */
 
 const SettingsLoginTile = () => {
     return (

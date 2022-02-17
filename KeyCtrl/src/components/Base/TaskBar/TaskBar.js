@@ -1,7 +1,17 @@
 import React from 'react'
-import './TaskBar.css'
+import '../../../styles/TaskBar.css'
 import { MdAccountCircle, MdSettings, MdKeyboard, MdFitnessCenter } from "react-icons/md"
 import { Link } from 'react-router-dom'
+
+/**
+ * @module TaskBar
+ * @param {Number} page
+ * @param {Function} setPage
+ * @description TaskBar that is is fixed to the leftmost portion of application
+ * @returns Component to be displayed
+ * @example
+ * <TaskBar page={page} setPage={setPage} />
+ */
 
 const TaskBar = ({ page, setPage }) => {
     return (

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import './TypingTest.css'
+import '../../styles/TypingTest.css'
 import PropTypes from "prop-types"
 import * as api from '../../utils/apiUtils.js'
 
@@ -10,11 +10,11 @@ import * as api from '../../utils/apiUtils.js'
 
 /**
  * Component for displaying typing test.
- * @function TypingTest
+ * @component TypingTest
  * @param {any} props contains list of all props needed for typing test
  * @description Typing test component that displays and runs the game
  * @returns Component to be displayed
- * @component
+ * 
  * @example
  * <TypingTest
           timerActive={timerActive}

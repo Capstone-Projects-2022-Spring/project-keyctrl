@@ -1,7 +1,17 @@
 import React from 'react'
-import './Account.css'
-import SingleStatDisplay from './SingleStatDisplay/SingleStatDisplay'
-import StatKeyboard from './StatKeyboard/StatKeyboard'
+import '../../styles/Account.css'
+import SingleStatDisplay from './SingleStatDisplay.js'
+import StatKeyboard from './StatKeyboard.js'
+
+/**
+ * @module Account
+ * @param {Object} accountInfo
+ * @description Account page that is displayed when logged in, shows statistics and graphics related to typing activity
+ * @returns Component to be displayed
+ * @example
+ * <Account accountInfo={accountInfo} />
+ */
+
 
 const Account = ({ accountInfo }) => {
 

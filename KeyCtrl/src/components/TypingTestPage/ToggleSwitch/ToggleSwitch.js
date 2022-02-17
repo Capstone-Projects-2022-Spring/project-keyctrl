@@ -1,6 +1,15 @@
 import React from 'react'
 import './ToggleSwitch.css'
 
+/**
+ * @module ToggleSwitch
+ * @param {boolean} countdownToggleChecked
+ * @param {Function} onToggle 
+ * @description A toggle switch componant to switch between two states
+ * @returns ToggleSwitch component
+ * 
+ */
+
 const ToggleSwitch = ({countdownToggleChecked, onToggle}) => {
 
     const blah = (e) => {

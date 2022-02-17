@@ -1,6 +1,14 @@
 import React from 'react'
-import './OfflineAccount.css'
+import '../../styles/OfflineAccount.css'
 import { MdLock } from 'react-icons/md'
+
+/**
+ * @module OfflineAccount
+ * @description Component that is shown in place of the statistics page if account is logged out
+ * @returns Component to be displayed
+ * @example
+ * <OfflineAccount />
+ */
 
 const OfflineAccount = () => {
     return (
