@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Base/TitleBar/SignInModal/SignInModal.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Base/TitleBar/SignInModal/SignInModal.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useRef, useEffect, useCallback } from 'react';
+import useForm from '../../../utils/useForm';
+import validate from '../../../utils/validateInfo'
+import "./SignInModal.css"
+import { useSpring, animated } from 'react-spring';
+import { MdClose } from 'react-icons/md';
+// import * as db from '../utils/dbUtils.js';
+
+import * as api from '../../../utils/apiUtils.js'
+
+/**
+ * @module SignInModal
+ * @param {Function} onLogin
+ * @param {Boolean} showSignIn
+ * @param {Function} setShowSignIn
+ * @description Popup modal that displays sign in instructions
+ * @returns Component to be displayed
+ * @example
+ * &lt;SignInModal onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
+ */
+
+const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
+
+    const modalRef = useRef();
+
+    const [showSignUp, setShowSignUp] = useState(false);
+
+
+    /**
+     * @function login
+     * @description Api call to log in and passes result to onLogin()
+     */
+    const login = () => {
+        onLogin(api.callLogin(values.username, values.password));        
+    }
+
+    /**
+     * @function register
+     * @description Api call to register new account and passes result to onLogin()
+     */
+    const register = () => {
+        onLogin(api.callRegisterAccount(values.email, values.username, values.password));
+    }
+
+    /**
+     * @function submitForm
+     * @description Method that is activated on signin/register button press, login or registers account
+     */
+    function submitForm() {
+        if (!showSignUp) {
+            console.log("Login Pressed");
+            login();
+        } else if (showSignUp) {
+            console.log("SignUp Pressed");
+            register();
+        }
+
+        setShowSignIn(false);
+        values.email = '';
+        values.username = '';
+        values.password = '';
+        values.password2 = '';
+    }
+
+    const { handleChange, handleSubmit, values, errors } = useForm(
+        submitForm,
+        validate
+    );
+
+
+    /**
+     * @function openSignUp
+     * @description Flips boolean value to show signup insead of register
+     */
+    const openSignUp = () => {
+        setShowSignUp(prev => !prev);
+    };
+
+    /**
+     * @function closeModal
+     * @param {Event} e 
+     * @description Closes current modalRef
+     */
+    const closeModal = e => {
+        if (modalRef.current === e.target) {
+            setShowSignIn(false);
+        }
+    };
+
+    const keyPress = useCallback(
+        e => {
+            if (e.key === 'Escape' &amp;&amp; showSignIn) {
+                setShowSignIn(false);
+                console.log('I pressed');
+            }
+        },
+        [setShowSignIn, showSignIn]
+    );
+
+    /**
+     * @function onFormSubmit
+     * @param {Event} e 
+     * @description Handles submission of field info
+     */
+    const onFormSubmit = (e) => {
+        if (showSignUp) {
+            handleSubmit(e);
+        } else if (showSignIn) {
+            submitForm();
+        }
+    }
+
+    useEffect(
+        () => {
+            document.addEventListener('keydown', keyPress);
+            // db.initCon();
+
+            return () => document.removeEventListener('keydown', keyPress);
+        },
+        [keyPress]
+    );
+    return (
+        &lt;>
+            {showSignIn ? (
+                &lt;div className='Background' onClick={closeModal} ref={modalRef}>
+                    &lt;animated.div >
+                        &lt;form onSubmit={onFormSubmit} noValidate>
+                            &lt;div className='ModalWrapper' showSignIn={showSignIn}>
+                                &lt;MdClose
+                                    aria-label='Close modal'
+                                    className='close-modal'
+                                    onClick={() => setShowSignIn(prev => !prev)}
+                                />
+                                &lt;div className='ModalContent'>
+                                    {showSignUp ? &lt;h1>Sign Up&lt;/h1> : &lt;h1>Login&lt;/h1>}
+
+                                    {showSignUp ? &lt;div className='form-inputs'>
+                                        &lt;input
+                                            className='form-input'
+                                            type='email'
+                                            name='email'
+                                            placeholder='Email'
+                                            value={values.email}
+                                            onChange={handleChange}
+                                        />
+                                        {errors.email &amp;&amp; &lt;p className="errors">{errors.email}&lt;/p>}
+                                    &lt;/div>
+                                        : null}
+                                    &lt;div className='form-inputs'>
+                                        &lt;input
+                                            className='form-input'
+                                            type='text'
+                                            name='username'
+                                            placeholder='Username'
+                                            value={values.username}
+                                            onChange={handleChange}
+                                        />
+                                        {errors.username &amp;&amp; &lt;p className="errors">{errors.username}&lt;/p>}
+                                    &lt;/div>
+                                    &lt;div className='form-inputs'>
+                                        &lt;input
+                                            className='form-input'
+                                            type='password'
+                                            name='password'
+                                            placeholder='Password'
+                                            value={values.password}
+                                            onChange={handleChange}
+                                        />
+                                        {errors.password &amp;&amp; &lt;p className="errors">{errors.password}&lt;/p>}
+                                    &lt;/div>
+                                    {showSignUp ? &lt;div className='form-inputs'>
+                                        &lt;input
+                                            className='form-input'
+                                            type='password'
+                                            name='password2'
+                                            placeholder='Confirm Password'
+                                            value={values.password2}
+                                            onChange={handleChange}
+                                        />
+                                        {errors.password2 &amp;&amp; &lt;p className="errors">{errors.password2}&lt;/p>}
+                                    &lt;/div>
+                                        : null}
+                                    &lt;div className='sign-in-options'>
+                                        &lt;div className='account-links'>
+                                            {showSignUp ? null : &lt;div className='individual'>Forgot password?&lt;/div>}
+                                            &lt;div onClick={openSignUp} className='individual'>{showSignUp ? 'Already have account? Login' : 'Register account'}&lt;/div>
+                                        &lt;/div>
+                                    &lt;/div>
+                                    &lt;button type="submit" className="sign-in-button">{showSignUp ? 'Sign up' : 'Login'}&lt;/button>
+                                &lt;/div>
+
+                            &lt;/div>
+                        &lt;/form>
+                    &lt;/animated.div>
+                &lt;/div>
+            ) : null}
+        &lt;/>
+    );
+}
+
+export default SignInModal
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Account.html">Account</a></li><li><a href="module-AccountTile.html">AccountTile</a></li><li><a href="module-ColoredLine.html">ColoredLine</a></li><li><a href="module-MissedKey.html">MissedKey</a></li><li><a href="module-OfflineAccount.html">OfflineAccount</a></li><li><a href="module-Settings.html">Settings</a></li><li><a href="module-SettingsLoginTile.html">SettingsLoginTile</a></li><li><a href="module-SignInModal.html">SignInModal</a></li><li><a href="module-SingleStatDisplay.html">SingleStatDisplay</a></li><li><a href="module-StatKeyboard.html">StatKeyboard</a></li><li><a href="module-TaskBar.html">TaskBar</a></li><li><a href="module-TitleBar.html">TitleBar</a></li><li><a href="module-ToggleSwitch.html">ToggleSwitch</a></li><li><a href="module-TypingTest.html">TypingTest</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Feb 16 2022 21:15:26 GMT-0500 (Eastern Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
