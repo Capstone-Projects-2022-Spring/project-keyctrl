@@ -46,6 +46,8 @@ import * as api from '../../utils/apiUtils.js'
 const TypingTest = (props) => {
     const [staticCountdown, setStaticCountdown] = useState(15);
     const [countdown, setCountdown] = useState(1);
+    const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
+
 
     /**
      * @function reset
@@ -55,6 +57,7 @@ const TypingTest = (props) => {
     function reset() {
         props.setTimerActive(false);
         props.setIndex(0);
+        props.setLineIndex(0)
         props.setTimer(staticCountdown);
         setCountdown(1);
         props.newWords();
@@ -68,6 +71,7 @@ const TypingTest = (props) => {
      * @description Used to set a delay/countdown that is persistant over react renders
      */
     function useInterval(callback, delay) {
+
         const savedCallback = useRef();
 
         // Remember the latest callback.
@@ -94,18 +98,41 @@ const TypingTest = (props) => {
         }
     };
 
-    function chopLineToLength(wordString){
-        var trimmedString = wordString.substring(0, 80)
+    function chopLineToLength(wordString) {
+        var trimmedString = wordString.substring(0, 60)
 
         // If we do not chop perfectly at end of word
-        if(wordString[80] !== " "){
+        if (wordString[60] !== " ") {
             var lastIndex = trimmedString.lastIndexOf(" ")
             trimmedString = trimmedString.substring(0, lastIndex)
         }
-        
+
         console.log(trimmedString.length)
         return trimmedString
     }
+
+    const checkForNewLine = (event) => {
+        console.log(props.lineIndex)
+        if (props.lineIndex === 0) {
+            console.log("hello")
+            setChoppedCurrentLine(chopLineToLength(props.words))
+            props.setCurrentLineLength(choppedCurrentLine.length)
+        }
+    }
+
+    useEffect(() => {
+
+        document.addEventListener('keydown', checkForNewLine);
+
+        if (!props.timerActive) {
+            setChoppedCurrentLine(chopLineToLength(props.words))
+            props.setCurrentLineLength(choppedCurrentLine.length)
+        } 
+
+        return () => {
+            document.removeEventListener('keydown', checkForNewLine);
+        };
+    }, [props.words])
 
     useInterval(() => {
         if (!props.inCountdown && props.timer === 0) {
@@ -166,10 +193,10 @@ const TypingTest = (props) => {
                     </div>
                     : null}
                 <div className="test-line-container">
-                    {chopLineToLength(props.words).split("").map(function (char, idx) {
+                    {choppedCurrentLine.split("").map(function (char, idx) {
                         return (
                             <span key={idx}
-                                className={(idx < props.index) ? 'right' : 'default'}
+                                className={(idx < props.lineIndex) ? 'correct' : 'default'}
                             >
                                 {char}
                             </span>
@@ -177,16 +204,8 @@ const TypingTest = (props) => {
                     })}
                 </div>
 
-                <div className="test-line-container">
-                    {chopLineToLength(props.nextUpWords).split("").map(function (char, idx) {
-                        return (
-                            <span key={idx}
-                                className={(idx < props.index) ? 'right' : 'default'}
-                            >
-                                {char}
-                            </span>
-                        )
-                    })}
+                <div className="test-line-container next-up">
+                    {props.nextUpWords}
                 </div>
             </div>
         </div>

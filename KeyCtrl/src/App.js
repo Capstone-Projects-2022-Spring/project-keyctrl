@@ -16,6 +16,8 @@ import { Route, Routes } from 'react-router-dom';
 function App() {
 
   const [index, setIndex] = useState(0);
+  const [lineIndex, setLineIndex] = useState(0)
+
   const [page, setPage] = useState(0);
 
   const [showSignIn, setShowSignIn] = useState(false);
@@ -28,6 +30,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [WPMTime, setWPMTime] = useState(1);
   const [accountInfo, setAccountInfo] = useState({})
+  const [currentLineLength, setCurrentLineLength] = useState(0);
 
   const [updateOnce, setUpdateOnce] = useState(false);
 
@@ -68,11 +71,11 @@ function App() {
     setNextUpRandomWords(nextUpLine)
   }
 
-  function getNewWordsLine(){
+  function getNewWordsLine() {
     const words = randWordsFunc({ exactly: 20, join: ' ' });
     const letters = words.length;
     console.log("letter", letters, "words", 13);
-   
+
     return words
   }
 
@@ -154,10 +157,19 @@ function App() {
       //EDITED TO MAKE LETTER MISSES UPDATE
       default:
         if (timerActive && !inCountdown) {
-          if (event.key === randomWords[index]) {
+          if (event.key === randomWords[lineIndex]) {
+
+            setLineIndex((lineIndex) => lineIndex + 1)
             setIndex((index) => index + 1);
+
+            if (lineIndex === currentLineLength - 1) {
+              console.log("hello")
+              onLineChange()
+            }
+
+
           } else if (event.key != randomWords[index] && loggedIn) {
-            incrementMissed(randomWords[index]);
+            incrementMissed(randomWords[lineIndex]);
             // console.log(randomWords[index]);
             // console.log(accountInfo.letter_misses);
           }
@@ -165,6 +177,12 @@ function App() {
         break;
     }
   };
+
+  function onLineChange() {
+    setIndex(index + lineIndex)
+    setCurrentRandomWords(nextUpRandomWords)
+    setLineIndex(0)
+  }
 
   const openSignIn = () => {
     setShowSignIn(prev => !prev);
@@ -194,7 +212,7 @@ function App() {
     return () => {
       document.removeEventListener('keydown', onKeyPress);
     };
-  }, [accountInfo, index, timerActive, inCountdown, page])
+  }, [accountInfo, index, lineIndex, timerActive, inCountdown, page])
 
   return (
     <div className="App">
@@ -215,9 +233,11 @@ function App() {
                   inCountdown={inCountdown}
                   setInCountdown={setInCountdown}
                   setIndex={setIndex}
+                  setLineIndex={setLineIndex}
                   words={randomWords}             //Instead of using words, we are trying to use random words. /randomWords={randomWords}I tried creating a new instance, but found out that its not needed
                   nextUpWords={nextUpRandomWords}
                   index={index}
+                  lineIndex={lineIndex}
                   countdownToggleChecked={countdownToggleChecked}
                   setCountdownToggleChecked={setCountdownToggleChecked}
                   newWords={newWords}
@@ -232,6 +252,8 @@ function App() {
                   WPMTime={WPMTime}
                   setWPMTime={setWPMTime}
                   grossWPM={grossWPM}
+                  currentLineLength={currentLineLength}
+                  setCurrentLineLength={setCurrentLineLength}
                 />
               } />
               <Route exact path="/training" element={<Training />} />
