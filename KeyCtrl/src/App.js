@@ -55,15 +55,25 @@ function App() {
     setLoggedIn(false);
   }
 
-  const [randomWords, setRandomWords] = useState("");    //setting its use state
+  const [randomWords, setCurrentRandomWords] = useState("");    //setting its use state
+  const [nextUpRandomWords, setNextUpRandomWords] = useState("");
   var randWordsFunc = require('random-words');          //Must require random-words
 
 
   function newWords() {
-    const words = randWordsFunc({ exactly: 100, join: ' ' });
+    var startingLine = getNewWordsLine()
+    var nextUpLine = getNewWordsLine()
+
+    setCurrentRandomWords(startingLine);
+    setNextUpRandomWords(nextUpLine)
+  }
+
+  function getNewWordsLine(){
+    const words = randWordsFunc({ exactly: 20, join: ' ' });
     const letters = words.length;
-    console.log("letter", letters, "words", 100);
-    setRandomWords(words);
+    console.log("letter", letters, "words", 13);
+   
+    return words
   }
 
   //INCREMENTS MISSED LETTER AND UPDATES ACCINFO
@@ -206,6 +216,7 @@ function App() {
                   setInCountdown={setInCountdown}
                   setIndex={setIndex}
                   words={randomWords}             //Instead of using words, we are trying to use random words. /randomWords={randomWords}I tried creating a new instance, but found out that its not needed
+                  nextUpWords={nextUpRandomWords}
                   index={index}
                   countdownToggleChecked={countdownToggleChecked}
                   setCountdownToggleChecked={setCountdownToggleChecked}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import '../../styles/TypingTest.css'
 import PropTypes from "prop-types"
+import styled from "styled-components"
 import * as api from '../../utils/apiUtils.js'
 
 /**
@@ -45,7 +46,7 @@ import * as api from '../../utils/apiUtils.js'
 const TypingTest = (props) => {
     const [staticCountdown, setStaticCountdown] = useState(15);
     const [countdown, setCountdown] = useState(1);
-    
+
     /**
      * @function reset
      * @description resets information variables related to running the typing test
@@ -92,6 +93,19 @@ const TypingTest = (props) => {
             props.setTimer(count);
         }
     };
+
+    function chopLineToLength(wordString){
+        var trimmedString = wordString.substring(0, 80)
+
+        // If we do not chop perfectly at end of word
+        if(wordString[80] !== " "){
+            var lastIndex = trimmedString.lastIndexOf(" ")
+            trimmedString = trimmedString.substring(0, lastIndex)
+        }
+        
+        console.log(trimmedString.length)
+        return trimmedString
+    }
 
     useInterval(() => {
         if (!props.inCountdown && props.timer === 0) {
@@ -151,8 +165,20 @@ const TypingTest = (props) => {
                         Get Ready!
                     </div>
                     : null}
-                <div className="test-text">
-                    {props.words.split("").map(function (char, idx) {
+                <div className="test-line-container">
+                    {chopLineToLength(props.words).split("").map(function (char, idx) {
+                        return (
+                            <span key={idx}
+                                className={(idx < props.index) ? 'right' : 'default'}
+                            >
+                                {char}
+                            </span>
+                        )
+                    })}
+                </div>
+
+                <div className="test-line-container">
+                    {chopLineToLength(props.nextUpWords).split("").map(function (char, idx) {
                         return (
                             <span key={idx}
                                 className={(idx < props.index) ? 'right' : 'default'}
