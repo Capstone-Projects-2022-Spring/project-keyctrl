@@ -11,3 +11,35 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+@font-face {
+  font-family: 'Almarai';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Almarai Regular'), url('fonts/Almarai-Regular.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Almarai Light';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Almarai Light'), url('fonts/Almarai-Light.woff') format('woff');
+}
+
+
+@font-face {
+  font-family: 'Almarai Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Almarai Bold'), url('fonts/Almarai-Bold.woff') format('woff');
+}
+    
+
+@font-face {
+  font-family: 'Almarai ExtraBold';
+  font-style: normal;
+  font-weight: normal;
+ src: local('Almarai ExtraBold'), url('fonts/Almarai-ExtraBold.woff') format('woff');
+}

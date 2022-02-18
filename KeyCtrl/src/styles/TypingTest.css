@@ -84,13 +84,15 @@
     padding-top: .5em;
     padding-bottom: .5em;
     padding-left: 1ch;
-    width: 50ch;
+    padding-right: 1ch;
+    width: 55ch;
     background: #1F1D42;
     font-family: Almarai;
     font-style: normal;
     font-weight: bold;
     font-size: 36px;
     text-align: left;
+    letter-spacing: .03em;
 }
 
 .test-line-container .correct{
