@@ -4,6 +4,7 @@ import validate from '../../../../utils/validateInfo'
 import '../../../../styles/SignInModal.css'
 import { useSpring, animated } from 'react-spring';
 import { MdClose } from 'react-icons/md';
+import GoogleLogin from 'react-google-login';
 // import * as db from '../utils/dbUtils.js';
 
 import * as api from '../../../../utils/apiUtils.js'
@@ -31,7 +32,7 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
      * @description Api call to log in and passes result to onLogin()
      */
     const login = () => {
-        onLogin(api.callLogin(values.username, values.password));        
+        onLogin(api.callLogin(values.username, values.password));
     }
 
     /**
@@ -119,10 +120,17 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
         },
         [keyPress]
     );
+
+    const responseGoogle = response => {
+        console.log(response);
+    };
+
+
     return (
         <>
             {showSignIn ? (
                 <div className='Background' onClick={closeModal} ref={modalRef}>
+
                     <animated.div >
                         <form onSubmit={onFormSubmit} noValidate>
                             <div className='ModalWrapper' showSignIn={showSignIn}>
@@ -132,6 +140,14 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
                                     onClick={() => setShowSignIn(prev => !prev)}
                                 />
                                 <div className='ModalContent'>
+
+                                    <GoogleLogin
+                                        clientId="568691465172-6a0kbo3t147jc4oi2bfomq8fjcq6cj2k.apps.googleusercontent.com"
+                                        buttonText="Login with Google"
+                                        onSuccess={responseGoogle}
+                                        onFailure={responseGoogle}
+                                        cookiePolicy="single_host_origin" />
+                                        
                                     {showSignUp ? <h1>Sign Up</h1> : <h1>Login</h1>}
 
                                     {showSignUp ? <div className='form-inputs'>
