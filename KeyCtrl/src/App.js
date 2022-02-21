@@ -17,19 +17,13 @@ function App() {
 
   const [index, setIndex] = useState(0);
   const [page, setPage] = useState(0);
-
   const [showSignIn, setShowSignIn] = useState(false);
-  const [timerActive, setTimerActive] = useState(false);
-  const [inCountdown, setInCountdown] = useState(false)
-  const [countdownToggleChecked, setCountdownToggleChecked] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [timer, setTimer] = useState(15);
   const [numEntries, setNumEntries] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
   const [WPMTime, setWPMTime] = useState(1);
   const [accountInfo, setAccountInfo] = useState({})
-
-  const [updateOnce, setUpdateOnce] = useState(false);
+  const [updateOnce, setUpdateOnce] = useState(false)
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
   const onLogin = async (account) => {
@@ -55,16 +49,6 @@ function App() {
     setLoggedIn(false);
   }
 
-  const [randomWords, setRandomWords] = useState("");    //setting its use state
-  var randWordsFunc = require('random-words');          //Must require random-words
-
-
-  function newWords() {
-    const words = randWordsFunc({ exactly: 100, join: ' ' });
-    const letters = words.length;
-    console.log("letter", letters, "words", 100);
-    setRandomWords(words);
-  }
 
   //INCREMENTS MISSED LETTER AND UPDATES ACCINFO
   function incrementMissed(letter) {
@@ -122,69 +106,30 @@ function App() {
     return wpm;
   };
 
-  const onKeyPress = (event) => {
-
-    switch (event.key) {
-
-      case "Enter":
-        // setUpdateOnce(true);
-        console.log(countdownToggleChecked)
-        if (!timerActive) {
-          setTimerActive(true);
-          if (countdownToggleChecked)
-            setInCountdown(true);
-          else
-            setInCountdown(false);
-        }
-        break;
-
-      case "Escape":
-        console.log("correct");
-        break;
-      //EDITED TO MAKE LETTER MISSES UPDATE
-      default:
-        if (timerActive && !inCountdown) {
-          if (event.key === randomWords[index]) {
-            setIndex((index) => index + 1);
-          } else if (event.key != randomWords[index] && loggedIn) {
-            incrementMissed(randomWords[index]);
-            // console.log(randomWords[index]);
-            // console.log(accountInfo.letter_misses);
-          }
-        }
-        break;
-    }
-  };
-
   const openSignIn = () => {
     setShowSignIn(prev => !prev);
   };
 
-  useEffect(() => {   //using another useEffect so random words does not refresh everytime.
+  const emptyForNow = () => {
 
-    newWords();  //Setting how many words given for the test right here.
-
-  }, [])
-
+  }
 
   useEffect(() => {
-    document.addEventListener('keydown', onKeyPress);
+    document.addEventListener('keydown', emptyForNow);
 
     // if (timer === 0 && !timerActive && loggedIn) {
     //   updateAccInfo(numEntries, WPMTime, grossWPM());
     // }
-    if (timer === 0 && !timerActive) {
-      setUpdateOnce(true);
-    }
+
     if (updateOnce && loggedIn) {
       updateAccInfo(numEntries, WPMTime, grossWPM());
       setUpdateOnce(false);
     }
 
     return () => {
-      document.removeEventListener('keydown', onKeyPress);
+      document.removeEventListener('keydown', emptyForNow);
     };
-  }, [accountInfo, index, timerActive, inCountdown, page])
+  }, [accountInfo, index, page])
 
   return (
     <div className="App">
@@ -200,22 +145,14 @@ function App() {
             <Routes>
               <Route exact path="/typing-test" element={
                 <TypingTest
-                  timerActive={timerActive}
-                  setTimerActive={setTimerActive}
-                  inCountdown={inCountdown}
-                  setInCountdown={setInCountdown}
+                  setUpdateOnce={setUpdateOnce}
                   setIndex={setIndex}
-                  words={randomWords}             //Instead of using words, we are trying to use random words. /randomWords={randomWords}I tried creating a new instance, but found out that its not needed
                   index={index}
-                  countdownToggleChecked={countdownToggleChecked}
-                  setCountdownToggleChecked={setCountdownToggleChecked}
-                  newWords={newWords}
                   accountInfo={accountInfo}
                   setAccountInfo={setAccountInfo}
                   loggedIn={loggedIn}
+                  incrementMissed={incrementMissed}
                   updateAccInfo={updateAccInfo}
-                  timer={timer}
-                  setTimer={setTimer}
                   numEntries={numEntries}
                   setNumEntries={setNumEntries}
                   WPMTime={WPMTime}

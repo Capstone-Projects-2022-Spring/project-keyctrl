@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import '../../styles/TypingTest.css'
 import PropTypes from "prop-types"
+import styled from "styled-components"
 import * as api from '../../utils/apiUtils.js'
 
 /**
@@ -45,18 +46,46 @@ import * as api from '../../utils/apiUtils.js'
 const TypingTest = (props) => {
     const [staticCountdown, setStaticCountdown] = useState(15);
     const [countdown, setCountdown] = useState(1);
-    
+    const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
+    const [lineIndex, setLineIndex] = useState(0)
+    const [timer, setTimer] = useState(15);
+    const [timerActive, setTimerActive] = useState(false);
+    const [countdownToggleChecked, setCountdownToggleChecked] = useState(true);
+    const [inCountdown, setInCountdown] = useState(false)
+    const [currentLineLength, setCurrentLineLength] = useState(0);
+
+    const [randomWords, setCurrentRandomWords] = useState(" ");    //setting its use state
+    const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
+    var randWordsFunc = require('random-words');          //Must require random-words
+
+
+    function newWords() {
+        var startingLine = getNewWordsLine()
+        var nextUpLine = getNewWordsLine()
+
+        setCurrentRandomWords(startingLine);
+        setNextUpRandomWords(chopLineToLength(nextUpLine))
+        console.log(startingLine)
+    }
+
+    useEffect(() => {   //using another useEffect so random words does not refresh everytime.
+
+        newWords();  //Setting how many words given for the test right here.
+
+    }, [])
+
     /**
      * @function reset
      * @description resets information variables related to running the typing test
      */
 
     function reset() {
-        props.setTimerActive(false);
+        setTimerActive(false);
         props.setIndex(0);
-        props.setTimer(staticCountdown);
+        setLineIndex(0)
+        setTimer(staticCountdown);
         setCountdown(1);
-        props.newWords();
+        newWords();
     }
 
     /**
@@ -67,6 +96,7 @@ const TypingTest = (props) => {
      * @description Used to set a delay/countdown that is persistant over react renders
      */
     function useInterval(callback, delay) {
+
         const savedCallback = useRef();
 
         // Remember the latest callback.
@@ -87,35 +117,121 @@ const TypingTest = (props) => {
     }
 
     const setCount = (count) => {
-        if (!props.timerActive) {
+        if (!timerActive) {
             setStaticCountdown(count);
-            props.setTimer(count);
+            setTimer(count);
+        }
+    };
+
+    function chopLineToLength(wordString) {
+        var trimmedString = wordString.substring(0, 60)
+
+        // If we do not chop perfectly at end of word
+        if (wordString[60] !== " ") {
+            var lastIndex = trimmedString.lastIndexOf(" ")
+            trimmedString = trimmedString.substring(0, lastIndex)
+        }
+        return trimmedString
+    }
+
+    function getNewWordsLine() {
+        const words = randWordsFunc({ exactly: 20, join: ' ' });
+        const letters = words.length;
+        console.log("letter", letters, "words", 13);
+
+        return words
+    }
+
+    function onLineChange() {
+        setCurrentRandomWords(nextUpRandomWords)
+        setNextUpRandomWords(chopLineToLength(getNewWordsLine()))
+        setLineIndex(0)
+    }
+
+    useEffect(() => {
+
+        document.addEventListener('keydown', onKeyPress);
+
+        if (timer === 0 && !timerActive) {
+            props.setUpdateOnce(true);
+        }
+
+        if (!props.timerActive) {
+            setChoppedCurrentLine(chopLineToLength(randomWords))
+            setCurrentLineLength(choppedCurrentLine.length)
+        } else if (lineIndex === choppedCurrentLine.length - 1) {
+            reset()
+        }
+
+        return () => {
+            document.removeEventListener('keydown', onKeyPress);
+        };
+    }, [randomWords, nextUpRandomWords, lineIndex, timerActive, inCountdown])
+
+    const onKeyPress = (event) => {
+
+        switch (event.key) {
+
+            case "Enter":
+                // setUpdateOnce(true);
+                if (!timerActive) {
+                    setTimerActive(true);
+                    if (countdownToggleChecked)
+                        setInCountdown(true);
+                    else
+                        setInCountdown(false);
+                }
+                break;
+
+            case "Escape":
+                console.log("correct");
+                break;
+            //EDITED TO MAKE LETTER MISSES UPDATE
+            default:
+                if (timerActive && !inCountdown) {
+                    console.log(event.key + " " + randomWords[lineIndex])
+                    if (event.key === randomWords[lineIndex]) {
+
+                        setLineIndex((lineIndex) => lineIndex + 1)
+                        props.setIndex((index) => index + 1);
+
+                        if (lineIndex === currentLineLength - 1) {
+                            onLineChange()
+                        }
+
+                    } else if (event.key != randomWords[lineIndex] && props.loggedIn) {
+                        props.incrementMissed(randomWords[lineIndex]);
+                        // console.log(randomWords[index]);
+                        // console.log(accountInfo.letter_misses);
+                    }
+                }
+                break;
         }
     };
 
     useInterval(() => {
-        if (!props.inCountdown && props.timer === 0) {
+        if (!inCountdown && timer === 0) {
             reset();
 
-        } else if (props.inCountdown) {
+        } else if (inCountdown) {
             if (countdown === 1) {
-                props.setInCountdown(false);
+                setInCountdown(false);
                 props.setNumEntries(0);
                 props.setWPMTime(staticCountdown);
             } else {
                 setCountdown(countdown => countdown - 1)
             }
         } else {
-            props.setTimer(timer => timer - 1);
+            setTimer(timer => timer - 1);
             props.setNumEntries(props.index);
         }
-    }, props.timerActive ? 1000 : null);
+    }, timerActive ? 1000 : null);
 
     return (
         <div className="container">
             <div className="timer-wrapper">
-                <div style={props.timerActive && !props.inCountdown ? { color: '#50E3C2', textShadow: ' 0px 0px 9px #50E3C2' } : { color: '#75749C' }} className="timer">
-                    {props.timer}s
+                <div style={timerActive && !inCountdown ? { color: '#50E3C2', textShadow: ' 0px 0px 9px #50E3C2' } : { color: '#75749C' }} className="timer">
+                    {timer}s
                 </div>
 
                 <div className="right-elements">
@@ -138,7 +254,7 @@ const TypingTest = (props) => {
 
             <div className="word-base">
 
-                {props.timerActive ? null : <div className="start-signal-wrapper">
+                {timerActive ? null : <div className="start-signal-wrapper">
 
                     Correct Entries: {props.numEntries} <br />
                     Your WPM: {props.grossWPM()} <br /> <br />
@@ -146,21 +262,25 @@ const TypingTest = (props) => {
                         Press Enter To Start!
                     </div>
                 </div>}
-                {props.timerActive && props.inCountdown && props.countdownToggleChecked ?
+                {timerActive && inCountdown && countdownToggleChecked ?
                     <div className="countdown">
                         Get Ready!
                     </div>
                     : null}
-                <div className="test-text">
-                    {props.words.split("").map(function (char, idx) {
+                <div className="test-line-container">
+                    {choppedCurrentLine.split("").map(function (char, idx) {
                         return (
                             <span key={idx}
-                                className={(idx < props.index) ? 'right' : 'default'}
+                                className={(idx < lineIndex) ? 'correct' : 'default'}
                             >
                                 {char}
                             </span>
                         )
                     })}
+                </div>
+
+                <div className="test-line-container next-up">
+                    {nextUpRandomWords}
                 </div>
             </div>
         </div>
