@@ -273,6 +273,7 @@ const TypingTest = (props) => {
                             <span key={idx}
                                 className={(idx < lineIndex) ? 'correct' : 'default'}
                             >
+                                {(idx === lineIndex) ? <span className="cursor" ></span> : <span/>}
                                 {char}
                             </span>
                         )
