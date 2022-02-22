@@ -109,7 +109,7 @@
 
 .timer-wrapper{
     height: auto;
-    width: 100%;
+    width: 65ch;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -229,4 +229,16 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+@keyframes blinker {
+  0% {
+    opacity: 0;
+  }
+}
+
+/* cursor */
+.cursor{
+  background-color: #50E3C2;
+  padding-left: 2px;
 }
