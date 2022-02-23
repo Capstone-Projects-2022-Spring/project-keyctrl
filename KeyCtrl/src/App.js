@@ -12,6 +12,7 @@ import LoadingSpinner from './components/Base/LoadingSpinner/LoadingSpinner.js';
 import * as api from './utils/apiUtils.js'
 import { MdSecurityUpdate } from 'react-icons/md';
 import { Route, Routes } from 'react-router-dom';
+import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
 
 function App() {
 
@@ -161,6 +162,7 @@ function App() {
                 />
               } />
               <Route exact path="/training" element={<Training />} />
+              <Route exact path="/multiplayer" element={<Multiplayer />} />
               <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} /> : <OfflineAccount />)} />
               <Route exact path="/settings" element={<Settings accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
             </Routes>

@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../../styles/TaskBar.css'
-import { MdAccountCircle, MdSettings, MdKeyboard, MdFitnessCenter } from "react-icons/md"
+import { MdAccountCircle, MdSettings, MdKeyboard, MdFitnessCenter, MdPublic } from "react-icons/md"
 import { Link } from 'react-router-dom'
 
 /**
@@ -22,6 +22,9 @@ const TaskBar = ({ page, setPage }) => {
                 </Link>
                 <Link to="/training">
                     <MdFitnessCenter onClick={() => setPage(2)} style={page === 2 ? { color: '#50E3C2', filter: 'drop-shadow(0px 0px 8px #50E3C2)' } : null} className='tb-button' />
+                </Link>
+                <Link to="/multiplayer">
+                    <MdPublic onClick={() => setPage(3)} style={page === 3 ? { color: '#50E3C2', filter: 'drop-shadow(0px 0px 8px #50E3C2)' } : null} className='tb-button'/>
                 </Link>
 
             </div>
