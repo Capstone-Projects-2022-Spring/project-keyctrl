@@ -143,7 +143,7 @@ function App() {
             {loading ? <LoadingSpinner /> : null}
 
             <Routes>
-              <Route exact path="/typing-test" element={
+              <Route exact path="" element={
                 <TypingTest
                   setUpdateOnce={setUpdateOnce}
                   setIndex={setIndex}

@@ -17,7 +17,7 @@ const TaskBar = ({ page, setPage }) => {
     return (
         <div className="tb-wrapper">
             <div className="top-group">
-                <Link to="/typing-test">
+                <Link to="">
                     <MdKeyboard onClick={() => setPage(0)} style={page === 0 ? { color: '#50E3C2', filter: 'drop-shadow(0px 0px 8px #50E3C2)' } : null} className='tb-button' />
                 </Link>
                 <Link to="/training">
