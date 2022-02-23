@@ -33,7 +33,7 @@
 
 	  form.addEventListener('submit', function(e) {
 		e.preventDefault();
-		socket.emit('sendWPM', 'user1');
+		socket.emit('sendWPM', input.value);
 	  });
 
 	  socket.on('sendWPM', function(msg) {
