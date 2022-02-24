@@ -21,7 +21,7 @@ jobs:
           wait-on-timeout: 300
           parallel: true
         env:
-          CI: false
+          CI: ""
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           # pass GitHub token to allow accurately detecting a build vs a re-run build

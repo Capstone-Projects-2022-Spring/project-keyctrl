@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import '../../styles/StatKeyboard.css'
 import Image from "../../assets/keyboard_shell.png"
-import MissedKey from './MissedKey';
 
 /**
  * @module StatKeyboard
@@ -14,7 +13,6 @@ import MissedKey from './MissedKey';
 
 const StatKeyboard = ({ letter_misses }) => {
 
-    var total = null;
     var max = null;
     const map = JSON.parse(letter_misses);
 
