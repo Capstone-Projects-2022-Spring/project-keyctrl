@@ -16,7 +16,7 @@ jobs:
           record: true
           working-directory: KeyCtrl
           wait-on: 'http://localhost:3000'
-          wait-on-timeout: 120
+          wait-on-timeout: 300
           parallel: true
         env:
           # pass the Dashboard record key as an environment variable
