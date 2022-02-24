@@ -13,8 +13,8 @@ jobs:
       - name: Cypress.io
         uses: cypress-io/github-action@v2.9.7
         with:
-          run:
-            npm start
+          build: npm run build
+          start: npm start
           record: true
           working-directory: KeyCtrl
           wait-on: 'http://localhost:3000'
