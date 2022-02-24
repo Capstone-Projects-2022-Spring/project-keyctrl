@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import { object } from 'prop-types';
 import App from './App';
 import Account from './components/AccountPage/Account';
 import OfflineAccount from './components/AccountPage/OfflineAccount';

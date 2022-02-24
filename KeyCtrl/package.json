@@ -60,7 +60,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/cypress": "^8.0.2",
     "concurrently": "^5.2.0",
+    "cypress": "^9.5.0",
     "electron": "^15.3.0",
     "electron-devtools-installer": "^3.2.0",
     "electron-is-dev": "^1.2.0",
