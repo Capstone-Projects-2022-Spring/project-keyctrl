@@ -9,7 +9,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "12"
-
+        working-directory: ./KeyCtrl
       # Speed up subsequent runs with caching
       - name: Cache node modules
         uses: actions/cache@v2
