@@ -1,5 +1,6 @@
 {
     "projectId": "99y4cm",
+    "CYPRESS_RECORD_KEY": " 468652da-3f69-48de-8c12-35df129e5f47",
     "baseUrl": "http://localhost:3000",
     "viewportWidth": 1400,
     "viewportHeight": 660
