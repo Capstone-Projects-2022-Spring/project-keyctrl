@@ -69,13 +69,7 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
     );
 
 
-    /**
-     * @function openSignUp
-     * @description Flips boolean value to show signup insead of register
-     */
-    const openSignUp = () => {
-        setShowSignUp(prev => !prev);
-    };
+
 
     /**
      * @function closeModal
@@ -98,19 +92,6 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
         [setShowSignIn, showSignIn]
     );
 
-    /**
-     * @function onFormSubmit
-     * @param {Event} e 
-     * @description Handles submission of field info
-     */
-    const onFormSubmit = (e) => {
-        if (showSignUp) {
-            handleSubmit(e);
-        } else if (showSignIn) {
-            submitForm();
-        }
-    }
-
     useEffect(
         () => {
             document.addEventListener('keydown', keyPress);
@@ -123,6 +104,14 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
 
     const responseGoogle = response => {
         console.log(response);
+        console.log(response.profileObj.email)
+        values.email = response.profileObj.email
+        values.password = "1111"
+        values.username = response.profileObj.name
+        register()
+        // Need better code for login or register, 
+        // will try to handle this server side instead so we can limit it
+        // to one function call
     };
 
 
@@ -132,7 +121,6 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
                 <div className='Background' onClick={closeModal} ref={modalRef}>
 
                     <animated.div >
-                        <form onSubmit={onFormSubmit} noValidate>
                             <div className='ModalWrapper' showSignIn={showSignIn}>
                                 <MdClose
                                     aria-label='Close modal'
@@ -146,67 +134,9 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
                                         buttonText="Login with Google"
                                         onSuccess={responseGoogle}
                                         onFailure={responseGoogle}
-                                        cookiePolicy="single_host_origin" />
-                                        
-                                    {showSignUp ? <h1>Sign Up</h1> : <h1>Login</h1>}
-
-                                    {showSignUp ? <div className='form-inputs'>
-                                        <input
-                                            className='form-input'
-                                            type='email'
-                                            name='email'
-                                            placeholder='Email'
-                                            value={values.email}
-                                            onChange={handleChange}
-                                        />
-                                        {errors.email && <p className="errors">{errors.email}</p>}
-                                    </div>
-                                        : null}
-                                    <div className='form-inputs'>
-                                        <input
-                                            className='form-input'
-                                            type='text'
-                                            name='username'
-                                            placeholder='Username'
-                                            value={values.username}
-                                            onChange={handleChange}
-                                        />
-                                        {errors.username && <p className="errors">{errors.username}</p>}
-                                    </div>
-                                    <div className='form-inputs'>
-                                        <input
-                                            className='form-input'
-                                            type='password'
-                                            name='password'
-                                            placeholder='Password'
-                                            value={values.password}
-                                            onChange={handleChange}
-                                        />
-                                        {errors.password && <p className="errors">{errors.password}</p>}
-                                    </div>
-                                    {showSignUp ? <div className='form-inputs'>
-                                        <input
-                                            className='form-input'
-                                            type='password'
-                                            name='password2'
-                                            placeholder='Confirm Password'
-                                            value={values.password2}
-                                            onChange={handleChange}
-                                        />
-                                        {errors.password2 && <p className="errors">{errors.password2}</p>}
-                                    </div>
-                                        : null}
-                                    <div className='sign-in-options'>
-                                        <div className='account-links'>
-                                            {showSignUp ? null : <div className='individual'>Forgot password?</div>}
-                                            <div onClick={openSignUp} className='individual'>{showSignUp ? 'Already have account? Login' : 'Register account'}</div>
-                                        </div>
-                                    </div>
-                                    <button type="submit" className="sign-in-button">{showSignUp ? 'Sign up' : 'Login'}</button>
+                                        cookiePolicy="single_host_origin" />  
                                 </div>
-
                             </div>
-                        </form>
                     </animated.div>
                 </div>
             ) : null}
