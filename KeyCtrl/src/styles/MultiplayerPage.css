@@ -1,0 +1,4 @@
+.multiplayer-base{
+    display: flex;
+    flex-direction: column;
+}
