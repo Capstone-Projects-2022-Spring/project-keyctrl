@@ -15,6 +15,9 @@ jobs:
         with:
           record: true
           working-directory: KeyCtrl
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
+          parallel: true
         env:
           # pass the Dashboard record key as an environment variable
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
