@@ -30,7 +30,9 @@ jobs:
 
       # Install required deps for action
       - name: Install Dependencies
-        run: npm install
+        run: 
+        npm install
+        npm install request --save
 
 
       # Finally, run our tests
