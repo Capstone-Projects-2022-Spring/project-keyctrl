@@ -2,6 +2,7 @@ import React from 'react'
 import '../../styles/StatKeyboard.css'
 import Image from "../../assets/keyboard_shell.png"
 
+
 /**
  * @module StatKeyboard
  * @param {JSON} letter_misses 
@@ -13,6 +14,7 @@ import Image from "../../assets/keyboard_shell.png"
 
 const StatKeyboard = ({ letter_misses }) => {
 
+    var total = null;
     var max = null;
     const map = JSON.parse(letter_misses);
 
