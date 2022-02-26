@@ -72,220 +72,223 @@ const TypingTest = (props) => {
 
         newWords();  //Setting how many words given for the test right here.
 
+        document.documentElement.setAttribute('data-theme', 'gruvbox');
+        // localStorage.setItem('theme', 'Dracula');
+
     }, [])
 
-    /**
-     * @function reset
-     * @description resets information variables related to running the typing test
-     */
+/**
+ * @function reset
+ * @description resets information variables related to running the typing test
+ */
 
-    function reset() {
-        setTimerActive(false);
-        props.setIndex(0);
-        setLineIndex(0)
-        setTimer(staticCountdown);
-        setCountdown(1);
-        newWords();
-    }
+function reset() {
+    setTimerActive(false);
+    props.setIndex(0);
+    setLineIndex(0)
+    setTimer(staticCountdown);
+    setCountdown(1);
+    newWords();
+}
 
-    /**
-     * 
-     * @param {any} callback used to callback to previous referance of page
-     * @param {any} delay amount to be delayed
-     * @function useInterval
-     * @description Used to set a delay/countdown that is persistant over react renders
-     */
-    function useInterval(callback, delay) {
+/**
+ * 
+ * @param {any} callback used to callback to previous referance of page
+ * @param {any} delay amount to be delayed
+ * @function useInterval
+ * @description Used to set a delay/countdown that is persistant over react renders
+ */
+function useInterval(callback, delay) {
 
-        const savedCallback = useRef();
+    const savedCallback = useRef();
 
-        // Remember the latest callback.
-        useEffect(() => {
-            savedCallback.current = callback;
-        }, [callback]);
-
-        // Set up the interval.
-        useEffect(() => {
-            function tick() {
-                savedCallback.current();
-            }
-            if (delay !== null) {
-                let id = setInterval(tick, delay);
-                return () => clearInterval(id);
-            }
-        }, [delay]);
-    }
-
-    const setCount = (count) => {
-        if (!timerActive) {
-            setStaticCountdown(count);
-            setTimer(count);
-        }
-    };
-
-    function chopLineToLength(wordString) {
-        var trimmedString = wordString.substring(0, 60)
-
-        // If we do not chop perfectly at end of word
-        if (wordString[60] !== " ") {
-            var lastIndex = trimmedString.lastIndexOf(" ")
-            trimmedString = trimmedString.substring(0, lastIndex)
-        }
-        return trimmedString
-    }
-
-    function getNewWordsLine() {
-        const words = randWordsFunc({ exactly: 20, join: ' ' });
-        const letters = words.length;
-        console.log("letter", letters, "words", 13);
-
-        return words
-    }
-
-    function onLineChange() {
-        setCurrentRandomWords(nextUpRandomWords)
-        setNextUpRandomWords(chopLineToLength(getNewWordsLine()))
-        setLineIndex(0)
-    }
-
+    // Remember the latest callback.
     useEffect(() => {
+        savedCallback.current = callback;
+    }, [callback]);
 
-        document.addEventListener('keydown', onKeyPress);
-
-        if (timer === 0 && !timerActive) {
-            props.setUpdateOnce(true);
+    // Set up the interval.
+    useEffect(() => {
+        function tick() {
+            savedCallback.current();
         }
-
-        if (!props.timerActive) {
-            setChoppedCurrentLine(chopLineToLength(randomWords))
-            setCurrentLineLength(choppedCurrentLine.length)
-        } else if (lineIndex === choppedCurrentLine.length - 1) {
-            reset()
+        if (delay !== null) {
+            let id = setInterval(tick, delay);
+            return () => clearInterval(id);
         }
+    }, [delay]);
+}
 
-        return () => {
-            document.removeEventListener('keydown', onKeyPress);
-        };
-    }, [randomWords, nextUpRandomWords, lineIndex, timerActive, inCountdown])
+const setCount = (count) => {
+    if (!timerActive) {
+        setStaticCountdown(count);
+        setTimer(count);
+    }
+};
 
-    const onKeyPress = (event) => {
+function chopLineToLength(wordString) {
+    var trimmedString = wordString.substring(0, 60)
 
-        switch (event.key) {
+    // If we do not chop perfectly at end of word
+    if (wordString[60] !== " ") {
+        var lastIndex = trimmedString.lastIndexOf(" ")
+        trimmedString = trimmedString.substring(0, lastIndex)
+    }
+    return trimmedString
+}
 
-            case "Enter":
-                // setUpdateOnce(true);
-                if (!timerActive) {
-                    setTimerActive(true);
-                    if (countdownToggleChecked)
-                        setInCountdown(true);
-                    else
-                        setInCountdown(false);
-                }
-                break;
+function getNewWordsLine() {
+    const words = randWordsFunc({ exactly: 20, join: ' ' });
+    const letters = words.length;
+    console.log("letter", letters, "words", 13);
 
-            case "Escape":
-                console.log("correct");
-                break;
-            //EDITED TO MAKE LETTER MISSES UPDATE
-            default:
-                if (timerActive && !inCountdown) {
-                    console.log(event.key + " " + randomWords[lineIndex])
-                    if (event.key === randomWords[lineIndex]) {
+    return words
+}
 
-                        setLineIndex((lineIndex) => lineIndex + 1)
-                        props.setIndex((index) => index + 1);
+function onLineChange() {
+    setCurrentRandomWords(nextUpRandomWords)
+    setNextUpRandomWords(chopLineToLength(getNewWordsLine()))
+    setLineIndex(0)
+}
 
-                        if (lineIndex === currentLineLength - 1) {
-                            onLineChange()
-                        }
+useEffect(() => {
 
-                    } else if (event.key != randomWords[lineIndex] && props.loggedIn) {
-                        props.incrementMissed(randomWords[lineIndex]);
-                        // console.log(randomWords[index]);
-                        // console.log(accountInfo.letter_misses);
-                    }
-                }
-                break;
-        }
+    document.addEventListener('keydown', onKeyPress);
+
+    if (timer === 0 && !timerActive) {
+        props.setUpdateOnce(true);
+    }
+
+    if (!props.timerActive) {
+        setChoppedCurrentLine(chopLineToLength(randomWords))
+        setCurrentLineLength(choppedCurrentLine.length)
+    } else if (lineIndex === choppedCurrentLine.length - 1) {
+        reset()
+    }
+
+    return () => {
+        document.removeEventListener('keydown', onKeyPress);
     };
+}, [randomWords, nextUpRandomWords, lineIndex, timerActive, inCountdown])
 
-    useInterval(() => {
-        if (!inCountdown && timer === 0) {
-            reset();
+const onKeyPress = (event) => {
 
-        } else if (inCountdown) {
-            if (countdown === 1) {
-                setInCountdown(false);
-                props.setNumEntries(0);
-                props.setWPMTime(staticCountdown);
-            } else {
-                setCountdown(countdown => countdown - 1)
+    switch (event.key) {
+
+        case "Enter":
+            // setUpdateOnce(true);
+            if (!timerActive) {
+                setTimerActive(true);
+                if (countdownToggleChecked)
+                    setInCountdown(true);
+                else
+                    setInCountdown(false);
             }
+            break;
+
+        case "Escape":
+            console.log("correct");
+            break;
+        //EDITED TO MAKE LETTER MISSES UPDATE
+        default:
+            if (timerActive && !inCountdown) {
+                console.log(event.key + " " + randomWords[lineIndex])
+                if (event.key === randomWords[lineIndex]) {
+
+                    setLineIndex((lineIndex) => lineIndex + 1)
+                    props.setIndex((index) => index + 1);
+
+                    if (lineIndex === currentLineLength - 1) {
+                        onLineChange()
+                    }
+
+                } else if (event.key != randomWords[lineIndex] && props.loggedIn) {
+                    props.incrementMissed(randomWords[lineIndex]);
+                    // console.log(randomWords[index]);
+                    // console.log(accountInfo.letter_misses);
+                }
+            }
+            break;
+    }
+};
+
+useInterval(() => {
+    if (!inCountdown && timer === 0) {
+        reset();
+
+    } else if (inCountdown) {
+        if (countdown === 1) {
+            setInCountdown(false);
+            props.setNumEntries(0);
+            props.setWPMTime(staticCountdown);
         } else {
-            setTimer(timer => timer - 1);
-            props.setNumEntries(props.index);
+            setCountdown(countdown => countdown - 1)
         }
-    }, timerActive ? 1000 : null);
+    } else {
+        setTimer(timer => timer - 1);
+        props.setNumEntries(props.index);
+    }
+}, timerActive ? 1000 : null);
 
-    return (
-        <div className="container">
-            <div className="timer-wrapper">
-                <div style={timerActive && !inCountdown ? { color: '#50E3C2', textShadow: ' 0px 0px 9px #50E3C2' } : { color: '#75749C' }} className="timer">
-                    {timer}s
-                </div>
-
-                <div className="right-elements">
-                    <div className="timer-select">
-                        <div onClick={() => setCount(15)} style={staticCountdown === 15 ? { color: '#50E3C2', textShadow: ' 0px 0px 9px #50E3C2' } : null} className="time-button">
-                            15
-                        </div>
-                        <div onClick={() => setCount(30)} style={staticCountdown === 30 ? { color: '#50E3C2', textShadow: ' 0px 0px 9px #50E3C2' } : null} className="time-button">
-                            30
-                        </div>
-                        <div onClick={() => setCount(45)} style={staticCountdown === 45 ? { color: '#50E3C2', textShadow: ' 0px 0px 9px #50E3C2' } : null} className="time-button">
-                            45
-                        </div>
-                        <div onClick={() => setCount(60)} style={staticCountdown === 60 ? { color: '#50E3C2', textShadow: ' 0px 0px 9px #50E3C2' } : null} className="time-button">
-                            60
-                        </div>
-                    </div>
-                </div>
+return (
+    <div className="container">
+        <div className="timer-wrapper">
+            <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
+                {timer}s
             </div>
 
-            <div className="word-base">
-
-                {timerActive ? null : <div className="start-signal-wrapper">
-
-                    Correct Entries: {props.numEntries} <br />
-                    Your WPM: {props.grossWPM()} <br /> <br />
-                    <div className="start-signal">
-                        Press Enter To Start!
+            <div className="right-elements">
+                <div className="timer-select">
+                    <div onClick={() => setCount(15)} style={staticCountdown === 15 ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : null} className="time-button">
+                        15
                     </div>
-                </div>}
-                {timerActive && inCountdown && countdownToggleChecked ?
-                    <div className="countdown">
-                        Get Ready!
+                    <div onClick={() => setCount(30)} style={staticCountdown === 30 ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : null} className="time-button">
+                        30
                     </div>
-                    : null}
-                <div className="test-line-container">
-                    {choppedCurrentLine.split("").map(function (char, idx) {
-                        return (
-                            <span key={idx}
-                                className={(idx < lineIndex) ? 'correct' : 'default'}
-                            >
-                                {(idx === lineIndex) ? <span className="cursor" ></span> : <span/>}
-                                {char}
-                            </span>
-                        )
-                    })}
-                </div>
-
-                <div className="test-line-container next-up">
-                    {nextUpRandomWords}
+                    <div onClick={() => setCount(45)} style={staticCountdown === 45 ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : null} className="time-button">
+                        45
+                    </div>
+                    <div onClick={() => setCount(60)} style={staticCountdown === 60 ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : null} className="time-button">
+                        60
+                    </div>
                 </div>
             </div>
         </div>
-    )
+
+        <div className="word-base">
+
+            {timerActive ? null : <div className="start-signal-wrapper">
+
+                Correct Entries: {props.numEntries} <br />
+                Your WPM: {props.grossWPM()} <br /> <br />
+                <div className="start-signal">
+                    Press Enter To Start!
+                </div>
+            </div>}
+            {timerActive && inCountdown && countdownToggleChecked ?
+                <div className="countdown">
+                    Get Ready!
+                </div>
+                : null}
+            <div className="test-line-container">
+                {choppedCurrentLine.split("").map(function (char, idx) {
+                    return (
+                        <span key={idx}
+                            className={(idx < lineIndex) ? 'correct' : 'default'}
+                        >
+                            {(idx === lineIndex) ? <span className="cursor" ></span> : <span />}
+                            {char}
+                        </span>
+                    )
+                })}
+            </div>
+
+            <div className="test-line-container next-up">
+                {nextUpRandomWords}
+            </div>
+        </div>
+    </div>
+)
 }
 
 // Starting to introduce proptypes
