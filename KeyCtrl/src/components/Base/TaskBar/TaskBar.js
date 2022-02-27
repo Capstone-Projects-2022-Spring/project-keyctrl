@@ -18,22 +18,22 @@ const TaskBar = ({ page, setPage }) => {
         <div className="tb-wrapper">
             <div className="top-group">
                 <Link to="">
-                    <MdKeyboard onClick={() => setPage(0)} style={page === 0 ? { color: '#50E3C2', filter: 'drop-shadow(0px 0px 8px #50E3C2)' } : null} className='tb-button' />
+                    <MdKeyboard onClick={() => setPage(0)} style={page === 0 ? { color: 'var(--selection-color)', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
                 </Link>
                 <Link to="/training">
-                    <MdFitnessCenter onClick={() => setPage(2)} style={page === 2 ? { color: '#50E3C2', filter: 'drop-shadow(0px 0px 8px #50E3C2)' } : null} className='tb-button' />
+                    <MdFitnessCenter onClick={() => setPage(2)} style={page === 2 ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
                 </Link>
                 <Link to="/multiplayer">
-                    <MdPublic onClick={() => setPage(3)} style={page === 3 ? { color: '#50E3C2', filter: 'drop-shadow(0px 0px 8px #50E3C2)' } : null} className='tb-button'/>
+                    <MdPublic onClick={() => setPage(3)} style={page === 3 ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button'/>
                 </Link>
 
             </div>
             <div className="bottom-group">
                 <Link to="account">
-                    <MdAccountCircle onClick={() => setPage(1)} style={page === 1 ? { color: '#50E3C2', filter: 'drop-shadow(0px 0px 8px #50E3C2)' } : null} className="tb-button" />
+                    <MdAccountCircle onClick={() => setPage(1)} style={page === 1 ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className="tb-button" />
                 </Link>
                 <Link to="settings">
-                    <MdSettings onClick={() => setPage(4)} style={page === 4 ? { color: '#50E3C2', filter: 'drop-shadow(0px 0px 8px #50E3C2)' } : null} className="tb-button" />
+                    <MdSettings onClick={() => setPage(4)} style={page === 4 ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className="tb-button" />
                 </Link>
             </div>
         </div>
