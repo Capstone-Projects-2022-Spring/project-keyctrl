@@ -11,14 +11,18 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('a user connected');
+
+  socket.on('switchRoom', function(newRoom) {
+    socket.leave(socket.room);
+    socket.join(newRoom);
+    socket.emit('updateRooms', newRoom);
+  });
+
+  socket.on('sendWPM', (msg, room) => {
+    io.in(room).emit('sendWPM', msg);
+  });
 });
 
 server.listen(3000, () => {
   console.log('listening on *:3000');
-});
-
-io.on('connection', (socket) => {
-  socket.on('sendWPM', (msg) => {
-    io.emit('sendWPM', msg);
-  });
 });

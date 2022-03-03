@@ -22,6 +22,7 @@
     </form>
 	
 	<span id='wpm'>0</span>
+  <span id='roomnum'>0</span>
 	
 	<script src="/socket.io/socket.io.js"></script>
 	<script>
@@ -30,10 +31,17 @@
 	  var messages = document.getElementById('messages');
 	  var form = document.getElementById('form');
 	  var input = document.getElementById('input');
+    var urlSearch = new URLSearchParams(document.location.search);
+    var roomnum = urlSearch.get('lobbyID');
+
+    socket.emit('switchRoom', roomnum);
+    socket.on('updateRooms', function(newRoom) {
+      socket.room = newRoom;
+    });
 
 	  form.addEventListener('submit', function(e) {
 		e.preventDefault();
-		socket.emit('sendWPM', input.value);
+		socket.emit('sendWPM', input.value, socket.room);
 	  });
 
 	  socket.on('sendWPM', function(msg) {
