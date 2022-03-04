@@ -10,14 +10,14 @@ import PropTypes from 'prop-types'
  * <ColoredLine color="#5B5A99" />
  */
 
-const ColoredLine = ({ color }) => {
+const ColoredLine = ({ color, width }) => {
     return (
         <hr
             style={{
                 color: color,
                 backgroundColor: color,
                 height: 1,
-                width: '100%',
+                width: width,
                 border: 'none',
             }}
         />
@@ -25,7 +25,8 @@ const ColoredLine = ({ color }) => {
 }
 
 ColoredLine.propTypes = {
-    color: PropTypes.string
+    color: PropTypes.string,
+    width: PropTypes.string
 }
 
 export default ColoredLine

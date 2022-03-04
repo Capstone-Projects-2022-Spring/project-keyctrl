@@ -24,6 +24,7 @@ function App() {
   const [WPMTime, setWPMTime] = useState(1);
   const [accountInfo, setAccountInfo] = useState({})
   const [updateOnce, setUpdateOnce] = useState(false)
+  const [showFriendList, setShowFriendList] = useState(false)
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
   const onLogin = async (account) => {
@@ -135,7 +136,12 @@ function App() {
     <div className="App">
       <div className="window">
         <div className="task-bar">
-          <TaskBar page={page} setPage={setPage} />
+          <TaskBar 
+            page={page}
+            setPage={setPage}
+            loggedIn={loggedIn}
+            setShowFriendList={setShowFriendList}
+            showFriendList={showFriendList} />
         </div>
         <div className="landing">
           <TitleBar loggedIn={loggedIn} openSignIn={openSignIn} />
