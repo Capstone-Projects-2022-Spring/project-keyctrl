@@ -12,11 +12,11 @@ export const Lobby = (props) => {
     useEffect(
       () => {
         socketRef.current = io.connect("http://localhost:4000")
-        socketRef.current.emit("switchLobby", { lobbyID })
+        socketRef.current.emit('switchLobby', { lobbyID })
         socketRef.current.on('updateLobby', function(newLobby) {
-            socketRef.current.room = newLobby;
+            socketRef.current.room = newLobby.lobbyID;
           });
-        socketRef.current.on("message", ({ name, message }) => {
+        socketRef.current.on("message", ({ name, message }, room) => {
           setChat([...chat, { name, message }])
         })
         return () => socketRef.current.disconnect()
