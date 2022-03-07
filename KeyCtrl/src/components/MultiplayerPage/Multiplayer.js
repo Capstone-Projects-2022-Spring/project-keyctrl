@@ -36,11 +36,6 @@ const Multiplayer = () => {
     setShowModal(true)
   }
 
-  function joinLobbyById() {
-    setLobbyID(document.getElementById('hiddenLobbyId'))
-    setJoinLobby(true)
-  }
-
   return (
     <div>
       <div className='multiplayer-base'>
