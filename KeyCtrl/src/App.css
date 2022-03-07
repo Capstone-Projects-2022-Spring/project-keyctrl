@@ -1,3 +1,47 @@
+:root {
+    --primary-color: #3d3883;
+    --secondary-color: #5b5a99;
+    --text-container: #1F1D42;
+    --dark-bg: #201D47;
+    --bg-color: #262353;
+    --selection-color: #50E3C2;
+    --text-color: #75749C;
+    --next-up-text-color: #585774;
+}
+
+[data-theme="dracula"]{
+    --primary-color: #44475A;
+    --secondary-color: #6272A4;
+    --bg-color: #282A36;
+    --selection-color: #BD93F9;
+    --text-color: #6272A4;
+    --next-up-text-color: #6272A4;
+    --text-container: #44475A;
+    --dark-bg: #222329;
+}
+
+[data-theme="gruvbox"]{
+    --primary-color: #665C54;
+    --text-container: #665C54;
+    --secondary-color: #928374;
+    --text-color: #928374;
+    --selection-color: #FE8019;
+    --next-up-text-color: #928374;
+    --bg-color: #282828;
+    --dark-bg: #1D1D1D;
+}
+
+[data-theme="sakura"]{
+    --primary-color: #C3829E;
+    --text-container: #C3829E;
+    --secondary-color: #E9B1CD;
+    --text-color: #E9B1CD;
+    --selection-color: #FFE7DE;
+    --next-up-text-color: #E9B1CD;
+    --bg-color: #562135;
+    --dark-bg: #492130;
+}
+
 .App {
   text-align: center;
     -webkit-touch-callout: none; /* iOS Safari */
@@ -23,10 +67,10 @@
 
 .task-bar{
   width: auto;
-  background: #262353;
+  background: var(--bg-color);
 }
 
 .main-window{
-  background: radial-gradient(123.22% 129.67% at 100.89% -5.6%, #201D47 0%, #17153A 100%); 
+  background: var(--dark-bg);
   min-height: 95vh;
 }

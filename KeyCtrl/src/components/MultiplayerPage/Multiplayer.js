@@ -7,16 +7,17 @@ import '../../styles/Modal.css'
 import '../../styles/MultiplayerPage.css'
 
 const Button = styled.button`
-  background: #3D3883;
+  background: var(--primary-color);
   border-radius: .2em;
   border: 0px;
-  color: #5B5A99;
+  color: var(--text-color);
   margin: 1em;
   padding: 0.25em 1em;
   font-family: "almarai";
   font-size: 2em;
   &:hover{
-    color: #50E3C2;
+    transition: .25s;
+    color: var(--selection-color);
     cursor: pointer;
   }
 `

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect} from 'react';
 import TypingTest from './components/TypingTestPage/TypingTest.js';
 import SignInModal from './components/Base/TitleBar/SignInModal/SignInModal.js';
 import TitleBar from './components/Base/TitleBar/TitleBar.js';
@@ -10,7 +10,6 @@ import Training from './components/TrainingPage/Training.js';
 import Settings from './components/SettingsPage/Settings.js';
 import LoadingSpinner from './components/Base/LoadingSpinner/LoadingSpinner.js';
 import * as api from './utils/apiUtils.js'
-import { MdSecurityUpdate } from 'react-icons/md';
 import { Route, Routes } from 'react-router-dom';
 import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
 
@@ -36,7 +35,7 @@ function App() {
     setLoading(false);
 
     console.log(account);
-    if (account.account_id != -1) {
+    if (account.account_id !== -1) {
       setAccountInfo(account);
       setLoggedIn(true);
     } else {
@@ -130,7 +129,7 @@ function App() {
     return () => {
       document.removeEventListener('keydown', emptyForNow);
     };
-  }, [accountInfo, index, page])
+  }, [accountInfo, index, page, numEntries, WPMTime, updateAccInfo, updateOnce])
 
   return (
     <div className="App">

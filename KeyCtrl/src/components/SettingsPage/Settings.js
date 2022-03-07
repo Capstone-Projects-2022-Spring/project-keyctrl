@@ -24,11 +24,11 @@ const Settings = ({ accountInfo, logout, loggedIn }) => {
                 Settings
             </div>
             <div className="s-line-spacing">
-                <ColoredLine color="#5B5A99" />
+                <ColoredLine color="var(--primary-color)" />
             </div>
             {loggedIn ? <AccountTile accountInfo={accountInfo} logout={logout} /> : <SettingsLoginTile />}
             <div className="s-line-spacing">
-                <ColoredLine color="#5B5A99" />
+                <ColoredLine color="var(--primary-color)" />
             </div>
             <div className="s-section">
                 More settings coming soon!
