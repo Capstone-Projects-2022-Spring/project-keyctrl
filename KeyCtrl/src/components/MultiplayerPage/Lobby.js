@@ -11,8 +11,11 @@ export const Lobby = (props) => {
   
     useEffect(
       () => {
-        socketRef.current = io.connect("151.197.236.81:4000")
+        socketRef.current = io.connect("http://localhost:4000")
         socketRef.current.emit("switchLobby", { lobbyID })
+        socketRef.current.on('updateLobby', function(newLobby) {
+            socketRef.current.room = newLobby;
+          });
         socketRef.current.on("message", ({ name, message }) => {
           setChat([...chat, { name, message }])
         })
@@ -27,7 +30,7 @@ export const Lobby = (props) => {
   
     const onMessageSubmit = (e) => {
       const { name, message } = state
-      socketRef.current.emit("message", { name, message })
+      socketRef.current.emit("message", { name, message }, socketRef.current.room)
       e.preventDefault()
       setState({ message: "", name })
     }
@@ -45,7 +48,7 @@ export const Lobby = (props) => {
     return (
       <div className="card">
           <form onSubmit={onMessageSubmit}>
-            <h1>Messenger</h1>
+            <h1>Lobby ID: {lobbyID}</h1>
             <div className="name-field">
               <TextField name="name" onChange={(e) => onTextChange(e)} value={state.name} label="Name" />
             </div>

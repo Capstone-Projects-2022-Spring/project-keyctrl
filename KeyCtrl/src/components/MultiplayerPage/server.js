@@ -5,10 +5,6 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
-
 io.on('connection', (socket) => {
   console.log('a user connected');
 
@@ -18,8 +14,8 @@ io.on('connection', (socket) => {
     socket.emit('updateLobby', newRoom);
   });
 
-  socket.on('sendWPM', (msg, room) => {
-    io.in(room).emit('sendWPM', msg);
+  socket.on('message', ({ name, message }, room) => {
+    io.in(room).emit('message', { name, message });
   });
 });
 
