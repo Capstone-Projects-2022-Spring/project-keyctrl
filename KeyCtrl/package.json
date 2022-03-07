@@ -5,6 +5,7 @@
   "main": "public/main.js",
   "homepage": "./",
   "dependencies": {
+    "@material-ui/core": "^4.9.8",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -13,7 +14,7 @@
     "material-design": "0.0.1",
     "material-design-icons": "^3.0.1",
     "mysql": "^2.18.1",
-    "postman-request": "^2.88.1-postman.30",
+    "postman-request": "^2.88.1-postman.31",
     "prop-types": "^15.8.1",
     "random-words": "^1.1.1",
     "react": "^17.0.2",
@@ -23,7 +24,10 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "^4.0.3",
     "react-spring": "^9.3.0",
+    "request": "^2.88.2",
     "request-promise": "^4.2.6",
+    "socket.io": "^4.4.1",
+    "socket.io-client": "^2.4.0",
     "styled-components": "^5.3.3",
     "web-vitals": "^1.1.2"
   },

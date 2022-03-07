@@ -43,7 +43,7 @@ import * as api from '../../utils/apiUtils.js'
 
  */
 
-const TypingTest = (props) => {
+export const TypingTest = (props) => {
     const [staticCountdown, setStaticCountdown] = useState(15);
     const [countdown, setCountdown] = useState(1);
     const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
