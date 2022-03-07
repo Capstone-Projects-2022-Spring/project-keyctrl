@@ -13,11 +13,16 @@ import * as api from './utils/apiUtils.js'
 import { Route, Routes } from 'react-router-dom';
 import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
 
+// Set default theme on first initialization
+document.documentElement.setAttribute('data-theme', 'default');
+
 function App() {
+
 
   const [index, setIndex] = useState(0);
   const [page, setPage] = useState(0);
   const [showSignIn, setShowSignIn] = useState(false);
+  const [showThemeOptions, setShowThemeOptions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [numEntries, setNumEntries] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -114,6 +119,8 @@ function App() {
 
   }
 
+
+
   useEffect(() => {
     document.addEventListener('keydown', emptyForNow);
 
@@ -163,7 +170,7 @@ function App() {
               <Route exact path="/training" element={<Training />} />
               <Route exact path="/multiplayer" element={<Multiplayer />} />
               <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} /> : <OfflineAccount />)} />
-              <Route exact path="/settings" element={<Settings accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
+              <Route exact path="/settings" element={<Settings setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
             </Routes>
 
           </div>

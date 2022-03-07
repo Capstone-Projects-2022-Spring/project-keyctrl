@@ -3,6 +3,7 @@ import '../../styles/Settings.css'
 import ColoredLine from './ColoredLine'
 import AccountTile from './AccountTile'
 import SettingsLoginTile from './SettingsLoginTile'
+import ThemeSelect from './ThemeSelect'
 
 /**
  * @module Settings
@@ -16,7 +17,7 @@ import SettingsLoginTile from './SettingsLoginTile'
  * <Settings accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />
  */
 
-const Settings = ({ accountInfo, logout, loggedIn }) => {
+const Settings = ({ accountInfo, logout, loggedIn, setShowThemeOptions }) => {
     return (
         <div className="s-wrapper">
 
@@ -30,8 +31,11 @@ const Settings = ({ accountInfo, logout, loggedIn }) => {
             <div className="s-line-spacing">
                 <ColoredLine color="var(--primary-color)" />
             </div>
+            <div className="sub">
+                Preferances
+            </div>
             <div className="s-section">
-                More settings coming soon!
+                <ThemeSelect setShowThemeOptions={setShowThemeOptions} />
             </div>
         </div>
     )
