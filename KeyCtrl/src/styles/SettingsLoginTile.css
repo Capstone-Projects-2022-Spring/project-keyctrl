@@ -3,11 +3,10 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: #282458;
-    filter: drop-shadow(0px 48px 69px rgba(23, 18, 43, 0.845335));
+    background: var(--bg-color);
     padding: 5px;
     border-radius: 10px;
-    color: #5B5A99;
+    color: var(--text-color);
     font-size: xx-large;
 }
 

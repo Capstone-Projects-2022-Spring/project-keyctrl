@@ -13,7 +13,7 @@ import { MdLock } from 'react-icons/md'
 const OfflineAccount = () => {
     return (
         <div className="oa-wrapper">
-            <MdLock style={{color: '50E3C2'}}/>
+            <MdLock style={{color: 'var(--selection-color)'}}/>
             Please Login to view account statistics
         </div>
     )
