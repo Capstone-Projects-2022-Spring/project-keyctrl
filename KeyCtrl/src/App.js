@@ -14,6 +14,7 @@ import { MdSecurityUpdate } from 'react-icons/md';
 import { Route, Routes } from 'react-router-dom';
 import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
 
+
 function App() {
 
   const [index, setIndex] = useState(0);
@@ -25,6 +26,8 @@ function App() {
   const [WPMTime, setWPMTime] = useState(1);
   const [accountInfo, setAccountInfo] = useState({})
   const [updateOnce, setUpdateOnce] = useState(false)
+ 
+ 
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
   const onLogin = async (account) => {
@@ -50,7 +53,6 @@ function App() {
     setLoggedIn(false);
   }
 
-
   //INCREMENTS MISSED LETTER AND UPDATES ACCINFO
   function incrementMissed(letter) {
     var jObj = JSON.parse(accountInfo.letter_misses);
@@ -58,7 +60,7 @@ function App() {
     setAccountInfo({ ...accountInfo, letter_misses: JSON.stringify(jObj) });
 
   }
-
+  
   async function updateApiStats(avgWPM, topWpm, total_words, total_time) {
 
     console.log("Before Update Stats",

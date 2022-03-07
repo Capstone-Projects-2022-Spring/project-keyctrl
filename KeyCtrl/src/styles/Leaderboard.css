@@ -1,0 +1,114 @@
+
+.topvpm{
+  
+  font-style: normal;
+  font-weight: bold;
+  font-size: 90px;
+  line-height: 300px;
+  text-align: center;
+  padding: 8px;
+  color: #75749C;
+  font-size: 15em;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  
+
+}
+#pageselect, #leaderboard {
+  display: block;
+  float: left;    
+  width: 200px;   
+  height: 100px;    
+}
+#pageselect {
+  
+ float: right;
+ font-size: 30px;
+ text-decoration: underline;
+  
+}
+
+#leaderboard {
+ float: right;
+ font-size: 30px;
+  
+}
+.scrollit {
+  overflow:scroll;
+  width:100%;
+  height:100%;
+  background-color: #1F1D42;
+
+}
+
+.searchBox{
+  text-align: left;
+  padding: 8px;
+  color: #75749C;
+  font-size: 50px;
+  font-weight: bold;
+  width: 500px;
+
+}
+.search-bar{
+  margin-bottom: 30px;
+  float: left;
+  width: 500px;
+  height: 50px;
+  font-size: 40px;
+  
+}
+
+  table {
+    width: 100%;
+  }
+  
+  th,
+  td {
+    
+    text-align: left;
+    padding: 10px;
+    
+  }
+  th {
+    border-radius: 20px;
+    font-size: 40px;
+    text-align: center;
+    padding: 20px;
+    border: 2px solid #50E3C2;
+    
+    background-color: #1F1D42;
+    color: #75749C;
+   
+  }
+  
+  td {
+    font-size: 30px;
+    text-align: center;
+    border: 20px solid #262353;
+    background-color: #1F1D42;
+    color: #50E3C2;
+  }
+  
+  form {
+    display: flex;
+    gap: 5px;
+  }
+  
+  form td:last-child {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  form * {
+    font-size: 28px;
+  }
+  body {
+    background-color: #120629;
+    color: #75749C;
+    padding: 40px;
+    font-family: Arial;
+    text-align: center;
+  }
+  
