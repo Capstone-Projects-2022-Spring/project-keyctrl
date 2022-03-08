@@ -5,6 +5,7 @@ import '../../../../styles/SignInModal.css'
 import { useSpring, animated } from 'react-spring';
 import { MdClose } from 'react-icons/md';
 // import * as db from '../utils/dbUtils.js';
+import sha256 from 'crypto-js/sha256';
 
 import * as api from '../../../../utils/apiUtils.js'
 
@@ -31,7 +32,7 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
      * @description Api call to log in and passes result to onLogin()
      */
     const login = () => {
-        onLogin(api.callLogin(values.username, values.password));        
+        onLogin(api.callLogin(hash(values.username, values.password)));        
     }
 
     /**
@@ -39,7 +40,7 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
      * @description Api call to register new account and passes result to onLogin()
      */
     const register = () => {
-        onLogin(api.callRegisterAccount(values.email, values.username, values.password));
+        onLogin(api.callRegisterAccount(hash(values.email, values.username, values.password)));
     }
 
     /**
