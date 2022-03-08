@@ -1,7 +1,6 @@
 import React from 'react'
 import '../../styles/SettingsLoginTile.css'
 import { MdLock } from 'react-icons/md'
-import googleBtn from '../../utils/googleUtils'
 /**
  * @module SettingsLoginTile
  * @component SettingsLoginTile
@@ -11,9 +10,6 @@ import googleBtn from '../../utils/googleUtils'
  * <SettingsLoginTile />
  */
 
- const responseGoogle = response => {
-    console.log(response);
-};
 
 const SettingsLoginTile = () => {
     return (
@@ -21,7 +17,6 @@ const SettingsLoginTile = () => {
             <MdLock style={{ color: '50E3C2', padding: '1em' }} />
             <div className="slt-text">
                 Login to view account settings
-                <googleBtn/>
             </div>
         </div>
     )

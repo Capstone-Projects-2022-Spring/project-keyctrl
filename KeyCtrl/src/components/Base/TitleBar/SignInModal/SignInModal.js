@@ -25,50 +25,16 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
     const modalRef = useRef();
 
     const [showSignUp, setShowSignUp] = useState(false);
+    
 
 
     /**
      * @function login
      * @description Api call to log in and passes result to onLogin()
      */
-    const login = () => {
-        onLogin(api.callLogin(values.username, values.password));
+    const login = (email) => {
+        onLogin(api.callLogin(email));
     }
-
-    /**
-     * @function register
-     * @description Api call to register new account and passes result to onLogin()
-     */
-    const register = () => {
-        onLogin(api.callRegisterAccount(values.email, values.username, values.password));
-    }
-
-    /**
-     * @function submitForm
-     * @description Method that is activated on signin/register button press, login or registers account
-     */
-    function submitForm() {
-        if (!showSignUp) {
-            console.log("Login Pressed");
-            login();
-        } else if (showSignUp) {
-            console.log("SignUp Pressed");
-            register();
-        }
-
-        setShowSignIn(false);
-        values.email = '';
-        values.username = '';
-        values.password = '';
-        values.password2 = '';
-    }
-
-    const { handleChange, handleSubmit, values, errors } = useForm(
-        submitForm,
-        validate
-    );
-
-
 
 
     /**
@@ -105,13 +71,8 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
     const responseGoogle = response => {
         console.log(response);
         console.log(response.profileObj.email)
-        values.email = response.profileObj.email
-        values.password = "1111"
-        values.username = response.profileObj.name
-        register()
-        // Need better code for login or register, 
-        // will try to handle this server side instead so we can limit it
-        // to one function call
+        login(response.profileObj.email)
+        //after login in on google login, we call login
     };
 
 
