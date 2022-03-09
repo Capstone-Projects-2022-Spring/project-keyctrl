@@ -6,6 +6,7 @@ import { useSpring, animated } from 'react-spring';
 import { MdClose } from 'react-icons/md';
 import GoogleLogin from 'react-google-login';
 // import * as db from '../utils/dbUtils.js';
+import sha256 from 'crypto-js/sha256';
 
 import * as api from '../../../../utils/apiUtils.js'
 
@@ -36,6 +37,55 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
         onLogin(api.callLogin(email));
     }
 
+    /**
+     * @function register
+     * @description Api call to register new account and passes result to onLogin()
+     */
+    const register = () => {
+        onLogin(api.callRegisterAccount(values.email, values.username, values.password));
+    }
+
+     /**
+     * @function HashedEmail
+     * @description Api call to log in but the email is HASHED and passes result to onLogin(). THIS IS A WORKING METHOD TO BE USED IN THE FUTURE
+     
+      const register = () => {
+        onLogin(api.callLogin(hash(values.email));
+    } */
+
+    /**
+     * @function submitForm
+     * @description Method that is activated on signin/register button press, login or registers account
+     */
+    function submitForm() {
+        if (!showSignUp) {
+            console.log("Login Pressed");
+            login();
+        } else if (showSignUp) {
+            console.log("SignUp Pressed");
+            register();
+        }
+
+        setShowSignIn(false);
+        values.email = '';
+        values.username = '';
+        values.password = '';
+        values.password2 = '';
+    }
+
+    const { handleChange, handleSubmit, values, errors } = useForm(
+        submitForm,
+        validate
+    );
+
+
+    /**
+     * @function openSignUp
+     * @description Flips boolean value to show signup insead of register
+     */
+    const openSignUp = () => {
+        setShowSignUp(prev => !prev);
+    };
 
     /**
      * @function closeModal

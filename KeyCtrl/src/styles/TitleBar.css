@@ -1,7 +1,7 @@
 .titlebar {
   padding: 0px;
   min-height: 5vh;
-  background: linear-gradient(to left, #201D47, #18163d);
+  background: var(--dark-bg);
 }
 
 .titlebar .drag-region {
@@ -43,14 +43,14 @@
 }
 
 .login-button{
-    color: #75749C;
+    color: var(--text-color);
     margin-top: 5px;
     margin-right: 5px;
     -webkit-app-region: no-drag;
 }
 
 .login-button:hover{
-    color: #50E3C2;
+    color: var(--selection-color);
     cursor: pointer;
     transition: .25s;
 }
