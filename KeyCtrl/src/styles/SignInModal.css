@@ -12,6 +12,7 @@
   position: relative;
   width: 25rem;
   height: auto;
+  padding-top: 1.5em;
   padding-bottom: 1.5em;
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
   background: #201D47;
