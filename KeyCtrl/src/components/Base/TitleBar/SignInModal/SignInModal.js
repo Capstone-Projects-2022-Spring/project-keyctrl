@@ -5,6 +5,7 @@ import '../../../../styles/SignInModal.css'
 import { useSpring, animated } from 'react-spring';
 import { MdClose } from 'react-icons/md';
 // import * as db from '../utils/dbUtils.js';
+import sha256 from 'crypto-js/sha256';
 
 import * as api from '../../../../utils/apiUtils.js'
 
@@ -41,6 +42,14 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
     const register = () => {
         onLogin(api.callRegisterAccount(values.email, values.username, values.password));
     }
+
+     /**
+     * @function HashedEmail
+     * @description Api call to log in but the email is HASHED and passes result to onLogin(). THIS IS A WORKING METHOD TO BE USED IN THE FUTURE
+     
+      const register = () => {
+        onLogin(api.callLogin(hash(values.email));
+    } */
 
     /**
      * @function submitForm
