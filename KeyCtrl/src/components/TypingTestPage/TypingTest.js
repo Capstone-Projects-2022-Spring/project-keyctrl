@@ -71,10 +71,7 @@ export const TypingTest = (props) => {
     useEffect(() => {   //using another useEffect so random words does not refresh everytime.
 
         newWords();  //Setting how many words given for the test right here.
-
-        document.documentElement.setAttribute('data-theme', 'gruvbox');
-        // localStorage.setItem('theme', 'Dracula');
-
+        
     }, [])
 
 /**

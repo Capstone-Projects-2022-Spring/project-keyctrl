@@ -19,7 +19,16 @@
     flex-direction: row;
     justify-content: left;
     color: var(--text-color);
-    font-size: 4em;
+    font-size: 5em;
+}
+
+.sub{
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    color: var(--text-color);
+    font-size: 3em;
 }
 
 .s-section{
