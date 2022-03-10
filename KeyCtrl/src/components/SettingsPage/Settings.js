@@ -32,7 +32,7 @@ const Settings = ({ accountInfo, logout, loggedIn, setShowThemeOptions }) => {
                 <ColoredLine color="var(--primary-color)" />
             </div>
             <div className="sub">
-                Preferances
+                Preferences
             </div>
             <div className="s-section">
                 <ThemeSelect setShowThemeOptions={setShowThemeOptions} />

@@ -15,6 +15,39 @@
     --next-up-text-color: #585774;
 }
 
+.App {
+  text-align: center;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+}
+
+.App-header {
+
+}
+
+.window{
+  display: flex;
+  flex-direction: row;
+}
+
+.landing{
+  width: 100%;
+}
+
+.task-bar{
+  width: auto;
+  background: var(--bg-color);
+}
+
+.main-window{
+  background: var(--dark-bg);
+  min-height: 95vh;
+}
+
 [data-theme="default"]{
     --primary-color: #3d3883;
     --secondary-color: #5b5a99;
@@ -98,7 +131,7 @@
     --secondary-color: #6688c1;
     --text-color: #efffff;
     --next-up-text-color: #efffff;
-    --selection-color: #ce916b;
+    --selection-color: #6fc3df;
     --bg-color: #111111;
     --dark-bg: #000000;
 }
@@ -145,37 +178,4 @@
     --selection-color: #fbc401;
     --bg-color: #122738;
     --dark-bg: #193549;
-}
-
-.App {
-  text-align: center;
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none;
-}
-
-.App-header {
-
-}
-
-.window{
-  display: flex;
-  flex-direction: row;
-}
-
-.landing{
-  width: 100%;
-}
-
-.task-bar{
-  width: auto;
-  background: var(--bg-color);
-}
-
-.main-window{
-  background: var(--dark-bg);
-  min-height: 95vh;
 }
