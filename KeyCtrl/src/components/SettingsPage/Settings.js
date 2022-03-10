@@ -25,11 +25,16 @@ const Settings = ({ accountInfo, logout, loggedIn, setShowThemeOptions }) => {
                 Settings
             </div>
             <div className="s-line-spacing">
-                <ColoredLine color="var(--primary-color)" />
+                <ColoredLine
+                 color="var(--primary-color)"
+                 width='100%'
+                />
             </div>
             {loggedIn ? <AccountTile accountInfo={accountInfo} logout={logout} /> : <SettingsLoginTile />}
             <div className="s-line-spacing">
-                <ColoredLine color="var(--primary-color)" />
+                <ColoredLine 
+                color="var(--primary-color)"
+                width='100%' />
             </div>
             <div className="sub">
                 Preferences

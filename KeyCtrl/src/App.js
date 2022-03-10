@@ -30,6 +30,8 @@ function App() {
   const [accountInfo, setAccountInfo] = useState({})
   const [updateOnce, setUpdateOnce] = useState(false)
 
+  const [showFriendList, setShowFriendList] = useState(false)
+
   const delay = ms => new Promise(res => setTimeout(res, ms));
   const onLogin = async (account) => {
 
@@ -54,7 +56,6 @@ function App() {
     setLoggedIn(false);
   }
 
-
   //INCREMENTS MISSED LETTER AND UPDATES ACCINFO
   function incrementMissed(letter) {
     var jObj = JSON.parse(accountInfo.letter_misses);
@@ -62,7 +63,7 @@ function App() {
     setAccountInfo({ ...accountInfo, letter_misses: JSON.stringify(jObj) });
 
   }
-
+  
   async function updateApiStats(avgWPM, topWpm, total_words, total_time) {
 
     console.log("Before Update Stats",
@@ -142,7 +143,12 @@ function App() {
     <div className="App">
       <div className="window">
         <div className="task-bar">
-          <TaskBar page={page} setPage={setPage} />
+          <TaskBar 
+            page={page}
+            setPage={setPage}
+            loggedIn={loggedIn}
+            setShowFriendList={setShowFriendList}
+            showFriendList={showFriendList} />
         </div>
         <div className="landing">
           <TitleBar loggedIn={loggedIn} openSignIn={openSignIn} />

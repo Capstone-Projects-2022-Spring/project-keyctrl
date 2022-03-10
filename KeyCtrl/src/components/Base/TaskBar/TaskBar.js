@@ -2,6 +2,9 @@ import React from 'react'
 import '../../../styles/TaskBar.css'
 import { MdAccountCircle, MdSettings, MdKeyboard, MdFitnessCenter, MdPublic } from "react-icons/md"
 import { Link } from 'react-router-dom'
+import ColoredLine from '../../SettingsPage/ColoredLine'
+import { IoIosPeople } from "react-icons/io"
+import PropTypes from 'prop-types'
 
 /**
  * @module TaskBar
@@ -13,7 +16,7 @@ import { Link } from 'react-router-dom'
  * <TaskBar page={page} setPage={setPage} />
  */
 
-const TaskBar = ({ page, setPage }) => {
+const TaskBar = ({ page, setPage, loggedIn, setShowFriendList, showFriendList }) => {
     return (
         <div className="tb-wrapper">
             <div className="top-group">
@@ -24,8 +27,16 @@ const TaskBar = ({ page, setPage }) => {
                     <MdFitnessCenter onClick={() => setPage(2)} style={page === 2 ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
                 </Link>
                 <Link to="/multiplayer">
-                    <MdPublic onClick={() => setPage(3)} style={page === 3 ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button'/>
+                    <MdPublic onClick={() => setPage(3)} style={page === 3 ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
                 </Link>
+                {loggedIn ?
+                    <div>
+                        <ColoredLine color="var(--primary-color)" width='70%' />
+                        <div>
+                            <IoIosPeople onClick={() => setShowFriendList(true)} style={ showFriendList ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
+                        </div>
+                    </div>
+                    : null}
 
             </div>
             <div className="bottom-group">
@@ -38,6 +49,14 @@ const TaskBar = ({ page, setPage }) => {
             </div>
         </div>
     )
+}
+
+TaskBar.propTypes = {
+    page: PropTypes.number,
+    setPage: PropTypes.func,
+    loggedIn: PropTypes.bool,
+    setShowFriendList: PropTypes.func,
+    showFriendList: PropTypes.bool
 }
 
 export default TaskBar

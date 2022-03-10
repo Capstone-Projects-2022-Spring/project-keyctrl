@@ -1,7 +1,6 @@
 import React from 'react'
 import '../../styles/SettingsLoginTile.css'
 import { MdLock } from 'react-icons/md'
-
 /**
  * @module SettingsLoginTile
  * @component SettingsLoginTile
@@ -10,6 +9,7 @@ import { MdLock } from 'react-icons/md'
  * @example
  * <SettingsLoginTile />
  */
+
 
 const SettingsLoginTile = () => {
     return (
