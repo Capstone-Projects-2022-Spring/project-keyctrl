@@ -4,6 +4,8 @@ import TextField from "@material-ui/core/TextField"
 
 export const Lobby = (props) => {
     var lobbyID = props.lobbyID
+    //INITIALIZE USERNAME FROM PROPS
+    var username = "testusername"
     const [state, setState] = useState({ message: "", name: "" })
     const [chat, setChat] = useState([])
   
@@ -12,12 +14,20 @@ export const Lobby = (props) => {
     useEffect(
       () => {
         socketRef.current = io.connect("http://localhost:4000")
-        socketRef.current.emit('switchLobby', { lobbyID })
+        //SENDING USERNAME TO SWITCHLOBBY
+        socketRef.current.emit('switchLobby', { lobbyID }, username )
         socketRef.current.on('updateLobby', function(newLobby) {
             socketRef.current.room = newLobby.lobbyID;
           });
         socketRef.current.on("message", ({ name, message }, room) => {
           setChat([...chat, { name, message }])
+        })
+        socketRef.current.on("playerJoined", ( username ) => {
+          alert(username)
+        })
+        socketRef.current.on("gameStart", () => {
+          //START GAME COUNTDOWN
+          alert("GAMESTART")
         })
         return () => socketRef.current.disconnect()
       },
@@ -41,7 +51,7 @@ export const Lobby = (props) => {
           <h3>
             {name}: <span>{message}</span>
           </h3>
-        </div>
+          </div>
       ))
     }
   
@@ -65,7 +75,7 @@ export const Lobby = (props) => {
             <button>Send Message</button>
           </form>
           <div className="render-chat">
-            <h1>Chat Log</h1>
+            <h1>Progress Board</h1>
             {renderChat()}
           </div>
       </div>
