@@ -11,7 +11,27 @@ const io = require('socket.io')(http, {
 });
 
 var numClients = {};
+var wordsArray = {};
 
+//Generate lines to send to players
+var randWordsFunc = require('random-words'); 
+
+function chopLineToLength(wordString) {
+    var trimmedString = wordString.substring(0, 60)
+
+    // If we do not chop perfectly at end of word
+    if (wordString[60] !== " ") {
+        var lastIndex = trimmedString.lastIndexOf(" ")
+        trimmedString = trimmedString.substring(0, lastIndex)
+    }
+    return trimmedString
+}
+
+function getNewWordsLine() {
+    return chopLineToLength(randWordsFunc({ exactly: 20, join: ' ' }));
+}
+
+//Server-side networking code
 io.on('connection', (socket) => {
   console.log('a user connected');
 
@@ -28,10 +48,18 @@ io.on('connection', (socket) => {
 
     socket.emit('playerJoined', username)
 
-    if(numClients[newRoom.lobbyID] == 5) {
-      socket.emit('gameStart')
+    if(numClients[newRoom.lobbyID] == 2) {
+      io.in(newRoom.lobbyID).emit('gameStart')
+      for(var i=0; i<10; i++) {
+        wordsArray[i] = getNewWordsLine()
+      }
+      io.in(newRoom.lobbyID).emit('gameLines', (wordsArray))
     }
   });
+
+  socket.on('sendPlayerIndex', function(playerName, playerIndex, room) {
+    io.in(room).emit('playerIndexUpdate', (playerName, playerIndex))
+  })
 
   socket.on('disconnect', function() {
     numClients[socket.room]--;
