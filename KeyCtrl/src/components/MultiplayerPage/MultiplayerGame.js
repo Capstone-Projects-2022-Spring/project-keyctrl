@@ -5,6 +5,7 @@ import { PropTypes } from 'prop-types'
 import OpponentTestVisual from './OpponentTestVisual';
 
 const MultiplayerGame = (props) => {
+  const [playerName, setPlayerName] = useState("TEMPNAME")
   const [staticCountdown, setStaticCountdown] = useState(15);
   const [countdown, setCountdown] = useState(3);
   const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
@@ -46,6 +47,9 @@ const MultiplayerGame = (props) => {
         console.log("Game Start")
         setInCountdown(true)
         setTimerActive(true);
+      })
+      socketRef.current.on("playerIndexUpdate", (playerName, playerIndex) => {
+        console.log("Player:" + playerName + " Index: " + playerIndex)
       })
 
       return () => socketRef.current.disconnect()
@@ -126,6 +130,7 @@ const MultiplayerGame = (props) => {
             if (lineIndex === currentLineLength - 1) {
               onLineChange()
             }
+            socketRef.current.emit("sendPlayerIndex", (playerName, index, socketRef.current.room))
           }
           // Do we add logged in stats for multiplayer?
           //  else if (event.key != randomWords[lineIndex] && props.loggedIn) {
