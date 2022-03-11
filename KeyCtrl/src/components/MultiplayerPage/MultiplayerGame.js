@@ -6,7 +6,7 @@ import OpponentTestVisual from './OpponentTestVisual';
 
 const MultiplayerGame = ({ lobbyId }) => {
   const [staticCountdown, setStaticCountdown] = useState(15);
-  const [countdown, setCountdown] = useState(1);
+  const [countdown, setCountdown] = useState(3);
   const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
   const [lineIndex, setLineIndex] = useState(0)
   const [index, setIndex] = useState(0);
@@ -42,6 +42,7 @@ const MultiplayerGame = ({ lobbyId }) => {
       })
       socketRef.current.on("gameStart", () => {
         console.log("Game Start")
+        setInCountdown(true)
         setTimerActive(true);
       })
 
@@ -70,7 +71,7 @@ const MultiplayerGame = ({ lobbyId }) => {
     setIndex(0);
     setLineIndex(0)
     setTimer(staticCountdown);
-    setCountdown(1);
+    setCountdown(3);
   }
 
   // ---- Key Press Events ---------------------------------
@@ -182,7 +183,7 @@ const MultiplayerGame = ({ lobbyId }) => {
     <div className="container">
       <OpponentTestVisual />
 
-      <div className="timer-wrapper">
+      <div className="timer-wrapper-multiplayer">
         <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
           {timer}s
         </div>
@@ -191,14 +192,16 @@ const MultiplayerGame = ({ lobbyId }) => {
 
       <div className="word-base">
 
-        {timerActive ? null : <div className="start-signal-wrapper">
-
-          Correct Entries: {25} <br />
-          Your WPM: {25} <br /> <br />
-          <div className="start-signal">
-            Press Enter To Start!
-          </div>
+        {timerActive ? null :
+         <div className="start-signal-wrapper">
+           Waiting for players...
         </div>}
+
+        {timerActive && inCountdown ?
+                    <div className="countdown">
+                        {countdown}
+                    </div>
+                    : null}
 
         <div className="test-line-container">
           {choppedCurrentLine.split("").map(function (char, idx) {
