@@ -48,6 +48,9 @@ const MultiplayerGame = (props) => {
         setInCountdown(true)
         setTimerActive(true);
       })
+      socketRef.current.on("gameLines", (gameLines) => {
+        console.log(gameLines[0])
+      })
       socketRef.current.on("playerIndexUpdate", (playerName, playerIndex) => {
         console.log("Player:" + playerName + " Index: " + playerIndex)
       })
