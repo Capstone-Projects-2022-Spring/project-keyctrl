@@ -4,7 +4,7 @@ import '../../styles/TypingTest.css'
 import { PropTypes } from 'prop-types'
 import OpponentTestVisual from './OpponentTestVisual';
 
-const MultiplayerGame = ({ lobbyId }) => {
+const MultiplayerGame = (props) => {
   const [staticCountdown, setStaticCountdown] = useState(15);
   const [countdown, setCountdown] = useState(3);
   const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
@@ -21,19 +21,21 @@ const MultiplayerGame = ({ lobbyId }) => {
   const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
 
   // ---- Server Communication -------------------------------------
-  var lobbyID = lobbyId
   const [state, setState] = useState({ message: "", name: "" })
   const [chat, setChat] = useState([])
 
   const socketRef = useRef()
 
+  var lobbyId = props.lobbyID
+
   useEffect(() => {
-  },[timerActive])
+  },[])
 
   useEffect(
     () => {
       socketRef.current = io.connect("http://localhost:4000")
-      socketRef.current.emit('switchLobby', { lobbyID })
+      console.log(lobbyId)
+      socketRef.current.emit('switchLobby', { lobbyId })
       socketRef.current.on('updateLobby', function (newLobby) {
         socketRef.current.room = newLobby.lobbyID;
       });
@@ -222,10 +224,6 @@ const MultiplayerGame = ({ lobbyId }) => {
       </div>
     </div>
   )
-}
-
-MultiplayerGame.propTypes = {
-  lobbyId: PropTypes.number
 }
 
 export default MultiplayerGame
