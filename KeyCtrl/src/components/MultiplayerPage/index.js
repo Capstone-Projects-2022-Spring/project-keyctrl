@@ -60,7 +60,6 @@ io.on('connection', (socket) => {
 
     socket.emit('playerJoined', username)
 
-    //Game start code
     if(numClients[newRoom.lobbyID] == 2) {
       io.in(newRoom.lobbyID).emit('gameStart')
     }
