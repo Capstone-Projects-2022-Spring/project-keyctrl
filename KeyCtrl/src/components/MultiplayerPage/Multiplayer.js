@@ -5,6 +5,7 @@ import { Modal } from './Modal.js'
 
 import '../../styles/Modal.css'
 import '../../styles/MultiplayerPage.css'
+import MultiplayerGame from "./MultiplayerGame.js"
 
 const Button = styled.button`
   background: var(--primary-color);
@@ -40,11 +41,11 @@ const Multiplayer = () => {
   return (
     <div>
       <div className='multiplayer-base'>
-        <div>Multiplayer</div>
         {joinLobby ? null : <Button onClick={findMatch} >Find Match</Button>}
         {joinLobby ? null : <Button onClick={enterLobbyModal} >Join Custom Lobby</Button>}
         {showModal ? <Modal setShowModal={setShowModal} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} /> : null}
-        {joinLobby ? <Lobby lobbyID={lobbyID}/> : null}
+        {/* {joinLobby ? <Lobby lobbyID={lobbyID}/> : null} */}
+        {joinLobby ? <MultiplayerGame lobbyID={lobbyID}/> : null}
       </div>
       <div id='portal'></div>
       <div id='hiddenLobbyId' css="display:none"></div>

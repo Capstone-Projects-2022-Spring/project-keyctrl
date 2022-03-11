@@ -33,9 +33,9 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
      * @function login
      * @description Api call to log in and passes result to onLogin()
      */
-    const login = (email) => {
-        onLogin(api.callLogin(email));
-    }
+    // const login = (email) => {
+    //     onLogin(api.callLogin(email));
+    // }
 
     /**
      * @function register
@@ -45,13 +45,17 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
         onLogin(api.callRegisterAccount(values.email, values.username, values.password));
     }
 
-     /**
-     * @function HashedEmail
-     * @description Api call to log in but the email is HASHED and passes result to onLogin(). THIS IS A WORKING METHOD TO BE USED IN THE FUTURE
      
-      const register = () => {
-        onLogin(api.callLogin(hash(values.email));
-    } */
+    /**
+      @function HashedEmail
+      @description Api call to log in but the email is HASHED and passes result to onLogin(). THIS IS A WORKING METHOD TO BE USED IN THE FUTURE
+     */
+
+      const login = () => {
+        var hash = sha256(values.email)
+        console.log(hash.toString() + " " + hash.toString().length)
+        onLogin(api.callLogin(hash.toString()));
+    }
 
     /**
      * @function submitForm
