@@ -26,7 +26,7 @@ const MultiplayerGame = (props) => {
 
   const socketRef = useRef()
 
-  var lobbyId = props.lobbyID
+  var lobbyID = props.lobbyID
 
   useEffect(() => {
   },[])
@@ -34,8 +34,8 @@ const MultiplayerGame = (props) => {
   useEffect(
     () => {
       socketRef.current = io.connect("http://localhost:4000")
-      console.log(lobbyId)
-      socketRef.current.emit('switchLobby', { lobbyId })
+      console.log(lobbyID)
+      socketRef.current.emit('switchLobby', { lobbyID })
       socketRef.current.on('updateLobby', function (newLobby) {
         socketRef.current.room = newLobby.lobbyID;
       });
