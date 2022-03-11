@@ -28,8 +28,8 @@ io.on('connection', (socket) => {
 
     socket.emit('playerJoined', username)
 
-    if(numClients[newRoom.lobbyID] == 5) {
-      socket.emit('gameStart')
+    if(numClients[newRoom.lobbyID] == 2) {
+      io.in(newRoom.lobbyID).emit('gameStart')
     }
   });
 
