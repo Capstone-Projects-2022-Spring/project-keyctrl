@@ -48,12 +48,13 @@ io.on('connection', (socket) => {
 
     socket.emit('playerJoined', username)
 
+    for(var i=0; i<10; i++) {
+      wordsArray[i] = getNewWordsLine()
+    }
+    io.in(newRoom.lobbyID).emit('gameLines', (wordsArray))
+
     if(numClients[newRoom.lobbyID] == 2) {
       io.in(newRoom.lobbyID).emit('gameStart')
-      for(var i=0; i<10; i++) {
-        wordsArray[i] = getNewWordsLine()
-      }
-      io.in(newRoom.lobbyID).emit('gameLines', (wordsArray))
     }
   });
 
