@@ -55,6 +55,7 @@ io.on('connection', (socket) => {
 
     if(numClients[newRoom.lobbyID] == 2) {
       io.in(newRoom.lobbyID).emit('gameStart')
+
     }
   });
 
