@@ -52,6 +52,10 @@ const MultiplayerGame = (props) => {
         console.log("Player:" + playerName + " Index: " + playerIndex)
       })
 
+      socketRef.current.on("gameLines", (lineArray) => {
+        console.log(lineArray)
+      })
+
       return () => socketRef.current.disconnect()
     },
     [chat]
