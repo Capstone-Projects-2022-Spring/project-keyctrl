@@ -12,6 +12,7 @@ const io = require('socket.io')(http, {
 
 var numClients = {};
 var wordsArray = {};
+var roomWordsArray = {};
 
 //Generate lines to send to players
 var randWordsFunc = require('random-words'); 
@@ -35,11 +36,22 @@ function getNewWordsLine() {
 io.on('connection', (socket) => {
   console.log('a user connected');
 
+  //On lobby join
   socket.on('switchLobby', function(newRoom, username) {
     socket.leave(socket.room);
     socket.join(newRoom.lobbyID);
     socket.emit('updateLobby', newRoom);
 
+    //Generate words list for this room
+    if(roomWordsArray[newRoom.lobbyID] == null) {
+      for(var i=0; i<10; i++) {
+        wordsArray[i] = getNewWordsLine()
+      }
+      roomWordsArray[newRoom.lobbyID] = wordsArray
+    }
+    socket.emit('gameLines', (roomWordsArray[newRoom.lobbyID]))
+    
+    //Count the room's clients
     if(numClients[newRoom.lobbyID] == undefined) {
       numClients[newRoom.lobbyID] = 1;
     } else {
@@ -48,14 +60,8 @@ io.on('connection', (socket) => {
 
     socket.emit('playerJoined', username)
 
-    for(var i=0; i<10; i++) {
-      wordsArray[i] = getNewWordsLine()
-    }
-    io.in(newRoom.lobbyID).emit('gameLines', (wordsArray))
-
     if(numClients[newRoom.lobbyID] == 2) {
       io.in(newRoom.lobbyID).emit('gameStart')
-
     }
   });
 
