@@ -6,6 +6,8 @@ import OpponentTestVisual from './OpponentTestVisual';
 
 const MultiplayerGame = (props) => {
   const [playerName, setPlayerName] = useState("TEMPNAME")
+  const [lobbyPlayers, setLobbyPlayers] = useState(new Map())
+
   const [staticCountdown, setStaticCountdown] = useState(15);
   const [countdown, setCountdown] = useState(3);
   const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
@@ -55,6 +57,11 @@ const MultiplayerGame = (props) => {
 
       socketRef.current.on("playerIndexUpdate", (playerName, playerIndex) => {
         console.log("Player:" + playerName + " Index: " + playerIndex)
+        setLobbyPlayers((prev) => new Map(prev).set(playerName, playerIndex))
+      })
+
+      socketRef.current.on("playerJoined", (username) => {
+        setLobbyPlayers(prev => new Map([...prev, [username, 0]]))
       })
 
       return () => socketRef.current.disconnect()
@@ -193,7 +200,7 @@ const MultiplayerGame = (props) => {
 
   return (
     <div className="container">
-      <OpponentTestVisual />
+      <OpponentTestVisual lobbyPlayers={lobbyPlayers} gameLines={gameLines} />
 
       <div className="timer-wrapper-multiplayer">
         <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
