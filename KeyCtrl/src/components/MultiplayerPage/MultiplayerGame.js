@@ -21,6 +21,9 @@ const MultiplayerGame = (props) => {
   const [randomWords, setCurrentRandomWords] = useState(" ");    //setting its use state
   const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
 
+  const [lineArrayIndex, setLineArrayIndex] = useState(0)
+  const [lineArray, setLineArray] = useState({})
+
   // ---- Server Communication -------------------------------------
   const [state, setState] = useState({ message: "", name: "" })
   const [chat, setChat] = useState([])
@@ -28,9 +31,10 @@ const MultiplayerGame = (props) => {
   const socketRef = useRef()
 
   var lobbyID = props.lobbyID
+  var la;
 
   useEffect(() => {
-  },[])
+  }, [])
 
   useEffect(
     () => {
@@ -57,8 +61,15 @@ const MultiplayerGame = (props) => {
         console.log("Player:" + playerName + " Index: " + playerIndex)
       })
 
-      socketRef.current.on("gameLines", (lineArray) => {
-        console.log(lineArray)
+      socketRef.current.on("gameLines", (lineArray_) => {
+        la = lineArray_
+        setLineArray(lineArray_)
+        setCurrentRandomWords(la[lineArrayIndex])
+        setLineArrayIndex((prev) => prev + 1)
+
+        setNextUpRandomWords(la[lineArrayIndex + 1])
+        setLineArrayIndex(prev => prev + 1)
+        console.log(lineArray, lineArray_)
       })
 
       return () => socketRef.current.disconnect()
@@ -93,19 +104,20 @@ const MultiplayerGame = (props) => {
   useEffect(() => {
 
     document.addEventListener('keydown', onKeyPress);
-
-    if (lineIndex === choppedCurrentLine.length - 1) {
-      reset()
-    }
+   
+    // if (lineIndex === randomWords.length - 1) {
+    //   reset()
+    // }
 
     return () => {
       document.removeEventListener('keydown', onKeyPress);
     };
-  }, [lineIndex, timerActive])
+  }, [lineIndex, timerActive, randomWords, nextUpRandomWords, inCountdown])
 
   function onLineChange() {
-    // setCurrentRandomWords(nextUpRandomWords)
-    // setNextUpRandomWords(chopLineToLength(getNewWordsLine()))
+    setCurrentRandomWords(nextUpRandomWords)
+    setNextUpRandomWords(lineArray[lineArrayIndex])
+    setLineArrayIndex(prev => prev + 1)
     setLineIndex(0)
   }
 
@@ -136,7 +148,7 @@ const MultiplayerGame = (props) => {
             setLineIndex((lineIndex) => lineIndex + 1)
             setIndex((index) => index + 1);
 
-            if (lineIndex === currentLineLength - 1) {
+            if (lineIndex === randomWords.length - 1) {
               onLineChange()
             }
             socketRef.current.emit("sendPlayerIndex", (playerName, index, socketRef.current.room))
@@ -156,24 +168,24 @@ const MultiplayerGame = (props) => {
 
   function useInterval(callback, delay) {
 
-        const savedCallback = useRef();
+    const savedCallback = useRef();
 
-        // Remember the latest callback.
-        useEffect(() => {
-            savedCallback.current = callback;
-        }, [callback]);
+    // Remember the latest callback.
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
 
-        // Set up the interval.
-        useEffect(() => {
-            function tick() {
-                savedCallback.current();
-            }
-            if (delay !== null) {
-                let id = setInterval(tick, delay);
-                return () => clearInterval(id);
-            }
-        }, [delay]);
-    }
+    // Set up the interval.
+    useEffect(() => {
+      function tick() {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  }
 
   useInterval(() => {
     if (!inCountdown && timer === 0) {
@@ -209,18 +221,18 @@ const MultiplayerGame = (props) => {
       <div className="word-base">
 
         {timerActive ? null :
-         <div className="start-signal-wrapper">
-           Waiting for players...
-        </div>}
+          <div className="start-signal-wrapper">
+            Waiting for players...
+          </div>}
 
         {timerActive && inCountdown ?
-                    <div className="countdown">
-                        {countdown}
-                    </div>
-                    : null}
+          <div className="countdown">
+            {countdown}
+          </div>
+          : null}
 
         <div className="test-line-container">
-          {choppedCurrentLine.split("").map(function (char, idx) {
+          {randomWords.split("").map(function (char, idx) {
             return (
               <span key={idx}
                 className={(idx < lineIndex) ? 'correct' : 'default'}
