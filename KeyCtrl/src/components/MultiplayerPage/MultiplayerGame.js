@@ -64,6 +64,10 @@ const MultiplayerGame = (props) => {
         setLobbyPlayers((prev) => new Map(prev).set(playerName, {index: playerIndex, lineArrayIndex: playerLineArrayIndex}))
       })
 
+      socketRef.current.on("pollAllPlayers", () => {
+        socketRef.current.emit("sendInLobby", username)
+      })
+
       socketRef.current.on("playerJoined", (username) => {
         console.log("username " + username)
         setLobbyPlayers(prev => new Map([...prev, [username, {index: 0 , lineArrayIndex: 0}]]))
@@ -198,6 +202,7 @@ const MultiplayerGame = (props) => {
 
   useInterval(() => {
     if (!inCountdown && timer === 0) {
+      socketRef.current.emit("gameEnd")
       reset();
 
     } else if (inCountdown) {

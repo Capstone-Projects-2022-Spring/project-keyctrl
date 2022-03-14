@@ -59,7 +59,10 @@ io.on('connection', (socket) => {
       numClients[newRoom.lobbyID]++;
     }
 
-    socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username)
+    io.in(newRoom.lobbyID).emit('pollAllPlayers')
+    socket.on('sendInLobby', (username) => {
+      socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username)
+    })
 
     if(numClients[newRoom.lobbyID] == 4) {
       io.in(newRoom.lobbyID).emit('gameStart')
@@ -73,6 +76,11 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', function() {
     numClients[socket.room]--;
+  })
+
+  socket.on('gameEnd', function() {
+    numClients[socket.room]--;
+    console.log('gameEnd')
   })
 
   socket.on('message', ({ name, message }, room) => {
