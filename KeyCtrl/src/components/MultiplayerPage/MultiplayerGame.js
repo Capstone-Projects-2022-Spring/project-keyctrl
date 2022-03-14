@@ -3,6 +3,8 @@ import io from "socket.io-client"
 import '../../styles/TypingTest.css'
 import { PropTypes } from 'prop-types'
 import OpponentTestVisual from './OpponentTestVisual';
+import styled from 'styled-components'
+import Popup from 'reactjs-popup'
 
 const MultiplayerGame = (props) => {
   const [lobbyPlayers, setLobbyPlayers] = useState(new Map())
@@ -25,6 +27,10 @@ const MultiplayerGame = (props) => {
   const [lineArrayIndex, setLineArrayIndex] = useState(0)
   const [lineArray, setLineArray] = useState([])
 
+  const [leaderBoardOpen, setLeaderBoardOpen] = useState(false);
+  const [leaderboard, setLeaderboard] = useState([{}]);
+  const closeLeaderBoard = () => setLeaderBoardOpen(false);
+
   // ---- Server Communication -------------------------------------
   const [state, setState] = useState({ message: "", name: "" })
   const [chat, setChat] = useState([])
@@ -42,7 +48,7 @@ const MultiplayerGame = (props) => {
     () => {
       socketRef.current = io.connect("http://lbox.ddns.net:4000") //LOCALHOST for local testing
       console.log(lobbyID, username)
-      socketRef.current.emit('switchLobby', {lobbyID}, username )
+      socketRef.current.emit('switchLobby', { lobbyID }, username)
       socketRef.current.on('updateLobby', function (newLobby) {
         socketRef.current.room = newLobby.lobbyID;
       });
@@ -62,11 +68,18 @@ const MultiplayerGame = (props) => {
       socketRef.current.on("matchResults", (matchResultsArray) => {
         console.log("GAMEEND")
         console.log(matchResultsArray)
+        setLeaderboard(matchResultsArray);
+        setLeaderBoardOpen(o => !o);
+
       })
 
       socketRef.current.on("playerIndexUpdate", (playerName, playerIndex, playerLineArrayIndex) => {
         console.log("Index update: ", playerName, playerIndex, playerLineArrayIndex)
-        setLobbyPlayers((prev) => new Map(prev).set(playerName, {index: playerIndex, lineArrayIndex: playerLineArrayIndex}))
+        setLobbyPlayers((prev) => new Map(prev).set(playerName, { index: playerIndex, lineArrayIndex: playerLineArrayIndex }))
+      })
+
+      socketRef.current.on("pollAllPlayers", () => {
+        socketRef.current.emit("sendInLobby", username)
       })
 
       socketRef.current.on("pollAllPlayers", () => {
@@ -75,7 +88,7 @@ const MultiplayerGame = (props) => {
 
       socketRef.current.on("playerJoined", (username) => {
         console.log("username " + username)
-        setLobbyPlayers(prev => new Map([...prev, [username, {index: 0 , lineArrayIndex: 0}]]))
+        setLobbyPlayers(prev => new Map([...prev, [username, { index: 0, lineArrayIndex: 0 }]]))
       })
 
       socketRef.current.on("gameLines", (lineArray_) => {
@@ -121,7 +134,7 @@ const MultiplayerGame = (props) => {
   useEffect(() => {
 
     document.addEventListener('keydown', onKeyPress);
-   
+
     // if (lineIndex === randomWords.length - 1) {
     //   reset()
     // }
@@ -180,6 +193,13 @@ const MultiplayerGame = (props) => {
     }
   };
 
+  const grossWPM = () => {
+    var words = (index / 5);
+    var wpm = ((words / WPMTime) * 60).toFixed(2);
+    console.log(wpm, words, index, WPMTime)
+    return wpm;
+  };
+
   // -------------------------------------------------------
 
   // ---- Gamer Timer Countdown Logic ----------------------
@@ -207,15 +227,18 @@ const MultiplayerGame = (props) => {
 
   useInterval(() => {
     if (!inCountdown && timer === 0) {
-      var wpmFAKE = 5
-      socketRef.current.emit("gameEnd", username, wpmFAKE, socketRef.current.room)
+
+      var WPM = grossWPM()
+      console.log("wpm: ", WPM);
+      socketRef.current.emit("gameEnd", username, grossWPM(), socketRef.current.room)
+
       reset();
 
     } else if (inCountdown) {
       if (countdown === 1) {
         setInCountdown(false);
         setNumEntries(0);
-        setWPMTime(staticCountdown);
+        setWPMTime(timer);
       } else {
         setCountdown(countdown => countdown - 1)
       }
@@ -226,6 +249,9 @@ const MultiplayerGame = (props) => {
   }, timerActive ? 1000 : null);
 
   // ---------------------------------------------------
+
+
+
 
   return (
     <div className="container">
@@ -251,6 +277,22 @@ const MultiplayerGame = (props) => {
           </div>
           : null}
 
+        <EndingPopup
+          open={leaderBoardOpen}
+          onClose={closeLeaderBoard}
+          position="center"
+          modal
+          closeOnDocumentClick
+        >
+          <Leaderboard>
+            {leaderboard.map(function (player, idx) {
+              return (
+                <div>{idx+1}. {player.player}  {player.WPM} WPM</div>
+              )
+            })}
+          </Leaderboard>
+        </EndingPopup>
+
         <div className="test-line-container">
           {randomWords.split("").map(function (char, idx) {
             return (
@@ -273,3 +315,25 @@ const MultiplayerGame = (props) => {
 }
 
 export default MultiplayerGame
+
+const EndingPopup = styled(Popup)`
+    
+  // use your custom style for ".popup-overlay"
+  &-overlay {
+  }
+  // use your custom style for ".popup-content"
+  &-content {
+    padding: 1em;
+    background: var(--primary-color);
+    border-style: solid;
+    border-color: var(--selection-color);
+  } 
+`;
+
+const Leaderboard = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+  font-family: "almarai";
+  font-size: 2em;
+`
