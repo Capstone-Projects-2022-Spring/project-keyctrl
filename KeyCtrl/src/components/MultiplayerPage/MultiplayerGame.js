@@ -5,13 +5,14 @@ import { PropTypes } from 'prop-types'
 import OpponentTestVisual from './OpponentTestVisual';
 
 const MultiplayerGame = (props) => {
-  const [playerName, setPlayerName] = useState("TEMPNAME")
+  const [lobbyPlayers, setLobbyPlayers] = useState(new Map())
+
   const [staticCountdown, setStaticCountdown] = useState(15);
   const [countdown, setCountdown] = useState(3);
   const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
   const [lineIndex, setLineIndex] = useState(0)
   const [index, setIndex] = useState(0);
-  const [timer, setTimer] = useState(15);
+  const [timer, setTimer] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
   const [inCountdown, setInCountdown] = useState(false)
   const [currentLineLength, setCurrentLineLength] = useState(0);
@@ -21,6 +22,9 @@ const MultiplayerGame = (props) => {
   const [randomWords, setCurrentRandomWords] = useState(" ");    //setting its use state
   const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
 
+  const [lineArrayIndex, setLineArrayIndex] = useState(0)
+  const [lineArray, setLineArray] = useState([])
+
   // ---- Server Communication -------------------------------------
   const [state, setState] = useState({ message: "", name: "" })
   const [chat, setChat] = useState([])
@@ -28,15 +32,17 @@ const MultiplayerGame = (props) => {
   const socketRef = useRef()
 
   var lobbyID = props.lobbyID
+  var username = props.username
+  var la;
 
   useEffect(() => {
-  },[])
+  }, [])
 
   useEffect(
     () => {
       socketRef.current = io.connect("http://localhost:4000")
-      console.log(lobbyID)
-      socketRef.current.emit('switchLobby', { lobbyID })
+      console.log(lobbyID, username)
+      socketRef.current.emit('switchLobby', {lobbyID}, username )
       socketRef.current.on('updateLobby', function (newLobby) {
         socketRef.current.room = newLobby.lobbyID;
       });
@@ -53,13 +59,30 @@ const MultiplayerGame = (props) => {
         console.log(gameLines[0])
       })
 
-      socketRef.current.on("playerIndexUpdate", (playerName, playerIndex) => {
-        console.log("Player:" + playerName + " Index: " + playerIndex)
+      socketRef.current.on("playerIndexUpdate", (playerName, playerIndex, playerLineArrayIndex) => {
+        console.log("Index update: ", playerName, playerIndex, playerLineArrayIndex)
+        setLobbyPlayers((prev) => new Map(prev).set(playerName, {index: playerIndex, lineArrayIndex: playerLineArrayIndex}))
+      })
+
+      socketRef.current.on("playerJoined", (username) => {
+        console.log("username " + username)
+        setLobbyPlayers(prev => new Map([...prev, [username, {index: 0 , lineArrayIndex: 0}]]))
+      })
+
+      socketRef.current.on("gameLines", (lineArray_) => {
+        la = lineArray_
+        setLineArray(lineArray_)
+        setCurrentRandomWords(la[lineArrayIndex])
+        setLineArrayIndex((prev) => prev + 1)
+
+        setNextUpRandomWords(la[lineArrayIndex + 1])
+        setLineArrayIndex(prev => prev + 1)
+        console.log(lineArray, lineArray_)
       })
 
       return () => socketRef.current.disconnect()
     },
-    [chat]
+    []
   )
 
   const onTextChange = (e) => {
@@ -89,19 +112,20 @@ const MultiplayerGame = (props) => {
   useEffect(() => {
 
     document.addEventListener('keydown', onKeyPress);
-
-    if (lineIndex === choppedCurrentLine.length - 1) {
-      reset()
-    }
+   
+    // if (lineIndex === randomWords.length - 1) {
+    //   reset()
+    // }
 
     return () => {
       document.removeEventListener('keydown', onKeyPress);
     };
-  }, [lineIndex, timerActive])
+  }, [lineIndex, timerActive, randomWords, nextUpRandomWords, inCountdown])
 
   function onLineChange() {
-    // setCurrentRandomWords(nextUpRandomWords)
-    // setNextUpRandomWords(chopLineToLength(getNewWordsLine()))
+    setCurrentRandomWords(nextUpRandomWords)
+    setNextUpRandomWords(lineArray[lineArrayIndex])
+    setLineArrayIndex(prev => prev + 1)
     setLineIndex(0)
   }
 
@@ -132,10 +156,11 @@ const MultiplayerGame = (props) => {
             setLineIndex((lineIndex) => lineIndex + 1)
             setIndex((index) => index + 1);
 
-            if (lineIndex === currentLineLength - 1) {
+            if (lineIndex === randomWords.length - 1) {
               onLineChange()
             }
-            socketRef.current.emit("sendPlayerIndex", (playerName, index, socketRef.current.room))
+            console.log(props.username, lineIndex, lineArrayIndex - 2, socketRef.current.room)
+            socketRef.current.emit("sendPlayerIndex", props.username, lineIndex, lineArrayIndex - 2, socketRef.current.room)
           }
           // Do we add logged in stats for multiplayer?
           //  else if (event.key != randomWords[lineIndex] && props.loggedIn) {
@@ -152,24 +177,24 @@ const MultiplayerGame = (props) => {
 
   function useInterval(callback, delay) {
 
-        const savedCallback = useRef();
+    const savedCallback = useRef();
 
-        // Remember the latest callback.
-        useEffect(() => {
-            savedCallback.current = callback;
-        }, [callback]);
+    // Remember the latest callback.
+    useEffect(() => {
+      savedCallback.current = callback;
+    }, [callback]);
 
-        // Set up the interval.
-        useEffect(() => {
-            function tick() {
-                savedCallback.current();
-            }
-            if (delay !== null) {
-                let id = setInterval(tick, delay);
-                return () => clearInterval(id);
-            }
-        }, [delay]);
-    }
+    // Set up the interval.
+    useEffect(() => {
+      function tick() {
+        savedCallback.current();
+      }
+      if (delay !== null) {
+        let id = setInterval(tick, delay);
+        return () => clearInterval(id);
+      }
+    }, [delay]);
+  }
 
   useInterval(() => {
     if (!inCountdown && timer === 0) {
@@ -193,7 +218,7 @@ const MultiplayerGame = (props) => {
 
   return (
     <div className="container">
-      <OpponentTestVisual />
+      <OpponentTestVisual lobbyPlayers={lobbyPlayers} lineArray={lineArray} />
 
       <div className="timer-wrapper-multiplayer">
         <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
@@ -205,18 +230,18 @@ const MultiplayerGame = (props) => {
       <div className="word-base">
 
         {timerActive ? null :
-         <div className="start-signal-wrapper">
-           Waiting for players...
-        </div>}
+          <div className="start-signal-wrapper">
+            Waiting for players...
+          </div>}
 
         {timerActive && inCountdown ?
-                    <div className="countdown">
-                        {countdown}
-                    </div>
-                    : null}
+          <div className="countdown">
+            {countdown}
+          </div>
+          : null}
 
         <div className="test-line-container">
-          {choppedCurrentLine.split("").map(function (char, idx) {
+          {randomWords.split("").map(function (char, idx) {
             return (
               <span key={idx}
                 className={(idx < lineIndex) ? 'correct' : 'default'}

@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
 
   //On lobby join
   socket.on('switchLobby', function(newRoom, username) {
+
     socket.leave(socket.room);
     socket.join(newRoom.lobbyID);
     socket.emit('updateLobby', newRoom);
@@ -58,15 +59,16 @@ io.on('connection', (socket) => {
       numClients[newRoom.lobbyID]++;
     }
 
-    socket.emit('playerJoined', username)
+    socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username)
 
-    if(numClients[newRoom.lobbyID] == 2) {
+    if(numClients[newRoom.lobbyID] == 4) {
       io.in(newRoom.lobbyID).emit('gameStart')
     }
   });
 
-  socket.on('sendPlayerIndex', function(playerName, playerIndex, room) {
-    io.in(room).emit('playerIndexUpdate', (playerName, playerIndex))
+  socket.on('sendPlayerIndex', function(playerName, playerIndex, playerLineArrayIndex, room) {
+    console.log(playerName, playerIndex, playerLineArrayIndex, room)
+    socket.broadcast.to(room).emit('playerIndexUpdate', playerName, playerIndex, playerLineArrayIndex)
   })
 
   socket.on('disconnect', function() {
