@@ -40,7 +40,7 @@ const MultiplayerGame = (props) => {
 
   useEffect(
     () => {
-      socketRef.current = io.connect("http://localhost:4000")
+      socketRef.current = io.connect("http://lbox.ddns.net:4000") //LOCALHOST for local testing
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', {lobbyID}, username )
       socketRef.current.on('updateLobby', function (newLobby) {
