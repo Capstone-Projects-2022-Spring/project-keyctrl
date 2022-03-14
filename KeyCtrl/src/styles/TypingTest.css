@@ -16,7 +16,6 @@
     justify-content: center;
     align-items: center;
     background: var(--bg-color);
-    filter: drop-shadow(0px 48px 69px var(--dark-bg));
     backdrop-filter: blur(20px);
     padding: 1em;
 }
@@ -117,6 +116,15 @@
     align-items: flex-end;
 }
 
+.timer-wrapper-multiplayer{
+    height: auto;
+    width: 65ch;
+    display: flex;
+    flex-direction: row;
+    font-size: xx-large;
+    justify-content: center;
+}
+
 .timer-wrapper .right-elements{
     display: flex;
     flex-direction: row;
@@ -137,7 +145,7 @@
     cursor: pointer;
 }
 
-.timer-wrapper .timer{
+.timer{
     font-size: 50px;
 }
 
