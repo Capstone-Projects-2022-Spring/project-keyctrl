@@ -2,7 +2,7 @@ const app = require('express')()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3000",  //CHANGE TO HOST URL
     methods: ["GET", "POST"],
     credentials: true,
     transports: ['websocket', 'polling']
@@ -13,6 +13,9 @@ const io = require('socket.io')(http, {
 var numClients = {};
 var wordsArray = {};
 var roomWordsArray = {};
+var matchResultsArray = {};
+
+var gameStartPlayers = 4;
 
 //Generate lines to send to players
 var randWordsFunc = require('random-words'); 
@@ -59,9 +62,14 @@ io.on('connection', (socket) => {
       numClients[newRoom.lobbyID]++;
     }
 
-    socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username)
 
-    if(numClients[newRoom.lobbyID] == 4) {
+    io.in(newRoom.lobbyID).emit('pollAllPlayers')
+    socket.on('sendInLobby', (username) => {
+      socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username)
+    })
+
+    if(numClients[newRoom.lobbyID] == gameStartPlayers) {
+
       io.in(newRoom.lobbyID).emit('gameStart')
     }
   });
@@ -71,8 +79,25 @@ io.on('connection', (socket) => {
     socket.broadcast.to(room).emit('playerIndexUpdate', playerName, playerIndex, playerLineArrayIndex)
   })
 
+  socket.on('disconnecting', function() {
+    var socketInfo = Array.from(socket.rooms)
+    numClients[socketInfo[1]]--
+
+  })
+
   socket.on('disconnect', function() {
-    numClients[socket.room]--;
+    console.log("client disconnect")
+  })
+
+  socket.on('gameEnd', function(player, WPM, room) {
+    console.log('gameEnd')
+    if(matchResultsArray[room] == null) {
+      matchResultsArray[room] = new Array()
+    }
+    matchResultsArray[room].push({player, WPM})
+    if(matchResultsArray[room].length === numClients[room]) {
+      io.in(room).emit('matchResults', matchResultsArray[room])
+    }
   })
 
   socket.on('message', ({ name, message }, room) => {
