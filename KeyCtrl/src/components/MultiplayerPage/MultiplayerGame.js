@@ -31,6 +31,7 @@ const MultiplayerGame = (props) => {
   const [leaderboard, setLeaderboard] = useState([{}]);
   const closeLeaderBoard = () => setLeaderBoardOpen(false);
 
+
   // ---- Server Communication -------------------------------------
   const [state, setState] = useState({ message: "", name: "" })
   const [chat, setChat] = useState([])
@@ -46,9 +47,11 @@ const MultiplayerGame = (props) => {
 
   useEffect(
     () => {
+
       socketRef.current = io.connect("http://lbox.ddns.net:4000") //LOCALHOST for local testing
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', { lobbyID }, username)
+
       socketRef.current.on('updateLobby', function (newLobby) {
         socketRef.current.room = newLobby.lobbyID;
       });
@@ -64,6 +67,7 @@ const MultiplayerGame = (props) => {
       socketRef.current.on("gameLines", (gameLines) => {
         console.log(gameLines[0])
       })
+
 
       socketRef.current.on("matchResults", (matchResultsArray) => {
         console.log("GAMEEND")
@@ -84,11 +88,14 @@ const MultiplayerGame = (props) => {
 
       socketRef.current.on("pollAllPlayers", () => {
         socketRef.current.emit("sendInLobby", username)
+
       })
 
       socketRef.current.on("playerJoined", (username) => {
         console.log("username " + username)
+
         setLobbyPlayers(prev => new Map([...prev, [username, { index: 0, lineArrayIndex: 0 }]]))
+
       })
 
       socketRef.current.on("gameLines", (lineArray_) => {
@@ -292,6 +299,7 @@ const MultiplayerGame = (props) => {
             })}
           </Leaderboard>
         </EndingPopup>
+
 
         <div className="test-line-container">
           {randomWords.split("").map(function (char, idx) {

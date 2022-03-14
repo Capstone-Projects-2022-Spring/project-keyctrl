@@ -62,12 +62,14 @@ io.on('connection', (socket) => {
       numClients[newRoom.lobbyID]++;
     }
 
+
     io.in(newRoom.lobbyID).emit('pollAllPlayers')
     socket.on('sendInLobby', (username) => {
       socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username)
     })
 
     if(numClients[newRoom.lobbyID] == gameStartPlayers) {
+
       io.in(newRoom.lobbyID).emit('gameStart')
     }
   });
@@ -80,6 +82,7 @@ io.on('connection', (socket) => {
   socket.on('disconnecting', function() {
     var socketInfo = Array.from(socket.rooms)
     numClients[socketInfo[1]]--
+
   })
 
   socket.on('disconnect', function() {
