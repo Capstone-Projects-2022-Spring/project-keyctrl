@@ -59,6 +59,11 @@ const MultiplayerGame = (props) => {
         console.log(gameLines[0])
       })
 
+      socketRef.current.on("matchResults", (matchResultsArray) => {
+        console.log("GAMEEND")
+        console.log(matchResultsArray)
+      })
+
       socketRef.current.on("playerIndexUpdate", (playerName, playerIndex, playerLineArrayIndex) => {
         console.log("Index update: ", playerName, playerIndex, playerLineArrayIndex)
         setLobbyPlayers((prev) => new Map(prev).set(playerName, {index: playerIndex, lineArrayIndex: playerLineArrayIndex}))
@@ -202,7 +207,8 @@ const MultiplayerGame = (props) => {
 
   useInterval(() => {
     if (!inCountdown && timer === 0) {
-      socketRef.current.emit("gameEnd")
+      var wpmFAKE = 5
+      socketRef.current.emit("gameEnd", username, wpmFAKE, socketRef.current.room)
       reset();
 
     } else if (inCountdown) {
