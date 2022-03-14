@@ -40,7 +40,7 @@ const MultiplayerGame = (props) => {
 
   useEffect(
     () => {
-      socketRef.current = io.connect("http://localhost:4000")
+      socketRef.current = io.connect("http://lbox.ddns.net:4000") //LOCALHOST for local testing
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', {lobbyID}, username )
       socketRef.current.on('updateLobby', function (newLobby) {
@@ -59,9 +59,18 @@ const MultiplayerGame = (props) => {
         console.log(gameLines[0])
       })
 
+      socketRef.current.on("matchResults", (matchResultsArray) => {
+        console.log("GAMEEND")
+        console.log(matchResultsArray)
+      })
+
       socketRef.current.on("playerIndexUpdate", (playerName, playerIndex, playerLineArrayIndex) => {
         console.log("Index update: ", playerName, playerIndex, playerLineArrayIndex)
         setLobbyPlayers((prev) => new Map(prev).set(playerName, {index: playerIndex, lineArrayIndex: playerLineArrayIndex}))
+      })
+
+      socketRef.current.on("pollAllPlayers", () => {
+        socketRef.current.emit("sendInLobby", username)
       })
 
       socketRef.current.on("playerJoined", (username) => {
@@ -198,6 +207,8 @@ const MultiplayerGame = (props) => {
 
   useInterval(() => {
     if (!inCountdown && timer === 0) {
+      var wpmFAKE = 5
+      socketRef.current.emit("gameEnd", username, wpmFAKE, socketRef.current.room)
       reset();
 
     } else if (inCountdown) {
