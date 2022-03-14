@@ -27,6 +27,7 @@ const Multiplayer = () => {
   //Set lobby join state and update during button press
   const [joinLobby, setJoinLobby] = useState(false)
   const [lobbyID, setLobbyID] = useState(0)
+  const [name, setName] = useState("")
 
   //Enter lobby modal
   const [showModal, setShowModal] = useState(false)
@@ -43,9 +44,9 @@ const Multiplayer = () => {
       <div className='multiplayer-base'>
         {joinLobby ? null : <Button onClick={findMatch} >Find Match</Button>}
         {joinLobby ? null : <Button onClick={enterLobbyModal} >Join Custom Lobby</Button>}
-        {showModal ? <Modal setShowModal={setShowModal} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} /> : null}
+        {showModal ? <Modal setShowModal={setShowModal} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
         {/* {joinLobby ? <Lobby lobbyID={lobbyID}/> : null} */}
-        {joinLobby ? <MultiplayerGame lobbyID={lobbyID}/> : null}
+        {joinLobby ? <MultiplayerGame lobbyID={lobbyID} username={name} /> : null}
       </div>
       <div id='portal'></div>
       <div id='hiddenLobbyId' css="display:none"></div>

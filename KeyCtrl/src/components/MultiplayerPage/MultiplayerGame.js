@@ -5,7 +5,6 @@ import { PropTypes } from 'prop-types'
 import OpponentTestVisual from './OpponentTestVisual';
 
 const MultiplayerGame = (props) => {
-  const [playerName, setPlayerName] = useState("TEMPNAME")
   const [lobbyPlayers, setLobbyPlayers] = useState(new Map())
 
   const [staticCountdown, setStaticCountdown] = useState(15);
@@ -13,7 +12,7 @@ const MultiplayerGame = (props) => {
   const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
   const [lineIndex, setLineIndex] = useState(0)
   const [index, setIndex] = useState(0);
-  const [timer, setTimer] = useState(15);
+  const [timer, setTimer] = useState(60);
   const [timerActive, setTimerActive] = useState(false);
   const [inCountdown, setInCountdown] = useState(false)
   const [currentLineLength, setCurrentLineLength] = useState(0);
@@ -24,7 +23,7 @@ const MultiplayerGame = (props) => {
   const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
 
   const [lineArrayIndex, setLineArrayIndex] = useState(0)
-  const [lineArray, setLineArray] = useState({})
+  const [lineArray, setLineArray] = useState([])
 
   // ---- Server Communication -------------------------------------
   const [state, setState] = useState({ message: "", name: "" })
@@ -33,6 +32,7 @@ const MultiplayerGame = (props) => {
   const socketRef = useRef()
 
   var lobbyID = props.lobbyID
+  var username = props.username
   var la;
 
   useEffect(() => {
@@ -41,8 +41,8 @@ const MultiplayerGame = (props) => {
   useEffect(
     () => {
       socketRef.current = io.connect("http://localhost:4000")
-      console.log(lobbyID)
-      socketRef.current.emit('switchLobby', { lobbyID })
+      console.log(lobbyID, username)
+      socketRef.current.emit('switchLobby', {lobbyID}, username )
       socketRef.current.on('updateLobby', function (newLobby) {
         socketRef.current.room = newLobby.lobbyID;
       });
@@ -59,13 +59,14 @@ const MultiplayerGame = (props) => {
         console.log(gameLines[0])
       })
 
-      socketRef.current.on("playerIndexUpdate", (playerName, playerIndex) => {
-        console.log("Player:" + playerName + " Index: " + playerIndex)
-        setLobbyPlayers((prev) => new Map(prev).set(playerName, playerIndex))
+      socketRef.current.on("playerIndexUpdate", (playerName, playerIndex, playerLineArrayIndex) => {
+        console.log("Index update: ", playerName, playerIndex, playerLineArrayIndex)
+        setLobbyPlayers((prev) => new Map(prev).set(playerName, {index: playerIndex, lineArrayIndex: playerLineArrayIndex}))
       })
 
       socketRef.current.on("playerJoined", (username) => {
-        setLobbyPlayers(prev => new Map([...prev, [username, 0]]))
+        console.log("username " + username)
+        setLobbyPlayers(prev => new Map([...prev, [username, {index: 0 , lineArrayIndex: 0}]]))
       })
 
       socketRef.current.on("gameLines", (lineArray_) => {
@@ -81,7 +82,7 @@ const MultiplayerGame = (props) => {
 
       return () => socketRef.current.disconnect()
     },
-    [chat]
+    []
   )
 
   const onTextChange = (e) => {
@@ -158,7 +159,8 @@ const MultiplayerGame = (props) => {
             if (lineIndex === randomWords.length - 1) {
               onLineChange()
             }
-            socketRef.current.emit("sendPlayerIndex", (playerName, index, socketRef.current.room))
+            console.log(props.username, lineIndex, lineArrayIndex - 2, socketRef.current.room)
+            socketRef.current.emit("sendPlayerIndex", props.username, lineIndex, lineArrayIndex - 2, socketRef.current.room)
           }
           // Do we add logged in stats for multiplayer?
           //  else if (event.key != randomWords[lineIndex] && props.loggedIn) {
@@ -216,7 +218,7 @@ const MultiplayerGame = (props) => {
 
   return (
     <div className="container">
-      <OpponentTestVisual lobbyPlayers={lobbyPlayers} gameLines={gameLines} />
+      <OpponentTestVisual lobbyPlayers={lobbyPlayers} lineArray={lineArray} />
 
       <div className="timer-wrapper-multiplayer">
         <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">

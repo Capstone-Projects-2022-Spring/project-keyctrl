@@ -1,7 +1,7 @@
 //Modal.js
 import React, { useRef } from "react";
 import ReactDom from "react-dom";
-export const Modal = ({ setShowModal, setJoinLobby, setLobbyID }) => {
+export const Modal = ({ setShowModal, setJoinLobby, setLobbyID, setName }) => {
   // close the modal when clicking outside the modal.
   const modalRef = useRef();
   const closeModal = (e) => {
@@ -12,6 +12,7 @@ export const Modal = ({ setShowModal, setJoinLobby, setLobbyID }) => {
 
   function lobbySubmit() {
     setLobbyID(document.getElementById('lobbyIdInput').value)
+    setName(document.getElementById('lobbyNameInput').value)
     setJoinLobby(true)
     setShowModal(false)
   }
@@ -22,6 +23,8 @@ export const Modal = ({ setShowModal, setJoinLobby, setLobbyID }) => {
       <div className="modal">
         <h2>Enter a Lobby ID</h2>
         <input id="lobbyIdInput"></input>
+        <h2>Name</h2>
+        <input id="lobbyNameInput"></input>
         <button id="lobbySubmit" onClick={() => lobbySubmit()}>Submit</button>
         <button onClick={() => setShowModal(false)}>X</button>
       </div>
