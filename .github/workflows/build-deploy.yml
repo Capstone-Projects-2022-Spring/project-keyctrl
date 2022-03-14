@@ -8,6 +8,8 @@ on:
     branches:
       - milestone-1-release
 
+working-directory: ./KeyCtrl
+
 jobs:
   build:
     name: Build
