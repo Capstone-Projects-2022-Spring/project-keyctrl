@@ -70,11 +70,16 @@ const MultiplayerGame = (props) => {
         console.log(matchResultsArray)
         setLeaderboard(matchResultsArray);
         setLeaderBoardOpen(o => !o);
+
       })
 
       socketRef.current.on("playerIndexUpdate", (playerName, playerIndex, playerLineArrayIndex) => {
         console.log("Index update: ", playerName, playerIndex, playerLineArrayIndex)
         setLobbyPlayers((prev) => new Map(prev).set(playerName, { index: playerIndex, lineArrayIndex: playerLineArrayIndex }))
+      })
+
+      socketRef.current.on("pollAllPlayers", () => {
+        socketRef.current.emit("sendInLobby", username)
       })
 
       socketRef.current.on("pollAllPlayers", () => {
@@ -222,9 +227,11 @@ const MultiplayerGame = (props) => {
 
   useInterval(() => {
     if (!inCountdown && timer === 0) {
+
       var WPM = grossWPM()
       console.log("wpm: ", WPM);
       socketRef.current.emit("gameEnd", username, grossWPM(), socketRef.current.room)
+
       reset();
 
     } else if (inCountdown) {
