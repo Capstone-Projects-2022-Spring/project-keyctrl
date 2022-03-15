@@ -187,3 +187,10 @@
   background-color: var(--selection-color);
   padding-left: 2px;
 }
+
+.multiplayer-player-name{
+    text-align: center;
+    color: var(--text-color);
+    font-size: 2em;
+    font-weight: bold;
+}

@@ -10,7 +10,9 @@ const OpponentTestVisual = ({ lobbyPlayers, lineArray }) => {
             {Array.from(lobbyPlayers, ([key, value]) => ({ key, value })).map(function (obj, idx_) {
                 return (
                     <div>
-                        {obj.key}
+                        <div className='multiplayer-player-name'>
+                            {obj.key}
+                        </div>
                         <div className="test-line-container">
                             {lineArray[obj.value.lineArrayIndex].split("").map(function (char, idx) {
                                 return (

@@ -28,7 +28,7 @@ const MultiplayerGame = (props) => {
   const [lineArray, setLineArray] = useState([])
 
   const [leaderBoardOpen, setLeaderBoardOpen] = useState(false);
-  const [leaderboard, setLeaderboard] = useState([{}]);
+  const [leaderboard, setLeaderboard] = useState([{player: '', WPM: ''},{player: '', WPM: ''},{player: '', WPM: ''},{player: '', WPM: ''}]);
   const closeLeaderBoard = () => setLeaderBoardOpen(false);
 
 
@@ -292,11 +292,23 @@ const MultiplayerGame = (props) => {
           closeOnDocumentClick
         >
           <Leaderboard>
-            {leaderboard.map(function (player, idx) {
+            <div style={{color: 'var(--selection-color)', fontWeight: 'bold'}}>
+              {leaderboard[0].player + " won!"}
+              <br/>
+              {leaderboard[0].WPM + " WPM"}
+            </div>
+            <div>
+              {"2nd: " + leaderboard[1].player + " " + leaderboard[1].WPM + " WPM"}
+              <br/>
+              {"3rd: " + leaderboard[2].player + " " + leaderboard[2].WPM + " WPM"}
+              <br/>
+              {"4th: " + leaderboard[3].player + " " + leaderboard[3].WPM + " WPM"}
+            </div>
+            {/* {leaderboard.map(function (player, idx) {
               return (
                 <div>{idx+1}. {player.player}  {player.WPM} WPM</div>
               )
-            })}
+            })} */}
           </Leaderboard>
         </EndingPopup>
 
@@ -344,4 +356,6 @@ const Leaderboard = styled.div`
   color: var(--text-color);
   font-family: "almarai";
   font-size: 2em;
+  justify-content: center;
+  text-align: center;
 `

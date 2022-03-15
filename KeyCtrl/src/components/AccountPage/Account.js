@@ -13,7 +13,13 @@ import StatKeyboard from './StatKeyboard.js'
  */
 
 
-const Account = ({ accountInfo }) => {
+const Account = ({ accountInfo_ }) => {
+
+    var accountInfo = { 
+        top_wpm: 73.25,
+        avg_wpm: 54.54,
+        letter_misses: '{"a": "12", "b": "23", "c": "76", "d": "35", "e": "35", "f": "8", "g":"4","h":"14","i":"65","j":"15","k":"35","l":"76","m":"43","n":"76","o":"45","p":"45","q":"76","r":"36","s":"27","t":"98","u":"45","v":"87","w":"34","x":"76","y":"34","z":"54"}'
+    }
 
     var jObj = JSON.parse(accountInfo.letter_misses);
     console.log(Object.entries(jObj).sort((a,b) => b[1]-a[1]));
