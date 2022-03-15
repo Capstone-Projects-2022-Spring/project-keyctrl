@@ -1,5 +1,5 @@
 .tb-wrapper{
-    background: #262353;
+    background: var(--bg-color);
     display: flex;
     height: 100%;
     flex-direction: column;
@@ -20,7 +20,7 @@
 .tb-button{
     padding-right: 4px;
     padding-left: 4px;
-    color: #5B5A99;
+    color: var(--text-color);
     -webkit-app-region: no-drag;
     font-size: xx-large;
     padding: 10px;
@@ -31,6 +31,6 @@
 }
 
 .tb-button:active{
-    color: #50E3C2;
-    filter: drop-shadow(0px 0px 8px #50E3C2);
+    color: var(--selection-color);
+    filter: drop-shadow(0px 0px 8px var(--selection-color));
 }

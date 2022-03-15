@@ -4,7 +4,9 @@ import validate from '../../../../utils/validateInfo'
 import '../../../../styles/SignInModal.css'
 import { useSpring, animated } from 'react-spring';
 import { MdClose } from 'react-icons/md';
+import GoogleLogin from 'react-google-login';
 // import * as db from '../utils/dbUtils.js';
+import sha256 from 'crypto-js/sha256';
 
 import * as api from '../../../../utils/apiUtils.js'
 
@@ -24,15 +26,16 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
     const modalRef = useRef();
 
     const [showSignUp, setShowSignUp] = useState(false);
+    
 
 
     /**
      * @function login
      * @description Api call to log in and passes result to onLogin()
      */
-    const login = () => {
-        onLogin(api.callLogin(values.username, values.password));        
-    }
+    // const login = (email) => {
+    //     onLogin(api.callLogin(email));
+    // }
 
     /**
      * @function register
@@ -40,6 +43,18 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
      */
     const register = () => {
         onLogin(api.callRegisterAccount(values.email, values.username, values.password));
+    }
+
+     
+    /**
+      @function HashedEmail
+      @description Api call to log in but the email is HASHED and passes result to onLogin(). THIS IS A WORKING METHOD TO BE USED IN THE FUTURE
+     */
+
+      const login = () => {
+        var hash = sha256(values.email)
+        console.log(hash.toString() + " " + hash.toString().length)
+        onLogin(api.callLogin(hash.toString()));
     }
 
     /**
@@ -97,19 +112,6 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
         [setShowSignIn, showSignIn]
     );
 
-    /**
-     * @function onFormSubmit
-     * @param {Event} e 
-     * @description Handles submission of field info
-     */
-    const onFormSubmit = (e) => {
-        if (showSignUp) {
-            handleSubmit(e);
-        } else if (showSignIn) {
-            submitForm();
-        }
-    }
-
     useEffect(
         () => {
             document.addEventListener('keydown', keyPress);
@@ -119,12 +121,21 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
         },
         [keyPress]
     );
+
+    const responseGoogle = response => {
+        console.log(response);
+        console.log(response.profileObj.email)
+        login(response.profileObj.email)
+        //after login in on google login, we call login
+    };
+
+
     return (
         <>
             {showSignIn ? (
                 <div className='Background' onClick={closeModal} ref={modalRef}>
+
                     <animated.div >
-                        <form onSubmit={onFormSubmit} noValidate>
                             <div className='ModalWrapper' showSignIn={showSignIn}>
                                 <MdClose
                                     aria-label='Close modal'
@@ -132,65 +143,15 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
                                     onClick={() => setShowSignIn(prev => !prev)}
                                 />
                                 <div className='ModalContent'>
-                                    {showSignUp ? <h1>Sign Up</h1> : <h1>Login</h1>}
 
-                                    {showSignUp ? <div className='form-inputs'>
-                                        <input
-                                            className='form-input'
-                                            type='email'
-                                            name='email'
-                                            placeholder='Email'
-                                            value={values.email}
-                                            onChange={handleChange}
-                                        />
-                                        {errors.email && <p className="errors">{errors.email}</p>}
-                                    </div>
-                                        : null}
-                                    <div className='form-inputs'>
-                                        <input
-                                            className='form-input'
-                                            type='text'
-                                            name='username'
-                                            placeholder='Username'
-                                            value={values.username}
-                                            onChange={handleChange}
-                                        />
-                                        {errors.username && <p className="errors">{errors.username}</p>}
-                                    </div>
-                                    <div className='form-inputs'>
-                                        <input
-                                            className='form-input'
-                                            type='password'
-                                            name='password'
-                                            placeholder='Password'
-                                            value={values.password}
-                                            onChange={handleChange}
-                                        />
-                                        {errors.password && <p className="errors">{errors.password}</p>}
-                                    </div>
-                                    {showSignUp ? <div className='form-inputs'>
-                                        <input
-                                            className='form-input'
-                                            type='password'
-                                            name='password2'
-                                            placeholder='Confirm Password'
-                                            value={values.password2}
-                                            onChange={handleChange}
-                                        />
-                                        {errors.password2 && <p className="errors">{errors.password2}</p>}
-                                    </div>
-                                        : null}
-                                    <div className='sign-in-options'>
-                                        <div className='account-links'>
-                                            {showSignUp ? null : <div className='individual'>Forgot password?</div>}
-                                            <div onClick={openSignUp} className='individual'>{showSignUp ? 'Already have account? Login' : 'Register account'}</div>
-                                        </div>
-                                    </div>
-                                    <button type="submit" className="sign-in-button">{showSignUp ? 'Sign up' : 'Login'}</button>
+                                    <GoogleLogin
+                                        clientId="568691465172-6a0kbo3t147jc4oi2bfomq8fjcq6cj2k.apps.googleusercontent.com"
+                                        buttonText="Login with Google"
+                                        onSuccess={responseGoogle}
+                                        onFailure={responseGoogle}
+                                        cookiePolicy="single_host_origin" />  
                                 </div>
-
                             </div>
-                        </form>
                     </animated.div>
                 </div>
             ) : null}

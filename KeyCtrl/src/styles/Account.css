@@ -18,7 +18,7 @@
     padding-left: 1%;
     padding-right: 1%;
 
-    background: linear-gradient(241.25deg, rgba(41, 39, 85, 0.35) 4.4%, rgba(41, 39, 84, 0.78) 61.77%, rgba(27, 24, 66, 0.35) 119.94%);
+    background: var(--bg-color); 
     box-shadow: 0px 51px 69px rgba(23, 18, 43, 0.585739);
     backdrop-filter: blur(23px);
     border-radius: 10px;
@@ -30,5 +30,5 @@
     line-height: 161px;
     text-align: center;
 
-    color: #75749C;
+    color: var(--text-color);
 }
