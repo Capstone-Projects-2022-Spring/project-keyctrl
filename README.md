@@ -15,11 +15,14 @@
 <p>We plan to use Socket.io to create the multiplayer mode. This will be achieved through creating server net code and hosting said server on a local machine. Key aspects of the multiplayer are the ability to make private matches to play with friends as well as be matched based on your rank against other players at your skill level.</p>
 
 
-## Client Install
+## Background
 
-- [Download Latest Release](https://github.com/CIS3296SoftwareDesignF21/prj-01-typingtest/releases/download/v0.3.0-pre-release/typing-test-win32-x64.zip)
-- Extract .zip file 
-- Run typing-test.exe
+<p>On the market, there are various typing tests and typing games. This one strives to take the best aspects from those that exist and consolidate them into one spot. For example, there are many stand-alone type trainers, speed tests, and type races, but practically none that put it all together. The plan is to be so feature rich that it could replace all other existing typing tests. </p>
+<p>TypeRacer, for example, is a very popular online typing website where users race against their friends and others to type a quote from popular media. It even allows for some basic statistics tracking. Where KeyCTRL will differ is in the other typing modes it offers, the more comprehensive statistics tracking, a deeper ranked systems based on more than just average typing speed but also recent performance, and a customizable typing experience both in its looks and testing functionality. </p>
+<p>Many other typing applications that do offer a customizable experience and better statistics, such as TypeTest.io, Keybr, and typings.gg, lack a multiplayer mode and typically only allow for training or speed tests, not both.</p>
+![image](https://user-images.githubusercontent.com/53317006/158291758-cbc7b54a-6431-47b9-ba48-ab257ee9464d.png)
+
+
 
 ## Developer Install
 
