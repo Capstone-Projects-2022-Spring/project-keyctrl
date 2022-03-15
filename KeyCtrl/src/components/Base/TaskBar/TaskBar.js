@@ -20,7 +20,7 @@ const TaskBar = ({ page, setPage, loggedIn, setShowFriendList, showFriendList })
     return (
         <div className="tb-wrapper">
             <div className="top-group">
-                <Link to="">
+                <Link to="/project-keyctrl">
                     <MdKeyboard onClick={() => setPage(0)} style={page === 0 ? { color: 'var(--selection-color)', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
                 </Link>
                 <Link to="/training">

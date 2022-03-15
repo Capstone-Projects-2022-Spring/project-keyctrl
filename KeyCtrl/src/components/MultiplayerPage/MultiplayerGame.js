@@ -14,7 +14,7 @@ const MultiplayerGame = (props) => {
   const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
   const [lineIndex, setLineIndex] = useState(0)
   const [index, setIndex] = useState(0);
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(45);
   const [timerActive, setTimerActive] = useState(false);
   const [inCountdown, setInCountdown] = useState(false)
   const [currentLineLength, setCurrentLineLength] = useState(0);
@@ -28,7 +28,7 @@ const MultiplayerGame = (props) => {
   const [lineArray, setLineArray] = useState([])
 
   const [leaderBoardOpen, setLeaderBoardOpen] = useState(false);
-  const [leaderboard, setLeaderboard] = useState([{}]);
+  const [leaderboard, setLeaderboard] = useState([{ player: '', WPM: '' }, { player: '', WPM: '' }, { player: '', WPM: '' }, { player: '', WPM: '' }]);
   const closeLeaderBoard = () => setLeaderBoardOpen(false);
 
 
@@ -73,6 +73,7 @@ const MultiplayerGame = (props) => {
         console.log("GAMEEND")
         console.log(matchResultsArray)
         setLeaderboard(matchResultsArray);
+        sortLeaderBoard(matchResultsArray);
         setLeaderBoardOpen(o => !o);
 
       })
@@ -207,6 +208,22 @@ const MultiplayerGame = (props) => {
     return wpm;
   };
 
+  function sortLeaderBoard(matchResultsArray){
+    function compare(a, b) {
+      if (a.WPM < b.WPM) {
+        return -1;
+      }
+      if (a.WPM > b.WPM) {
+        return 1;
+      }
+      return 0;
+    }
+
+    var sortedArray = matchResultsArray.sort(compare);
+    setLeaderboard(sortedArray);
+  }
+
+
   // -------------------------------------------------------
 
   // ---- Gamer Timer Countdown Logic ----------------------
@@ -292,11 +309,21 @@ const MultiplayerGame = (props) => {
           closeOnDocumentClick
         >
           <Leaderboard>
-            {leaderboard.map(function (player, idx) {
+            <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
+              {leaderboard[0].player + " won!"}
+              <br />
+              {leaderboard[0].WPM + " WPM"}
+            </div>
+            <div>
+              {"2nd: " + leaderboard[1].player + " " + leaderboard[1].WPM + " WPM"}
+              <br />
+              {"3rd: " + leaderboard[2].player + " " + leaderboard[2].WPM + " WPM"}
+            </div>
+            {/* {leaderboard.map(function (player, idx) {
               return (
                 <div>{idx+1}. {player.player}  {player.WPM} WPM</div>
               )
-            })}
+            })} */}
           </Leaderboard>
         </EndingPopup>
 
@@ -344,4 +371,6 @@ const Leaderboard = styled.div`
   color: var(--text-color);
   font-family: "almarai";
   font-size: 2em;
+  justify-content: center;
+  text-align: center;
 `

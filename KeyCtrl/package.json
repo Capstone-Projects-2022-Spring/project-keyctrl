@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "main": "public/main.js",
-  "homepage": "./",
+  "homepage": "http://localhost:3000/project-keyctrl",
   "dependencies": {
     "@material-ui/core": "^4.9.8",
     "@testing-library/jest-dom": "^5.14.1",
@@ -36,6 +36,8 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -68,6 +70,7 @@
     "@testing-library/cypress": "^8.0.2",
     "concurrently": "^5.2.0",
     "cypress": "^9.5.0",
+    "gh-pages": "^3.2.3",
     "wait-on": "^5.3.0"
   }
 }
