@@ -1,5 +1,6 @@
-# Key Ctrl
-### Jason, Colin, Melanie, Andy, Alex, Li, Abdul
+![KC_Final_trim](https://user-images.githubusercontent.com/53317006/158295058-cf117398-aebd-49a9-99b5-b62e3cabd82d.png)
+
+### Created by: Jason, Colin, Abdul, Melanie, Andy, Alex, and Li
 
 ## Project Description
 
@@ -22,7 +23,14 @@
 <p>Many other typing applications that do offer a customizable experience and better statistics, such as TypeTest.io, Keybr, and typings.gg, lack a multiplayer mode and typically only allow for training or speed tests, not both.</p>
 
 
+## Patch Notes
+- Release notes indicating what is new
+```
+-Google Sign In
+-Private Multiplayer
+-Theme Select
 
+```
 
 
 - Source Code For Release
