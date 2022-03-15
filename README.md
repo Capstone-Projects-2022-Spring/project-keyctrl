@@ -20,64 +20,13 @@
 <p>On the market, there are various typing tests and typing games. This one strives to take the best aspects from those that exist and consolidate them into one spot. For example, there are many stand-alone type trainers, speed tests, and type races, but practically none that put it all together. The plan is to be so feature rich that it could replace all other existing typing tests. </p>
 <p>TypeRacer, for example, is a very popular online typing website where users race against their friends and others to type a quote from popular media. It even allows for some basic statistics tracking. Where KeyCTRL will differ is in the other typing modes it offers, the more comprehensive statistics tracking, a deeper ranked systems based on more than just average typing speed but also recent performance, and a customizable typing experience both in its looks and testing functionality. </p>
 <p>Many other typing applications that do offer a customizable experience and better statistics, such as TypeTest.io, Keybr, and typings.gg, lack a multiplayer mode and typically only allow for training or speed tests, not both.</p>
-![image](https://user-images.githubusercontent.com/53317006/158291758-cbc7b54a-6431-47b9-ba48-ab257ee9464d.png)
 
 
 
-## Developer Install
 
-- Install Node JS 16.13.0 LTS ([External Site](https://nodejs.org/en/))
-- Download Dependencies ([More Details](https://github.com/CIS3296SoftwareDesignF21/prj-01-typingtest/network/dependencies))
+
+- Source Code For Release
 ```
-npm install -g electron
-npm install electron-squirrel-startup --save
-npm install react react-dom --save
-npm install react-scripts --save
-npm install -g node@10.9.0
-npm install react-spring
-npm install mysql
-npm install web-vitals
-npm install styled-components
-npm install react-icons
-npm install material-design-icons
-npm i -D electron-devtools-installer && npm i -D concurrently@5.2.0 wait-on@5.1.0 && npm i electron-is-dev@1.2.0
-npm i postman-request
-npm install random-words
-npm install --save request-promise
-npm install react-loader-spinner --save
+git clone https://github.com/Capstone-Projects-2022-Spring/project-keyctrl
 ```
-- Clone Repo
-```
-git clone https://github.com/CIS3296SoftwareDesignF21/prj-01-typingtest
-```
-## Open & Run 
-- Recommemded IDE: [Visual Studio Code](https://code.visualstudio.com/download)
-### Open Source Code
-- Navigate to Cloned Repository Direcctory
-- Utilize VS Code 
-```
-cd prj-01-typingtest/typing-test
-code .
-```
-### Run
--Run .bat file to connect to server and open electron app
-```
-cd prj-01-typingtest/typing-test
-./Open.bat
-```
-
-## [UML](https://github.com/CIS3296SoftwareDesignF21/prj-01-typingtest/blob/Revise-ReadMe/UML/UML.md)
-
-## [User Personas](https://github.com/CIS3296SoftwareDesignF21/prj-01-typingtest/blob/Revise-ReadMe/UserPersonas/UserPersonas.md)
-
-
-
-## Releases
-- [0.1.0-pre-release](https://github.com/CIS3296SoftwareDesignF21/prj-01-typingtest/releases/download/v0.1.0/typing-test-win32-x64.rar)
-
-- [0.2.0-pre-release](https://github.com/CIS3296SoftwareDesignF21/prj-01-typingtest/releases/download/v0.2.0-pre-release/typing-test-win32-x64.zip)
-
-- [0.3.0-pre-release](https://github.com/CIS3296SoftwareDesignF21/prj-01-typingtest/releases/download/v0.3.0-pre-release/typing-test-win32-x64.zip)
-
-- [1.0.0-release](https://github.com/CIS3296SoftwareDesignF21/prj-01-typingtest/releases/tag/v1.0.0)
 
