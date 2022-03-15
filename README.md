@@ -26,6 +26,13 @@
 ## Installation Instructions
 <p>Though we are building a web app, it is necessary that we include installation instructions since our application is not yet hosted online. Follow the below steps to install a local instance of the application. The multiplayer server should be available to you. This means you'll be able to play with your friends at any time as long as it is running, even from your local instance of the app.</p>
 
+```
+cd project-keyctrl\KeyCtrl
+npm i
+npm install request-promise
+npm start
+```
+
 ## Using the Release: How to Test
 <p>This release involves three major components: Google Sign In for account creation, multiplayer, and theme selection. The testing steps for each element are listed below.</p>  
 Google Sign In
@@ -44,7 +51,9 @@ Multiplayer (can be tested solo or with up to 4 friends)
       -You can also have your friends join you. All they need to do is enter the same lobby ID that you did.  
     -After the timer runs out, the match results will appear in a popup modal in the center of your screen.    
 -Theme Selection  
-
+  -Navigate to the Settings tab located on the bottom of the task bar
+  -Click the 'Change Theme' button
+  -Select new theme to use
 
 ## Patch Notes
 - Release notes indicating what is new
