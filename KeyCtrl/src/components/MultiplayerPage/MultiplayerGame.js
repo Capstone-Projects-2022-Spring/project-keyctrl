@@ -301,8 +301,6 @@ const MultiplayerGame = (props) => {
               {"2nd: " + leaderboard[1].player + " " + leaderboard[1].WPM + " WPM"}
               <br/>
               {"3rd: " + leaderboard[2].player + " " + leaderboard[2].WPM + " WPM"}
-              <br/>
-              {"4th: " + leaderboard[3].player + " " + leaderboard[3].WPM + " WPM"}
             </div>
             {/* {leaderboard.map(function (player, idx) {
               return (
