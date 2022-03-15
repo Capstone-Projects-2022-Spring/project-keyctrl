@@ -22,13 +22,38 @@
 <p>TypeRacer, for example, is a very popular online typing website where users race against their friends and others to type a quote from popular media. It even allows for some basic statistics tracking. Where KeyCTRL will differ is in the other typing modes it offers, the more comprehensive statistics tracking, a deeper ranked systems based on more than just average typing speed but also recent performance, and a customizable typing experience both in its looks and testing functionality. </p>
 <p>Many other typing applications that do offer a customizable experience and better statistics, such as TypeTest.io, Keybr, and typings.gg, lack a multiplayer mode and typically only allow for training or speed tests, not both.</p>
 
+## Installation Instructions
+<p>Though we are building a web app, it is necessary that we include installation instructions since our application is not yet hosted online. Follow the below steps to install a local instance of the application. The multiplayer server should be available to you. This means you'll be able to play with your friends at any time as long as it is running, even from your local instance of the app.</p>
+
+## Using the Release: How to Test
+<p>This release involves three major components: Google Sign In for account creation, multiplayer, and theme selection. The testing steps for each element are listed below.</p>
+-Google Sign In 
+    -Navigate to KeyCTRL 
+    -Click "Login" in the top right corner 
+    -Click "Login with Google" in the popup modal 
+    -Verify that you now have access to your account statistics page  
+    
+-Multiplayer (can be tested solo or with up to 4 friends)
+    -Click the World icon on the left navigation bar 
+    -Click "Join Custom Lobby" 
+    -Enter any lobby ID and name 
+    -The game will not start until 4 people are in the lobby 
+      -To start the game solo, you can open 3 other tabs and navigate to the same place. Make sure to join the same lobby!
+      -You can also have your friends join you. All they need to do is enter the same lobby ID that you did.
+    -After the timer runs out, the match results will appear in a popup modal in the center of your screen.  
+    
+-Theme Selection
+
 
 ## Patch Notes
 - Release notes indicating what is new
 ```
--Google Sign In
--Private Multiplayer
--Theme Select
+-Google Sign In 
+  -Use your Google account to login to our application.
+-Multiplayer 
+  -Connect to a custom lobby and play with your friends to see who has the highest words per minute!
+-Theme Select 
+  -Change the look and feel of KeyCTRL with theme selection.
 
 ```
 
