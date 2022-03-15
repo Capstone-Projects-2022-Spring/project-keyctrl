@@ -50,7 +50,8 @@ Multiplayer (can be tested solo or with up to 4 friends)
       -To start the game solo, you can open 3 other tabs and navigate to the same place. Make sure to join the same lobby!  
       -You can also have your friends join you. All they need to do is enter the same lobby ID that you did.  
     -After the timer runs out, the match results will appear in a popup modal in the center of your screen.    
--Theme Selection  
+Theme Selection  
+
   -Navigate to the Settings tab located on the bottom of the task bar
   -Click the 'Change Theme' button
   -Select new theme to use
