@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect} from 'react';
 import TypingTest from './components/TypingTestPage/TypingTest.js';
 import SignInModal from './components/Base/TitleBar/SignInModal/SignInModal.js';
 import TitleBar from './components/Base/TitleBar/TitleBar.js';
@@ -10,26 +10,27 @@ import Training from './components/TrainingPage/Training.js';
 import Settings from './components/SettingsPage/Settings.js';
 import LoadingSpinner from './components/Base/LoadingSpinner/LoadingSpinner.js';
 import * as api from './utils/apiUtils.js'
-import { MdSecurityUpdate } from 'react-icons/md';
 import { Route, Routes } from 'react-router-dom';
+import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
+
+// Set default theme on first initialization
+document.documentElement.setAttribute('data-theme', 'default');
 
 function App() {
 
+
   const [index, setIndex] = useState(0);
   const [page, setPage] = useState(0);
-
   const [showSignIn, setShowSignIn] = useState(false);
-  const [timerActive, setTimerActive] = useState(false);
-  const [inCountdown, setInCountdown] = useState(false)
-  const [countdownToggleChecked, setCountdownToggleChecked] = useState(true);
+  const [showThemeOptions, setShowThemeOptions] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [timer, setTimer] = useState(15);
   const [numEntries, setNumEntries] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
   const [WPMTime, setWPMTime] = useState(1);
   const [accountInfo, setAccountInfo] = useState({})
+  const [updateOnce, setUpdateOnce] = useState(false)
 
-  const [updateOnce, setUpdateOnce] = useState(false);
+  const [showFriendList, setShowFriendList] = useState(false)
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
   const onLogin = async (account) => {
@@ -41,7 +42,7 @@ function App() {
     setLoading(false);
 
     console.log(account);
-    if (account.account_id != -1) {
+    if (account.account_id !== -1) {
       setAccountInfo(account);
       setLoggedIn(true);
     } else {
@@ -55,17 +56,6 @@ function App() {
     setLoggedIn(false);
   }
 
-  const [randomWords, setRandomWords] = useState("");    //setting its use state
-  var randWordsFunc = require('random-words');          //Must require random-words
-
-
-  function newWords() {
-    const words = randWordsFunc({ exactly: 100, join: ' ' });
-    const letters = words.length;
-    console.log("letter", letters, "words", 100);
-    setRandomWords(words);
-  }
-
   //INCREMENTS MISSED LETTER AND UPDATES ACCINFO
   function incrementMissed(letter) {
     var jObj = JSON.parse(accountInfo.letter_misses);
@@ -73,7 +63,7 @@ function App() {
     setAccountInfo({ ...accountInfo, letter_misses: JSON.stringify(jObj) });
 
   }
-
+  
   async function updateApiStats(avgWPM, topWpm, total_words, total_time) {
 
     console.log("Before Update Stats",
@@ -122,75 +112,43 @@ function App() {
     return wpm;
   };
 
-  const onKeyPress = (event) => {
-
-    switch (event.key) {
-
-      case "Enter":
-        // setUpdateOnce(true);
-        console.log(countdownToggleChecked)
-        if (!timerActive) {
-          setTimerActive(true);
-          if (countdownToggleChecked)
-            setInCountdown(true);
-          else
-            setInCountdown(false);
-        }
-        break;
-
-      case "Escape":
-        console.log("correct");
-        break;
-      //EDITED TO MAKE LETTER MISSES UPDATE
-      default:
-        if (timerActive && !inCountdown) {
-          if (event.key === randomWords[index]) {
-            setIndex((index) => index + 1);
-          } else if (event.key != randomWords[index] && loggedIn) {
-            incrementMissed(randomWords[index]);
-            // console.log(randomWords[index]);
-            // console.log(accountInfo.letter_misses);
-          }
-        }
-        break;
-    }
-  };
-
   const openSignIn = () => {
     setShowSignIn(prev => !prev);
   };
 
-  useEffect(() => {   //using another useEffect so random words does not refresh everytime.
+  const emptyForNow = () => {
 
-    newWords();  //Setting how many words given for the test right here.
+  }
 
-  }, [])
 
 
   useEffect(() => {
-    document.addEventListener('keydown', onKeyPress);
+    document.addEventListener('keydown', emptyForNow);
 
     // if (timer === 0 && !timerActive && loggedIn) {
     //   updateAccInfo(numEntries, WPMTime, grossWPM());
     // }
-    if (timer === 0 && !timerActive) {
-      setUpdateOnce(true);
-    }
+
     if (updateOnce && loggedIn) {
       updateAccInfo(numEntries, WPMTime, grossWPM());
       setUpdateOnce(false);
     }
 
     return () => {
-      document.removeEventListener('keydown', onKeyPress);
+      document.removeEventListener('keydown', emptyForNow);
     };
-  }, [accountInfo, index, timerActive, inCountdown, page])
+  }, [accountInfo, index, page, numEntries, WPMTime, updateAccInfo, updateOnce])
 
   return (
     <div className="App">
       <div className="window">
         <div className="task-bar">
-          <TaskBar page={page} setPage={setPage} />
+          <TaskBar 
+            page={page}
+            setPage={setPage}
+            loggedIn={loggedIn}
+            setShowFriendList={setShowFriendList}
+            showFriendList={showFriendList} />
         </div>
         <div className="landing">
           <TitleBar loggedIn={loggedIn} openSignIn={openSignIn} />
@@ -198,24 +156,16 @@ function App() {
             {loading ? <LoadingSpinner /> : null}
 
             <Routes>
-              <Route exact path="/typing-test" element={
+              <Route exact path="" element={
                 <TypingTest
-                  timerActive={timerActive}
-                  setTimerActive={setTimerActive}
-                  inCountdown={inCountdown}
-                  setInCountdown={setInCountdown}
+                  setUpdateOnce={setUpdateOnce}
                   setIndex={setIndex}
-                  words={randomWords}             //Instead of using words, we are trying to use random words. /randomWords={randomWords}I tried creating a new instance, but found out that its not needed
                   index={index}
-                  countdownToggleChecked={countdownToggleChecked}
-                  setCountdownToggleChecked={setCountdownToggleChecked}
-                  newWords={newWords}
                   accountInfo={accountInfo}
                   setAccountInfo={setAccountInfo}
                   loggedIn={loggedIn}
+                  incrementMissed={incrementMissed}
                   updateAccInfo={updateAccInfo}
-                  timer={timer}
-                  setTimer={setTimer}
                   numEntries={numEntries}
                   setNumEntries={setNumEntries}
                   WPMTime={WPMTime}
@@ -224,8 +174,9 @@ function App() {
                 />
               } />
               <Route exact path="/training" element={<Training />} />
+              <Route exact path="/multiplayer" element={<Multiplayer />} />
               <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} /> : <OfflineAccount />)} />
-              <Route exact path="/settings" element={<Settings accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
+              <Route exact path="/settings" element={<Settings setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
             </Routes>
 
           </div>

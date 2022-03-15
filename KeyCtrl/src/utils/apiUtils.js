@@ -2,10 +2,9 @@ const request = require('postman-request');
 const rp = require('request-promise');
 
 var account = {
-    account_id: -1,
+    account_id: -1,//When account_id != -1, App.js setAccountInfo(account) setLoggedIn(true)
     display_name: "",
     user_email: "",
-    password: "",
     photo: -1,
     avg_wpm: -1,
     top_wpm: -1,
@@ -15,33 +14,32 @@ var account = {
 };
 
 
-export function callLogin(username, password) {
+export function callLogin(email) {
     account = {
         account_id: -1,
         display_name: "",
         user_email: "",
-        password: "",
         photo: -1
     };
 
     var options = {
         url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/login?email='
-        + username
-        + '&pw=' + password
+        + email
     };
 
     rp(options)
         .then(function(acc){
             console.log(acc);
-            if(acc != "Invalid Login Credentials"){
+            if(acc != "Fail"){//instead of invalid, "does not exist"
                 var info = JSON.parse(acc);
                 account.account_id = info[0].account_id;
                 account.display_name = info[0].display_name;
                 account.user_email = info[0].user_email;
-                account.password = info[0].password;
                 account.photo = info[0].photo;
                 console.log(account);
                 getStats(account.account_id);
+            }else{ 
+                callRegisterAccount(email);// if it returns invalid login recentials, it registers the account
             }
         })
         .finally(function(){
@@ -54,12 +52,11 @@ export function callLogin(username, password) {
 
 }
 
-export function callRegisterAccount(email, username, password) {
+export function callRegisterAccount(email) {
     account = {
         account_id: -1,
         display_name: "",
         user_email: "",
-        password: "",
         photo: -1
     };
     var options = {
@@ -67,9 +64,7 @@ export function callRegisterAccount(email, username, password) {
         headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
         url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/signup',
         body: JSON.stringify( {
-        "dispName": username,
         "email": email,
-        "pw": password
         })
     };
 
@@ -80,7 +75,6 @@ export function callRegisterAccount(email, username, password) {
             account.account_id = info[0].account_id;
             account.display_name = info[0].display_name;
             account.user_email = info[0].user_email;
-            account.password = info[0].password;
             account.photo = info[0].photo;
             getStats(account.account_id);
             console.log(account);

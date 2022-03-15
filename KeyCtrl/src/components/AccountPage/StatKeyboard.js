@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import '../../styles/StatKeyboard.css'
 import Image from "../../assets/keyboard_shell.png"
-import MissedKey from './MissedKey';
+
 
 /**
  * @module StatKeyboard

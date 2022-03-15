@@ -1,7 +1,6 @@
 import React from 'react'
 import '../../styles/SettingsLoginTile.css'
 import { MdLock } from 'react-icons/md'
-
 /**
  * @module SettingsLoginTile
  * @component SettingsLoginTile
@@ -11,10 +10,11 @@ import { MdLock } from 'react-icons/md'
  * <SettingsLoginTile />
  */
 
+
 const SettingsLoginTile = () => {
     return (
         <div className="slt-wrapper">
-            <MdLock style={{color: '50E3C2', padding: '1em'}}/>
+            <MdLock style={{color: 'var(--selection-color)', padding: '1em'}}/>
             <div className="slt-text">
                 Login to view account settings
             </div>

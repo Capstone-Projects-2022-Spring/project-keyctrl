@@ -1,3 +1,20 @@
+:root{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+    --primary-color: #3d3883;
+    --secondary-color: #5b5a99;
+    --text-container: #1F1D42;
+    --dark-bg: #201D47;
+    --bg-color: #262353;
+    --selection-color: #50E3C2;
+    --text-color: #75749C;
+    --next-up-text-color: #585774;
+}
+
 .App {
   text-align: center;
     -webkit-touch-callout: none; /* iOS Safari */
@@ -23,10 +40,142 @@
 
 .task-bar{
   width: auto;
-  background: #262353;
+  background: var(--bg-color);
 }
 
 .main-window{
-  background: radial-gradient(123.22% 129.67% at 100.89% -5.6%, #201D47 0%, #17153A 100%); 
+  background: var(--dark-bg);
   min-height: 95vh;
+}
+
+[data-theme="default"]{
+    --primary-color: #3d3883;
+    --secondary-color: #5b5a99;
+    --text-container: #1F1D42;
+    --dark-bg: #201D47;
+    --bg-color: #262353;
+    --selection-color: #50E3C2;
+    --text-color: #75749C;
+    --next-up-text-color: #585774;
+}
+
+[data-theme="dracula"]{
+    --primary-color: #44475A;
+    --secondary-color: #6272A4;
+    --bg-color: #282A36;
+    --selection-color: #BD93F9;
+    --text-color: #6272A4;
+    --next-up-text-color: #6272A4;
+    --text-container: #44475A;
+    --dark-bg: #222329;
+}
+
+[data-theme="gruvbox"]{
+    --primary-color: #665C54;
+    --text-container: #665C54;
+    --secondary-color: #928374;
+    --text-color: #928374;
+    --selection-color: #FE8019;
+    --next-up-text-color: #928374;
+    --bg-color: #282828;
+    --dark-bg: #1D1D1D;
+}
+
+[data-theme="sakura"]{
+    --primary-color: #C3829E;
+    --text-container: #C3829E;
+    --secondary-color: #E9B1CD;
+    --text-color: #E9B1CD;
+    --selection-color: #FFE7DE;
+    --next-up-text-color: #E9B1CD;
+    --bg-color: #562135;
+    --dark-bg: #492130;
+}
+
+[data-theme="abyss"]{
+    --primary-color: #051336;
+    --text-container: #051336;
+    --secondary-color: #6688c1;
+    --text-color: #6688c1;
+    --selection-color: #f280c6;
+    --next-up-text-color: #6688c1;
+    --bg-color: #000c18;
+    --dark-bg: #060621;
+}
+
+[data-theme="kimbie"]{
+    --primary-color: #362712;
+    --text-container: #362712;
+    --secondary-color: #6688c1;
+    --text-color: #a57a4c;
+    --next-up-text-color: #a57a4c;
+    --selection-color: #a63058;
+    --bg-color: #221a0f;
+    --dark-bg: #131510;
+}
+
+[data-theme="monokai"]{
+    --primary-color: #646656;
+    --text-container: #646656;
+    --secondary-color: #6688c1;
+    --text-color: #888456;
+    --next-up-text-color: #888456;
+    --selection-color: #b67534;
+    --bg-color: #272822;
+    --dark-bg: #1e1f1c;
+}
+
+[data-theme="contrast"]{
+    --primary-color: #4c4c4c;
+    --text-container: #4c4c4c;
+    --secondary-color: #6688c1;
+    --text-color: #efffff;
+    --next-up-text-color: #efffff;
+    --selection-color: #6fc3df;
+    --bg-color: #111111;
+    --dark-bg: #000000;
+}
+
+[data-theme="light"]{
+    --primary-color: #e5e5e5;
+    --text-container: #e5e5e5;
+    --secondary-color: #6688c1;
+    --text-color: #999999;
+    --next-up-text-color: #999999;
+    --selection-color: #007acc;
+    --bg-color: #f3f3f3;
+    --dark-bg: #ffffff;
+}
+
+[data-theme="tokyo-light"]{
+    --primary-color: #e5e5e5;
+    --text-container: #e5e5e5;
+    --secondary-color: #6688c1;
+    --text-color: #5c626d;
+    --next-up-text-color: #5c626d;
+    --selection-color: #71b6bd;
+    --bg-color: #d5d6db;
+    --dark-bg: #cbccd1;
+}
+
+[data-theme="tokyo-dark"]{
+    --primary-color: #344261;
+    --text-container: #344261;
+    --secondary-color: #6688c1;
+    --text-color: #c0caf5;
+    --next-up-text-color: #c0caf5;
+    --selection-color: #3d59a1;
+    --bg-color: #1f2335;
+    --dark-bg: #24283b;
+}
+
+[data-theme="cobalt"]{
+    --primary-color: #29475c;
+    --text-container: #29475c;
+    --secondary-color: #6688c1;
+    --text-color: #a5a6a7;
+    --next-up-text-color: #a5a6a7;
+    --selection-color: #fbc401;
+    --bg-color: #122738;
+    --dark-bg: #193549;
 }
