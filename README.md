@@ -31,6 +31,7 @@ git clone https://github.com/Capstone-Projects-2022-Spring/project-keyctrl.git
 cd project-keyctrl\KeyCtrl
 npm i
 npm install request-promise
+npm install request
 npm start
 ```
 
