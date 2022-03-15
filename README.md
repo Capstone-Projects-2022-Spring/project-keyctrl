@@ -31,9 +31,8 @@
     -Navigate to KeyCTRL  
     -Click "Login" in the top right corner  
     -Click "Login with Google" in the popup modal  
-    -Verify that you now have access to your account statistics page  
-    
--Multiplayer (can be tested solo or with up to 4 friends)
+    -Verify that you now have access to your account statistics page    
+-Multiplayer (can be tested solo or with up to 4 friends)  
     -Click the World icon on the left navigation bar  
     -Click "Join Custom Lobby"  
     -Enter any lobby ID and name  
@@ -41,7 +40,6 @@
       -To start the game solo, you can open 3 other tabs and navigate to the same place. Make sure to join the same lobby!  
       -You can also have your friends join you. All they need to do is enter the same lobby ID that you did.  
     -After the timer runs out, the match results will appear in a popup modal in the center of your screen.    
-    
 -Theme Selection  
 
 
