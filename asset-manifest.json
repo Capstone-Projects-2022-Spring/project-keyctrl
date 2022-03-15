@@ -1,27 +1,28 @@
 {
   "files": {
-    "main.css": "/project-keyctrl/static/css/main.269f7252.chunk.css",
-    "main.js": "/project-keyctrl/static/js/main.7b98a743.chunk.js",
-    "main.js.map": "/project-keyctrl/static/js/main.7b98a743.chunk.js.map",
+    "main.css": "/project-keyctrl/static/css/main.c49d2ef0.chunk.css",
+    "main.js": "/project-keyctrl/static/js/main.ae64d2ac.chunk.js",
+    "main.js.map": "/project-keyctrl/static/js/main.ae64d2ac.chunk.js.map",
     "runtime-main.js": "/project-keyctrl/static/js/runtime-main.7babbd2a.js",
     "runtime-main.js.map": "/project-keyctrl/static/js/runtime-main.7babbd2a.js.map",
     "static/css/2.ab75b8d7.chunk.css": "/project-keyctrl/static/css/2.ab75b8d7.chunk.css",
-    "static/js/2.58295d49.chunk.js": "/project-keyctrl/static/js/2.58295d49.chunk.js",
-    "static/js/2.58295d49.chunk.js.map": "/project-keyctrl/static/js/2.58295d49.chunk.js.map",
+    "static/js/2.e3380c25.chunk.js": "/project-keyctrl/static/js/2.e3380c25.chunk.js",
+    "static/js/2.e3380c25.chunk.js.map": "/project-keyctrl/static/js/2.e3380c25.chunk.js.map",
     "static/js/3.05e9e5c1.chunk.js": "/project-keyctrl/static/js/3.05e9e5c1.chunk.js",
     "static/js/3.05e9e5c1.chunk.js.map": "/project-keyctrl/static/js/3.05e9e5c1.chunk.js.map",
     "index.html": "/project-keyctrl/index.html",
     "static/css/2.ab75b8d7.chunk.css.map": "/project-keyctrl/static/css/2.ab75b8d7.chunk.css.map",
-    "static/css/main.269f7252.chunk.css.map": "/project-keyctrl/static/css/main.269f7252.chunk.css.map",
-    "static/js/2.58295d49.chunk.js.LICENSE.txt": "/project-keyctrl/static/js/2.58295d49.chunk.js.LICENSE.txt",
+    "static/css/main.c49d2ef0.chunk.css.map": "/project-keyctrl/static/css/main.c49d2ef0.chunk.css.map",
+    "static/js/2.e3380c25.chunk.js.LICENSE.txt": "/project-keyctrl/static/js/2.e3380c25.chunk.js.LICENSE.txt",
     "static/media/index.css": "/project-keyctrl/static/media/Almarai-Regular.657233a9.woff",
+    "static/media/colin-profile.adebe167.png": "/project-keyctrl/static/media/colin-profile.adebe167.png",
     "static/media/keyboard_shell.27fae057.png": "/project-keyctrl/static/media/keyboard_shell.27fae057.png"
   },
   "entrypoints": [
     "static/js/runtime-main.7babbd2a.js",
     "static/css/2.ab75b8d7.chunk.css",
-    "static/js/2.58295d49.chunk.js",
-    "static/css/main.269f7252.chunk.css",
-    "static/js/main.7b98a743.chunk.js"
+    "static/js/2.e3380c25.chunk.js",
+    "static/css/main.c49d2ef0.chunk.css",
+    "static/js/main.ae64d2ac.chunk.js"
   ]
 }
