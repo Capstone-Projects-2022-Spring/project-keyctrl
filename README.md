@@ -1,3 +1,4 @@
+
 ![KC_Final_trim](https://user-images.githubusercontent.com/53317006/158295058-cf117398-aebd-49a9-99b5-b62e3cabd82d.png)
 
 ### Created by: Jason, Colin, Abdul, Melanie, Andy, Alex, and Li
@@ -27,12 +28,14 @@
 
 ## Using the Release: How to Test
 <p>This release involves three major components: Google Sign In for account creation, multiplayer, and theme selection. The testing steps for each element are listed below.</p>  
--Google Sign In  
+Google Sign In
+
     -Navigate to KeyCTRL  
     -Click "Login" in the top right corner  
     -Click "Login with Google" in the popup modal  
     -Verify that you now have access to your account statistics page    
--Multiplayer (can be tested solo or with up to 4 friends)  
+Multiplayer (can be tested solo or with up to 4 friends)  
+
     -Click the World icon on the left navigation bar  
     -Click "Join Custom Lobby"  
     -Enter any lobby ID and name  
@@ -60,4 +63,3 @@
 ```
 git clone https://github.com/Capstone-Projects-2022-Spring/project-keyctrl
 ```
-
