@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, setState } from "react";
 import '../../styles/TypingTest.css'
 import PropTypes from "prop-types"
+import { IoIosArrowBack } from "react-icons/io";
 import styled from "styled-components"
 import * as api from '../../utils/apiUtils.js'
 

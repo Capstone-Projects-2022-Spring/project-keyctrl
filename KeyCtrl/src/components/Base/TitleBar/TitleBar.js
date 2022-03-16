@@ -5,7 +5,7 @@ import '../../../styles/TaskBar.css'
 import { MdAccountCircle, MdSettings, MdKeyboard, MdFitnessCenter, MdPublic } from "react-icons/md"
 import { Link } from 'react-router-dom'
 import ColoredLine from '../../SettingsPage/ColoredLine'
-import { IoIosPeople } from "react-icons/io"
+import { IoIosArrowBack } from "react-icons/io"
 import PropTypes from 'prop-types'
 
 /**
@@ -18,7 +18,7 @@ import PropTypes from 'prop-types'
  * <TitleBar loggedIn={loggedIn} openSignIn={openSignIn} />
  */
 
-const TitleBar = ({ page, setPage, loggedIn, logout, setShowFriendList, showFriendList, openSignIn }) => {
+const TitleBar = ({ setState, page, setPage, loggedIn, logout, setShowFriendList, showFriendList, openSignIn }) => {
     return (
         <div>
             <header className="titlebar">
@@ -47,27 +47,32 @@ const TitleBar = ({ page, setPage, loggedIn, logout, setShowFriendList, showFrie
                             </Link>
 
                             <div>
-                                {loggedIn ? 
-                                 <div className="tb-signout">
-                                    <div>
+                                {loggedIn ?
+                                    <div className="tb-signout">
+                                        <div>
                                             <div onClick={logout}>
                                                 Log Out
                                             </div>
+                                        </div>
                                     </div>
-                                </div>
-                                :
-                                 <div className="tb-login">
-                                    <div>
+                                    :
+                                    <div className="tb-login">
+                                        <div>
                                             <div onClick={openSignIn}>
                                                 Log In
                                             </div>
-                                    </div>
+                                        </div>
 
-                                </div>
+                                    </div>
                                 }
-                               
+
                             </div>
 
+                            {loggedIn ?
+                                <div onClick={() => setState({ isPaneOpen: true })} className='friends-list-popup-button'>
+                                    <IoIosArrowBack className="fl-button" />
+                                </div>
+                                : null}
                         </div>
                     </div>
 

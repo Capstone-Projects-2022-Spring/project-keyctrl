@@ -38,7 +38,7 @@
 }
 
 .landing{
-  width: 100%;
+    width: 100%;
 }
 
 .task-bar{
@@ -50,6 +50,13 @@
   background: var(--dark-bg);
   justify-content: center;
   height: auto;
+}
+
+.friends-list-popup{
+    background: var(--bg-color) !important;
+}
+.friends-list-popup .slide-pane__content{
+    padding: 0 !important;
 }
 
 [data-theme="default"]{
