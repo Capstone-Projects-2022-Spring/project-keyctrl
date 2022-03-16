@@ -157,7 +157,8 @@ function App() {
             loggedIn={loggedIn}
             setShowFriendList={setShowFriendList}
             showFriendList={showFriendList}
-            openSignIn={openSignIn} />
+            openSignIn={openSignIn}
+            logout={logout} />
           <div className="main-window">
             {loading ? <LoadingSpinner /> : null}
 

@@ -18,7 +18,7 @@ import PropTypes from 'prop-types'
  * <TitleBar loggedIn={loggedIn} openSignIn={openSignIn} />
  */
 
-const TitleBar = ({ page, setPage, loggedIn, setShowFriendList, showFriendList, openSignIn }) => {
+const TitleBar = ({ page, setPage, loggedIn, logout, setShowFriendList, showFriendList, openSignIn }) => {
     return (
         <div>
             <header className="titlebar">
@@ -29,29 +29,44 @@ const TitleBar = ({ page, setPage, loggedIn, setShowFriendList, showFriendList, 
                             KeyCtrl
                         </div>
                         <div className="top-group">
-                            <Link to="/project-keyctrl">
-                                <MdKeyboard onClick={() => setPage(0)} style={page === 0 ? { color: 'var(--selection-color)', backgroundColor: 'var(--bg-color)' } : null} className='tb-button' />
-                            </Link>
-                            <Link to="/training">
+                            {/* <Link to="/training">
                                 <MdFitnessCenter onClick={() => setPage(2)} style={page === 2 ? { color: 'var(--selection-color', backgroundColor: 'var(--bg-color)' } : null} className='tb-button' />
-                            </Link>
-                            <Link to="/multiplayer">
-                                <MdPublic onClick={() => setPage(3)} style={page === 3 ? { color: 'var(--selection-color', backgroundColor: 'var(--bg-color)' } : null} className='tb-button' /> 
-                            </Link>
+                            </Link> */}
                             <Link to="account">
                                 <MdAccountCircle onClick={() => setPage(1)} style={page === 1 ? { color: 'var(--selection-color', backgroundColor: 'var(--bg-color)' } : null} className="tb-button" />
                             </Link>
+                            <Link to="/multiplayer">
+                                <MdPublic onClick={() => setPage(3)} style={page === 3 ? { color: 'var(--selection-color', backgroundColor: 'var(--bg-color)' } : null} className='tb-button' />
+                            </Link>
+                            <Link to="/project-keyctrl">
+                                <MdKeyboard onClick={() => setPage(0)} style={page === 0 ? { color: 'var(--selection-color)', backgroundColor: 'var(--bg-color)' } : null} className='tb-button' />
+                            </Link>
+
                             <Link to="settings">
                                 <MdSettings onClick={() => setPage(4)} style={page === 4 ? { color: 'var(--selection-color', backgroundColor: 'var(--bg-color)' } : null} className="tb-button" />
                             </Link>
-                            {loggedIn ?
-                                <div>
-                                    <ColoredLine color="var(--primary-color)" width='70%' />
+
+                            <div>
+                                {loggedIn ? 
+                                 <div className="tb-signout">
                                     <div>
-                                        <IoIosPeople onClick={() => setShowFriendList(true)} style={showFriendList ? { color: 'var(--selection-color', backgroundColor: 'var(--bg-color)' } : null} className='tb-button' />
+                                            <div onClick={logout}>
+                                                Log Out
+                                            </div>
                                     </div>
                                 </div>
-                                : null}
+                                :
+                                 <div className="tb-login">
+                                    <div>
+                                            <div onClick={openSignIn}>
+                                                Log In
+                                            </div>
+                                    </div>
+
+                                </div>
+                                }
+                               
+                            </div>
 
                         </div>
                     </div>
