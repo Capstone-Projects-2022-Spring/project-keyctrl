@@ -13,10 +13,13 @@
     --selection-color: #50E3C2;
     --text-color: #75749C;
     --next-up-text-color: #585774;
+    background: var(--dark-bg);
 }
 
 .App {
-  text-align: center;
+    background: var(--dark-bg);
+    height: 100%;
+    text-align: center;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -45,7 +48,8 @@
 
 .main-window{
   background: var(--dark-bg);
-  min-height: 95vh;
+  justify-content: center;
+  height: auto;
 }
 
 [data-theme="default"]{

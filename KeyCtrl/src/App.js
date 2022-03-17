@@ -142,16 +142,23 @@ function App() {
   return (
     <div className="App">
       <div className="window">
-        <div className="task-bar">
+        {/* <div className="task-bar">
           <TaskBar 
             page={page}
             setPage={setPage}
             loggedIn={loggedIn}
             setShowFriendList={setShowFriendList}
             showFriendList={showFriendList} />
-        </div>
+        </div> */}
         <div className="landing">
-          <TitleBar loggedIn={loggedIn} openSignIn={openSignIn} />
+          <TitleBar 
+            page={page}
+            setPage={setPage}
+            loggedIn={loggedIn}
+            setShowFriendList={setShowFriendList}
+            showFriendList={showFriendList}
+            openSignIn={openSignIn}
+            logout={logout} />
           <div className="main-window">
             {loading ? <LoadingSpinner /> : null}
 
