@@ -6,6 +6,8 @@ import { MdAccountCircle, MdSettings, MdKeyboard, MdFitnessCenter, MdPublic } fr
 import { Link } from 'react-router-dom'
 import ColoredLine from '../../SettingsPage/ColoredLine'
 import { IoIosArrowBack } from "react-icons/io"
+import { IoIosPeople } from "react-icons/io"
+
 import PropTypes from 'prop-types'
 
 /**
@@ -73,6 +75,7 @@ const TitleBar = ({ setState, page, setPage, loggedIn, logout, setShowFriendList
                                     <IoIosArrowBack className="fl-button" />
                                 </div>
                                 : null}
+
                         </div>
                     </div>
 
