@@ -14,6 +14,29 @@
     flex-direction: row;
     justify-content: center;
     width: auto;
+    position: relative;
+}
+
+.friends-list-popup-button{
+    position: absolute;
+    margin-right: 1em;
+    top: 40%;
+    right: 0;
+}:hover{
+    transition: .25s;
+}
+
+.fl-button{
+    color: var(--text-color);
+    font-size: 2em;
+}
+
+.fl-button:hover{
+    cursor: pointer;
+    color: var(--selection-color);
+    font-size: 2.1em;
+    transition: .25s;
+
 }
 
 .bottom-group{
