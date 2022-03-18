@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import ColoredLine from '../../SettingsPage/ColoredLine'
 import { IoIosPeople } from "react-icons/io"
 import PropTypes from 'prop-types'
+import { useLocation } from 'react-router-dom'
 
 /**
  * @module TaskBar
@@ -17,17 +18,20 @@ import PropTypes from 'prop-types'
  */
 
 const TaskBar = ({ page, setPage, loggedIn, setShowFriendList, showFriendList }) => {
+   
+    const location = useLocation();
+
     return (
         <div className="tb-wrapper">
             <div className="top-group">
                 <Link to="/project-keyctrl">
-                    <MdKeyboard onClick={() => setPage(0)} style={page === 0 ? { color: 'var(--selection-color)', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
+                    <MdKeyboard style={location.pathname === "/project-keyctrl" ? { color: 'var(--selection-color)', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
                 </Link>
                 <Link to="/training">
-                    <MdFitnessCenter onClick={() => setPage(2)} style={page === 2 ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
+                    <MdFitnessCenter  style={location.pathname === "/training" ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
                 </Link>
                 <Link to="/multiplayer">
-                    <MdPublic onClick={() => setPage(3)} style={page === 3 ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
+                    <MdPublic  style={location.pathname === "/multiplayer" ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className='tb-button' />
                 </Link>
                 {loggedIn ?
                     <div>
@@ -41,10 +45,10 @@ const TaskBar = ({ page, setPage, loggedIn, setShowFriendList, showFriendList })
             </div>
             <div className="bottom-group">
                 <Link to="account">
-                    <MdAccountCircle onClick={() => setPage(1)} style={page === 1 ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className="tb-button" />
+                    <MdAccountCircle style={location.pathname === "/account" ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className="tb-button" />
                 </Link>
                 <Link to="settings">
-                    <MdSettings onClick={() => setPage(4)} style={page === 4 ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className="tb-button" />
+                    <MdSettings style={location.pathname === "/settings" ? { color: 'var(--selection-color', filter: 'drop-shadow(0px 0px 8px var(--selection-color)' } : null} className="tb-button" />
                 </Link>
             </div>
         </div>
