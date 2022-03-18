@@ -57,6 +57,11 @@ io.on('connection', (socket) => {
     //If there are more than 4 people queuing, begin a game
     if(findMatchPlayers.length >= gameStartPlayers) {
       console.log('---- Match Found ----')
+      console.log('---------------------')
+      console.log('| Players: ')
+      findMatchPlayers.forEach(player => console.log("| " + player))
+      console.log('---------------------')
+
       //Create random lobby ID
       var lobby = 'room' + Math.random() * 10000
       //Remove the first four players from the queue and emit them the findMatchSuccess event
@@ -74,8 +79,7 @@ io.on('connection', (socket) => {
 
   //Custom Lobby code
   socket.on('switchLobby', function(newRoom, username) {
-
-    socket.leave(socket.room);
+    socket.leave(newRoom.lobbyID)
     socket.join(newRoom.lobbyID);
     socket.emit('updateLobby', newRoom);
 
@@ -102,7 +106,6 @@ io.on('connection', (socket) => {
     })
 
     if(numClients[newRoom.lobbyID] == gameStartPlayers) {
-
       io.in(newRoom.lobbyID).emit('gameStart')
     }
   });
@@ -120,7 +123,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('disconnect', function() {
-    console.log("client disconnect")
+    console.log(socket.id + " disconnected")
   })
 
   socket.on('gameEnd', function(player, WPM, room) {
