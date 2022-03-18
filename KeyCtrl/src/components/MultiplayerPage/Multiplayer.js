@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import styled from 'styled-components'
-import { Lobby } from './Lobby.js'
+import io from "socket.io-client"
 import { Modal } from './Modal.js'
 
 import '../../styles/Modal.css'
@@ -29,10 +29,23 @@ const Multiplayer = () => {
   const [lobbyID, setLobbyID] = useState(0)
   const [name, setName] = useState("")
 
+  const socketRef = useRef()
+    useEffect(
+      () => {
+        socketRef.current = io.connect("http://localhost:4000")
+        //Finding Match code...
+        socketRef.current.on('findMatchSuccess', (lobby) => {
+          console.log(socketRef.current.id + " found a match")
+          setLobbyID(lobby)
+          setName('username' + Math.random() * 10000) //PLACE USERNAME HERE
+          setJoinLobby(true)
+        })
+      })
+
   //Enter lobby modal
   const [showModal, setShowModal] = useState(false)
   function findMatch() {
-    //find match code
+    socketRef.current.emit('findMatch')
   }
 
   function enterLobbyModal() {
