@@ -28,6 +28,7 @@ const Multiplayer = () => {
   const [joinLobby, setJoinLobby] = useState(false)
   const [lobbyID, setLobbyID] = useState(0)
   const [name, setName] = useState("")
+  const [isFindMatch, setFindMatch] = useState(false)
 
   const socketRef = useRef()
     useEffect(
@@ -37,7 +38,8 @@ const Multiplayer = () => {
         socketRef.current.on('findMatchSuccess', (lobby) => {
           console.log(socketRef.current.id + " found a match")
           setLobbyID(lobby)
-          setName('username' + Math.random() * 10000) //PLACE USERNAME HERE
+          setName('username' + Math.random() * 10000) //PLACE USERNAME LOGIC HERE (dont forget to handle logged out)
+          setShowModal(false)
           setJoinLobby(true)
         })
       })
@@ -45,19 +47,28 @@ const Multiplayer = () => {
   //Enter lobby modal
   const [showModal, setShowModal] = useState(false)
   function findMatch() {
+    setFindMatch(true)
+    setShowModal(true)
     socketRef.current.emit('findMatch')
+  }
+
+  function cancelFindMatch() {
+    socketRef.current.emit('cancelFindMatch')
+    setFindMatch(false)
+    setShowModal(false)
   }
 
   function enterLobbyModal() {
     setShowModal(true)
   }
 
+
   return (
     <div>
       <div className='multiplayer-base'>
         {joinLobby ? null : <Button onClick={findMatch} >Find Match</Button>}
         {joinLobby ? null : <Button onClick={enterLobbyModal} >Join Custom Lobby</Button>}
-        {showModal ? <Modal setShowModal={setShowModal} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
+        {showModal ? <Modal setShowModal={setShowModal} cancelFindMatch={cancelFindMatch} isFindMatch={isFindMatch} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
         {/* {joinLobby ? <Lobby lobbyID={lobbyID}/> : null} */}
         {joinLobby ? <MultiplayerGame lobbyID={lobbyID} username={name} /> : null}
       </div>

@@ -43,7 +43,8 @@ io.on('connection', (socket) => {
   /*Find Match
   * ----------
   * Uses socket.id (unique socket ID assigned automatically by socket.io) to track users waiting 
-  * for match 
+  * for a match. Once the match is made, the users are sent to MultiplayerGame.js. When the user presses
+  * Find Match, a modal is displayed. Pressing cancel calls cancelFindMatch and removes the user from the queue.
   * ----------
   */
   //Add player to the queue if they aren't in it already
@@ -65,6 +66,10 @@ io.on('connection', (socket) => {
         console.log(player + ' joining match')
       } 
     }
+  })
+
+  socket.on('cancelFindMatch', function() {
+    findMatchPlayers.splice(findMatchPlayers.indexOf(socket.id), 1)
   })
 
   //Custom Lobby code
