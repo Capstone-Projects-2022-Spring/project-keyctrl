@@ -21,10 +21,10 @@ const AccountTile = ({ accountInfo, logout }) => {
         
         <div className="base">
             <div className="account-photo">
-                 <img src={Image} />
+                 <img src={accountInfo.photo} />
             </div>
             <div className="account-info">
-                <div className="acc-name">Colin Harker</div>
+                <div className="acc-name">{accountInfo.user_email}</div>
             </div>
             <div>
                 <div onClick={logout} className="logout">
