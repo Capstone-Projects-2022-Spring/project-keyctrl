@@ -35,7 +35,7 @@
     top: 7px;
     right: 7px;
     padding: 8px 11px;
-    background: crimson;
+    background: var(--selection-color);;
     color: white;
     font-weight: bold;
     border: none;
