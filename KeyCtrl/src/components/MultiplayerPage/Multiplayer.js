@@ -46,12 +46,12 @@ const Multiplayer = () => {
   }
 
   return (
-    <div className='multiplayer-background'>
+    <div>
       <div className='multiplayer-base'>
         {joinLobby ? null : 
         <div className="multiplayer-Icons"> 
               <div onClick={findMatch} className = 'find-game' > 
-                <GiMagnifyingGlass style={{fontSize: '20em'}}/>
+                <GiMagnifyingGlass style={{fontSize: '17em'}}/>
                 <div className="multiplayer-select-text">
                   Find Game
                 </div>
@@ -66,7 +66,7 @@ const Multiplayer = () => {
         {joinLobby ? null : 
         <div className="multiplayer-Icons">
           <div onClick={enterLobbyModal} className='find-game'>
-            <MdPrivateConnectivity style={{fontSize: '20em'}}/>
+            <MdPrivateConnectivity style={{fontSize: '17em'}}/>
             <div className="multiplayer-select-text">
             Private Match
           </div>
