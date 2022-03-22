@@ -6,6 +6,7 @@ import { Modal } from './Modal.js'
 import '../../styles/Modal.css'
 import '../../styles/MultiplayerPage.css'
 import MultiplayerGame from "./MultiplayerGame.js"
+import { MdSettings } from "react-icons/md"
 
 const Button = styled.button`
   background: var(--primary-color);
@@ -42,7 +43,30 @@ const Multiplayer = () => {
   return (
     <div>
       <div className='multiplayer-base'>
-        {joinLobby ? null : <Button onClick={findMatch} >Find Match</Button>}
+        {joinLobby ? null : 
+        <div className="multiplayer-Icons"> 
+              <div onClick={findMatch} className = 'find-game' > 
+                <MdSettings style={{fontSize: '20em'}}/>
+                <div className="multiplayer-select-text">
+                  testing
+                </div>
+            
+              </div>
+
+              <div onClick={findMatch} className = 'find-game' > 
+              <MdSettings />
+              </div>
+
+
+
+        </div>
+        }
+
+
+
+
+
+
         {joinLobby ? null : <Button onClick={enterLobbyModal} >Join Custom Lobby</Button>}
         {showModal ? <Modal setShowModal={setShowModal} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
         {/* {joinLobby ? <Lobby lobbyID={lobbyID}/> : null} */}

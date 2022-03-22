@@ -3,6 +3,31 @@
     flex-direction: column;
 }
 
+.multiplayer-Icons{
+  display: flex;
+  flex-direction: center;
+  justify-content: space-evenly;
+}
+
+.multiplayer-select-text{
+  height: fit-content;
+  text-align: center;
+  font-size: 4em;
+}
+
+.find-game{
+  background: var(--bg-color);
+  align-self: center;
+  color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 4em;
+    padding-right: 4em;
+    border-radius: 5%;
+}
+
 /** Below if from tutorial code*/
 
 .card {
