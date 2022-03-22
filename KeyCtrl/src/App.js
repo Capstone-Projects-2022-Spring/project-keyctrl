@@ -15,6 +15,9 @@ import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
 import SlidingPane from "react-sliding-pane"
 import "react-sliding-pane/dist/react-sliding-pane.css"
 import FriendsList from './components/Base/FriendsList/FriendsList.js';
+import Scrollbars from 'react-custom-scrollbars-2'
+import {RemoveScrollBar} from 'react-remove-scroll-bar'
+
 
 // Set default theme on first initialization
 document.documentElement.setAttribute('data-theme', 'default');
@@ -149,6 +152,7 @@ function App() {
 
   return (
     <div className="App">
+      <Scrollbars autoHeight autoHeightMin={window.innerHeight}>
       <div className="window">
         {/* <div className="task-bar">
           <TaskBar 
@@ -210,9 +214,9 @@ function App() {
           </SlidingPane>
 
         </div>
-        <SignInModal onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
+        <SignInModal loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
       </div>
-
+      </Scrollbars>
     </div>
   );
 }

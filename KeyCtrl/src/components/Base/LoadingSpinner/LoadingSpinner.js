@@ -8,10 +8,10 @@ const LoadingSpinner = () => {
         <div className="loader-base">
             <div className="loader">
                 <Loader
-                    type="ThreeDots"
+                    type="TailSpin"
                     color="#50E3C2"
-                    height={200}
-                    width={200}
+                    height={150}
+                    width={150}
                     timeout={4000} //4 secs
                 />
             </div>

@@ -16,6 +16,10 @@
     background: var(--dark-bg);
 }
 
+/* ::-webkit-scrollbar {
+  display: none;
+} */
+
 .App {
     background: var(--dark-bg);
     height: 100%;
@@ -28,9 +32,6 @@
             user-select: none;
 }
 
-.App-header {
-
-}
 
 .window{
   display: flex;

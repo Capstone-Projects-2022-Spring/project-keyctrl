@@ -1,6 +1,6 @@
 import React from 'react'
 import '../../styles/StatKeyboard.css'
-import Image from "../../assets/keyboard_shell.png"
+import KeyBoard from "../../assets/keyboard_shell.svg"
 
 
 /**
@@ -88,7 +88,7 @@ const StatKeyboard = ({ letter_misses }) => {
             <div style={{ backgroundColor: getColor("b") }} className="key" id="b" />
             <div style={{ backgroundColor: getColor("n") }} className="key" id="n" />
             <div style={{ backgroundColor: getColor("m") }} className="key" id="m" />
-            <img className="keyboard-img" src={Image} />
+            <img className="keyboard-img" src={KeyBoard} />
             <div className="key1" id="q" />
             <div className="key1" id="w" />
             <div className="key1" id="e" />

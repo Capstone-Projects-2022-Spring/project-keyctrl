@@ -72,7 +72,7 @@ const TitleBar = ({ setState, page, setPage, loggedIn, logout, setShowFriendList
 
                             {loggedIn ?
                                 <div onClick={() => setState({ isPaneOpen: true })} className='friends-list-popup-button'>
-                                    <IoIosArrowBack className="fl-button" />
+                                    <IoIosArrowBack className="fl-button" /> Friends List
                                 </div>
                                 : null}
 

@@ -21,7 +21,7 @@ import * as api from '../../../../utils/apiUtils.js'
  * <SignInModal onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
  */
 
-const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
+const SignInModal = ({ loggedIn, onLogin, showSignIn, setShowSignIn }) => {
 
     const modalRef = useRef();
 
@@ -123,6 +123,7 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
     );
 
     const responseGoogle = response => {
+        setShowSignIn(false)
         console.log(response);
         console.log(response.profileObj.email)
         login(response.profileObj.email)
