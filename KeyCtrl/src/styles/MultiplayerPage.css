@@ -1,12 +1,26 @@
+.multiplayer-background{
+  background: var(--bg-color);
+}
+
 .multiplayer-base{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 10em;
+    background: var(--bg-color);
 }
 
 .multiplayer-Icons{
   display: flex;
   flex-direction: center;
   justify-content: space-evenly;
+}
+
+.find-game:hover{
+  cursor: pointer;
+  color: var(--selection-color);
+  transition: .25s;
 }
 
 .multiplayer-select-text{
