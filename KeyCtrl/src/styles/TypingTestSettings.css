@@ -1,0 +1,271 @@
+
+ .header{
+    font-size: 40px;
+    color: #5B5A99;
+    float:center;
+    text-align: center;
+    padding: 10px;
+    border: 15px solid #1F1D42 ;
+    background-color: #262353;
+    
+  
+ }
+ .test-header{
+  font-size: 40px;
+  text-decoration: underline;
+  color: #5B5A99;
+  float:center;
+  text-align: center;
+  padding: 10px;
+  border: 15px solid #1F1D42 ;
+  background-color: #262353;
+  
+
+}
+ .buttons{
+   font-size: 70px;
+   width:50px;
+   height: 30px;
+   color: #50E3C2;
+   background-color: transparent;
+   border-color: transparent;
+   position:fixed; left:89%; top:8%;
+ }
+ .navigationBar {
+    overflow: hidden;
+    font-family: Arial;
+    background-color: #1F1D42;
+    border: 5px solid #262353;
+    height: 100%;
+  }
+  
+  .navigationBar a {
+    float: left;
+    font-size: 16px;
+    color: rgb(24, 6, 68);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  .dropdown .dropbtn {
+   
+    font-size: 40px;
+    border: none;
+    outline: none;
+    color: #5B5A99;
+    padding: 14px 16px;
+    background-color: inherit;
+    
+  }
+  
+  .navigationBar a:hover, .dropdown:hover .dropbtn {
+    font-size: 30px;
+  }
+  
+  .dropdown-content {
+    display: none;
+    box-sizing: border-box;
+    width: 100%;
+    height: 800px;
+    
+    background-color: #1F1D42;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0);
+    
+    
+  }
+  
+  .dropdown-content {
+    display: block;
+  }
+  
+  .capitalLetters{
+    text-decoration: underline;
+    color: #5B5A99;
+    float:left;
+    text-align: center;
+    width: 32.28%;
+    padding: 10px;
+    height:100%;
+    
+  }
+  .punctuation {
+    text-decoration: underline;
+    color: #5B5A99;
+    float:left;
+    text-align: center;
+    width: 32.28%;
+    padding: 10px;
+    height:100%;
+    
+  }
+   .maxWord {
+    text-decoration: underline;
+    color: #5B5A99;
+    float:left;
+    text-align: center;
+    width: 32.28%;
+    padding: 10px;
+    height:100%;
+    
+  }
+  .addWordsBox {
+    float:left;
+    text-align: center;
+    padding: 100px;
+    height: 100px;
+    position:fixed; left:12%; top:50%;
+    
+  }
+  .addFile {
+    float:left;
+    text-align: center;
+    padding: 100px;
+    height: 100px;
+    position:fixed; left:70%; top:70%;
+    
+    
+  }
+  .secondOption {
+    font-size: 100px;
+    position: fixed;
+    left:70%;
+    bottom:30%;
+    float:right;
+    width: 340px;
+    color:#5B5A99;
+    
+  }
+  
+  .capitalLetters a {
+    float: none;
+    color: #5B5A99;
+    padding: 16px;
+    display: block;
+    text-align: center;
+  }
+  
+  .capitalLetters a:hover {
+    background-color: #ddd;
+  }
+  
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  } 
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    border-radius: 25px;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #5B5A99;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    border-radius: 25px;
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: #1F1D42;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #50E3C2;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  .increOrDecre{
+  color: #50E3C2;
+  font-size: 35px;
+
+  }
+  .inputfile {
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  .inputfile + label {
+    
+    border-radius: 5px;
+    font-size: 40px;
+    font-weight: 700;
+    border: 1px solid #50E3C2;
+    color: #5B5A99;
+    
+    display: inline-block;
+}
+#box {
+  color: #50E3C2;
+  font-size: 25px;
+  background-color: #3D3883;
+  border: 1px solid #50E3C2;
+  height: 150px;
+  width: 1000px;
+}
+.countButton {
+  background-color: transparent;
+  color:#5B5A99;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    font-size: 40px;
+}
+::-webkit-input-placeholder {
+  position:fixed; left:0%; top:0%;
+  color: #50E3C2;
+}
+body {
+  margin: 0px;
+  min-height: 100%;
+  width: 100%;
+  background-color: #1F1D42;
+}
+.submitBox{
+  float:right;
+  background-color: #50E3C2;
+  position:fixed; left:38.7%; top:76.9%;
+}
