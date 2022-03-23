@@ -4,6 +4,7 @@ import PropTypes from "prop-types"
 import { IoIosArrowBack } from "react-icons/io";
 import styled from "styled-components"
 import * as api from '../../utils/apiUtils.js'
+import TypingSettings from "./TypingTestSettings";
 
 /**
  * @module TypingTest 
@@ -274,10 +275,10 @@ export const TypingTest = (props) => {
                             <span key={idx}
                                 className={(idx < lineIndex) ? 'correct' : 'default'}
                             >
-                                {(idx === lineIndex) ? <span className="cursor" ></span> : <span />}
+                                {(idx === lineIndex) ? <span className="cursor"></span> : <span />}
                                 {char}
                             </span>
-                        )
+                        );
                     })}
                 </div>
 
@@ -285,6 +286,7 @@ export const TypingTest = (props) => {
                     {nextUpRandomWords}
                 </div>
             </div>
+            <TypingSettings />
         </div>
     )
 }
