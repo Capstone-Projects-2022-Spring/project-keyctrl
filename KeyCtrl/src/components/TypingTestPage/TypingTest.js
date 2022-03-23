@@ -3,6 +3,7 @@ import '../../styles/TypingTest.css'
 import PropTypes from "prop-types"
 import styled from "styled-components"
 import * as api from '../../utils/apiUtils.js'
+import TypingSettings from "./TypingTestSettings";
 
 /**
  * @module TypingTest 
@@ -284,6 +285,7 @@ return (
                 {nextUpRandomWords}
             </div>
         </div>
+        <TypingSettings />
     </div>
 )
 }
