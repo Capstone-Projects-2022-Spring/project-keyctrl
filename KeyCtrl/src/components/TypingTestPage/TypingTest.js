@@ -4,6 +4,7 @@ import PropTypes from "prop-types"
 import { IoIosArrowBack } from "react-icons/io";
 import styled from "styled-components"
 import * as api from '../../utils/apiUtils.js'
+import TypingSettings from "./TypingTestSettings";
 
 /**
  * @module TypingTest 
@@ -286,7 +287,10 @@ export const TypingTest = (props) => {
                 </div>
             </div>
         </div>
-    )
+        // <TypingSettings />
+    </div>
+)
+
 }
 
 // Starting to introduce proptypes
