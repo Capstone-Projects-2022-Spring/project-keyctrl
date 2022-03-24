@@ -137,7 +137,7 @@ export const TypingTest = (props) => {
     function getNewWordsLine() {
         const words = randWordsFunc({ exactly: 20, join: ' ' });
         const letters = words.length;
-        console.log("letter", letters, "words", 13);
+        console.log("letter", letters, "words", words);
 
         return words
     }
