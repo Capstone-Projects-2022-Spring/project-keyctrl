@@ -1,163 +1,93 @@
-.header{
-  border-radius: 10px;
-   box-sizing: content-box;
-   width: 52%;
-   margin: auto;
-   font-size: 20px;
-   padding: 5px;
-   color: var(--text-color);
-   background: var(--bg-color);
-   
-   
- 
-}
-.test-header{
-  padding-left: 35px;
- color:var(--text-color);
- font-size: 20px;
- text-decoration: underline;
- background: var(--bg-color);
- 
- 
+header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  font-size: 20px;
+  color: var(--text-color);
+  background: var(--bg-color);
+  
+  
 
 }
-.buttons{
-  font-size: 40px;
-  color: var(--selection-color);
-  background-color: transparent;
-  border-color: transparent;
-  position: relative;
-  left:210px;
-  top:10px;
-}
-.navigationBar {
-   overflow: hidden;
-   font-family: Arial;
-   background: var(--bg-color);
-   border: 5px solid var(--dark-bg);
-   height: 100%;
- }
+
+.test-header{
+  color:var(--text-color);
+  font-size: 20px;
+  text-decoration: underline;
+  background: var(--bg-color);
+  font-weight: bold;
+  border-style: solid;
+  border-width: 30px;
+  width:610px;
+  border: 15px solid var(--bg-color) ;
+  background-color: var(--dark-bg);
  
- .navigationBar a {
-   float: left;
-   font-size: 16px;
-   color: var(--text-color);
-   text-align: center;
-   padding: 14px 16px;
-   text-decoration: none;
  }
- 
- .dropdown .dropbtn {
+ .hiddenSettings{
+  background-color: var(--dark-bg);
+  border: 10px solid var(--bg-color) ;
+  padding:10px;
   
-   font-size: 40px;
-   border: none;
-   outline: none;
-   color: var(--text-color);
-  
-   
  }
- 
- .navigationBar a:hover, .dropdown:hover .dropbtn {
-   font-size: 30px;
- }
- 
- .dropdown-content {
-   border-radius: 21px;
-   display: none;
-   box-sizing: border-box;
-   width: 100%;
-   height: 350px;
-   border: 15px solid var(--bg-color) ;
-   background-color: var(--dark-bg);
-   
-   
- }
- 
- .dropdown-content {
-   display: block;
- }
- 
  .capitalLetters{
+  
    text-decoration: underline;
    color: var(--text-color);
-   float:left;
-   text-align: center;
-   width: 30%;
-   padding: 10px;
-   height:100%;
+  
    
- }
- .slideButton{
-   position: absolute;
-   left: 1400px;
-   bottom: 490px;
-   color: var(--text-color);
-   
- }
- .slideButton2{
-   color: var(--text-color);
-   position: absolute;
-   left: 1594px;
-   bottom: 490px;
  }
  .punctuation {
    text-decoration: underline;
    color: var(--text-color);
-   float:left;
-   text-align: center;
-   width: 30%;
-   padding: 10px;
-   height:100%;
-   
+  
  }
   .maxWord {
    text-decoration: underline;
    color: var(--text-color);
-   float:left;
-   text-align: center;
-   width: 30%;
-   padding: 10px;
-   height:100%;
-   
- }
- .addWordsBox {
-   float:left;
-   text-align: center;
-   padding: 100px;
-   height: 100px;
-   position:fixed; left:12%; top:50%;
-   
- }
- .addFile {
-   float:left;
-   text-align: center;
-   padding: 100px;
-   height: 100px;
-   position:fixed; left:70%; top:70%;
    
    
  }
- .secondOption {
-   font-size: 50px;
-   position: absolute;
-   right: 670px;
-   top: 700px;
-   float:right;
-   width: 340px;
-   color:var(--text-color);
+ div.TitleSettings {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  text-align:center;
+  width:600px;
+  height:20px;
+}
+div.TitleButtonSettings {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+}
+div.BoxAndUploadSettings {
+  display: flex;
+  justify-content: space-between; 
+  flex-wrap: wrap;
+  flex-direction: row;
+  
+  
+}
+
+ .slideButton{
+  position:absolute;
+  margin-right: auto;
+  padding: 15px 70px;
+  color: var(--text-color);
    
  }
- 
- 
- .row:after {
-   content: "";
-   display: table;
-   clear: both;
- } 
+ .slideButton2{
+  position:relative;
+  left:150px;
+  top:13px;
+  margin-right: auto;
+  color: var(--text-color);
+   
+ }
  .switch {
    position: relative;
-   top:100px;
-   right:600px;
    display: inline-block;
    width: 60px;
    height: 34px;
@@ -210,75 +140,79 @@
  .slider.round:before {
    border-radius: 50%;
  }
- .increOrDecre{
-   position: absolute;
-   right: 770px;
-   top: 540px;
-  color:var(--selection-color); 
-  font-size: 35px;
-
- }
- .inputfile {
-   width: 1px;
-   height: 1px;
-   opacity: 0;
-   overflow: hidden;
-   position: absolute;
-   z-index: -1;
- }
- .inputfile + label {
-   
-   border-radius: 14px;
-   font-size: 1rem;
-   font-weight: bold;
-   border-style: solid;
-   border-width: 2px;
-   border-color: var(--selection-color);
-   font-weight: 400;
-   position: absolute;
-   right: 790px;
-   top: 770px;
-   color: var(--text-color);
-   display: inline-block;
-}
-#box {
+ #box {
  
- background-color:#5B5A99;
- 
- font-size: 1rem;
- border-style: solid;
- border-width: 1px;
- border-color: var(--selection-color);
- position: absolute;
-   right: 950px;
-   top: 700px;
- height: 100px;
- width: 300px;
+  background-color:#5B5A99;
+  font-size: 1rem;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--selection-color);
+  display: flex;
+  position: relative;
+  left:20px;
+  flex-wrap: wrap;
+  text-align:center;
+  padding: 30px 100px;
+ }
+ .secondOption {
+   display: flex;
+   flex-direction: column;
+   float: right;
+  font-size: 20px;
+  width: 200px;
+  color:var(--text-color);
+  
 }
 .countButton {
- background-color: transparent;
- color:var(--text-color);
-   background-repeat: no-repeat;
-   border: none;
-   cursor: pointer;
-   overflow: hidden;
-   outline: none;
-   font-size: 40px;
+  background-color: transparent;
+  color:var(--text-color);
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    font-size: 40px;
+ }
+ .increOrDecre{
+   display: inline;
+   position:relative;
+   left:430px;
+   bottom: 20px;
+ color:var(--selection-color); 
+ font-size: 35px;
+
+}
+.inputfile {
+  overflow: hidden;
+  position: relative;
+  z-index: -1;
+}
+.inputfile + label {
+  display: flex;
+  border-radius: 14px;
+  font-size: 1rem;
+  border-style: solid;
+  border-color: var(--selection-color);
+  font-weight: 400;
+  
+  position: relative;
+  top: 1px;
+  left:65px;
+  width: 70px;
+  color: var(--text-color);
+  
+}
+
+ .buttons{
+  font-size: 30px;
+  color: var(--selection-color);
+  background-color: transparent;
+  border-color: transparent;
+  position: relative;
+  left:210px;
+  top:10px;
 }
 ::-webkit-input-placeholder {
  position:fixed; left:0%; top:0%;
  color:var(--selection-color);
-}
-.submitBox{
- float:right;
- font-size: 1rem;
- font-weight: bold;
- border-style: solid;
- border-width: 1px;
- border-color: var(--selection-color);
- color:var(--selection-color);
- background-color: var(--dark-bg);
- position: absolute;
- right: 950px;
- bottom:160px;
 }

@@ -23,48 +23,49 @@ export default function TypingSettings() {
           <button class="buttons" onClick={() => setHidden(s => !s)}>
             <AiOutlineDown />
           </button>
-        </div>{!hidden ?
-          <div class="dropdown">
-            <div class="dropdown-content">
-              <div class="row">
+        </div>
+        {!hidden ?
+          
 
-                <div class="capitalLetters">
-                  Capital Letters</div>
-                <div class="punctuation">
-                  Punctuation
-                </div>
-                <div class="maxWord">
-                  Max Word Length
-                </div>
-
-                <div class="slideButton2">
-                  <label class="switch">
-                    <input type="checkbox"></input>
-                    <span class="slider"></span></label> </div>
-                <div class="slideButton">
-                  <label class="switch">
-                    <input type="checkbox"></input>
-                    <span class="slider"></span></label></div>
-                <div class="secondOption">
-                  OR
-                </div>
-                <input id="box" type="text" name="text" placeholder="Paste custom word list here..." />
-
-                <input type="submit" value="Submit" class="submitBox" />
-                <div className="increOrDecre">
-                  <button class="countButton" onClick={decrementCount}> &lt; </button>
-                  {count}
-                  <button class="countButton" onClick={incrementCount}> &gt; </button>
-                </div>
-
-                <input type="file" name="file" id="file" class="inputfile" />
-
-                <label for="file">Choose file</label>
-                <div>
-                </div>
-              </div>
+                <>
+                <div class="hiddenSettings">
+                <div class="TitleSettings"><div class="capitalLetters">
+            Capital Letters</div>
+            <div class="punctuation">
+              Punctuation
             </div>
-          </div>
+            <div class="maxWord">
+              Max Word Length
+            </div>
+            </div>
+            
+            <div class="TitleButtonSettings">
+            <div class="slideButton">
+              <label class="switch">
+                <input type="checkbox"></input>
+                <span class="slider"></span></label> </div>
+                
+            <div className="increOrDecre">
+              <button class="countButton" onClick={decrementCount}> &lt; </button>
+              {count}
+              <button class="countButton" onClick={incrementCount}> &gt; </button>
+            </div>
+                <div class="slideButton2">
+              <label class="switch">
+                <input type="checkbox"></input>
+                <span class="slider"></span></label></div>
+                </div>
+              <div class="BoxAndUploadSettings">
+            <input id="box" type="text" name="text" placeholder="Paste custom word list here..." />
+           
+            <div class="secondOption">
+              OR 
+           <input type="file" name="file" id="file" class="inputfile" /><label for="file">Choose file</label><div>
+           </div></div> </div>
+           </div>
+           </>
+              
+          
           : null}
       </div></>
 
