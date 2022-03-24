@@ -14,10 +14,10 @@ var account = {
 };
 
 
-export function callLogin(email, photoUrl) {
+export function callLogin(email, photoUrl, name) {
     account = {
         account_id: -1,
-        display_name: "",
+        display_name: name,
         user_email: "",
         photo: photoUrl
     };
@@ -34,7 +34,7 @@ export function callLogin(email, photoUrl) {
             if(acc != "Fail"){//instead of invalid, "does not exist"
                 var info = JSON.parse(acc);
                 account.account_id = info[0].account_id;
-                account.display_name = info[0].display_name;
+                //account.display_name = info[0].display_name;
                 account.user_email = info[0].user_email;
                 //account.photo = info[0].photo;
                 console.log(account);
@@ -74,7 +74,7 @@ export function callRegisterAccount(email, photoUrl) {
             console.log(acc);
             var info = JSON.parse(acc);
             account.account_id = info[0].account_id;
-            account.display_name = info[0].display_name;
+            //account.display_name = info[0].display_name;
             account.user_email = info[0].user_email;
             //account.photo = info[0].photo;
             //getStats(account.account_id);

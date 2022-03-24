@@ -51,10 +51,10 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
       @description Api call to log in but the email is HASHED and passes result to onLogin(). THIS IS A WORKING METHOD TO BE USED IN THE FUTURE
      */
 
-      const login = (email, photo) => {
+      const login = (email, photo, name) => {
         var hash = sha256(email)
         console.log(hash.toString() + " " + hash.toString().length)
-        onLogin(api.callLogin(hash.toString(), photo));
+        onLogin(api.callLogin(hash.toString(), photo, name));
     }
 
     /**
@@ -126,7 +126,7 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
         console.log(response);
         console.log(response.profileObj.imageUrl)
         console.log(response.profileObj.email)
-        login(response.profileObj.email, response.profileObj.imageUrl)
+        login(response.profileObj.email, response.profileObj.imageUrl, response.profileObj.name)
         //after login in on google login, we call login
     };
 
