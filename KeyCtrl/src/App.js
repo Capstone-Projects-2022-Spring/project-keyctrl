@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import TypingTest from './components/TypingTestPage/TypingTest.js';
 import SignInModal from './components/Base/TitleBar/SignInModal/SignInModal.js';
 import TitleBar from './components/Base/TitleBar/TitleBar.js';
@@ -12,6 +12,9 @@ import LoadingSpinner from './components/Base/LoadingSpinner/LoadingSpinner.js';
 import * as api from './utils/apiUtils.js'
 import { Route, Routes } from 'react-router-dom';
 import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
+import SlidingPane from "react-sliding-pane"
+import "react-sliding-pane/dist/react-sliding-pane.css"
+import FriendsList from './components/Base/FriendsList/FriendsList.js';
 
 // Set default theme on first initialization
 document.documentElement.setAttribute('data-theme', 'default');
@@ -29,6 +32,11 @@ function App() {
   const [WPMTime, setWPMTime] = useState(1);
   const [accountInfo, setAccountInfo] = useState({})
   const [updateOnce, setUpdateOnce] = useState(false)
+
+  const [state, setState] = useState({
+    isPaneOpen: false,
+    isPaneOpenLeft: false,
+  });
 
   const [showFriendList, setShowFriendList] = useState(false)
 
@@ -63,7 +71,7 @@ function App() {
     setAccountInfo({ ...accountInfo, letter_misses: JSON.stringify(jObj) });
 
   }
-  
+
   async function updateApiStats(avgWPM, topWpm, total_words, total_time) {
 
     console.log("Before Update Stats",
@@ -142,21 +150,29 @@ function App() {
   return (
     <div className="App">
       <div className="window">
-        <div className="task-bar">
+        {/* <div className="task-bar">
           <TaskBar 
             page={page}
             setPage={setPage}
             loggedIn={loggedIn}
             setShowFriendList={setShowFriendList}
             showFriendList={showFriendList} />
-        </div>
+        </div> */}
         <div className="landing">
-          <TitleBar loggedIn={loggedIn} openSignIn={openSignIn} />
+          <TitleBar
+            page={page}
+            setPage={setPage}
+            loggedIn={loggedIn}
+            setShowFriendList={setShowFriendList}
+            showFriendList={showFriendList}
+            openSignIn={openSignIn}
+            logout={logout}
+            setState={setState} />
           <div className="main-window">
             {loading ? <LoadingSpinner /> : null}
 
             <Routes>
-              <Route exact path="" element={
+              <Route exact path="/project-keyctrl" element={
                 <TypingTest
                   setUpdateOnce={setUpdateOnce}
                   setIndex={setIndex}
@@ -180,6 +196,19 @@ function App() {
             </Routes>
 
           </div>
+
+          <SlidingPane
+            className='friends-list-popup'
+            closeIcon={<div>Some div containing custom close icon.</div>}
+            hideHeader={true}
+            isOpen={state.isPaneOpen}
+            from="right"
+            width="300px"
+            onRequestClose={() => setState({ isPaneOpen: false })}
+          >
+            <FriendsList />
+          </SlidingPane>
+
         </div>
         <SignInModal onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
       </div>

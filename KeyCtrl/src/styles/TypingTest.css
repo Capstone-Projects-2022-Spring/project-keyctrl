@@ -1,7 +1,7 @@
 .container {
     padding-left: 20%;
     padding-right: 20%;
-    height: 95vh;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -16,9 +16,8 @@
     justify-content: center;
     align-items: center;
     background: var(--bg-color);
-    filter: drop-shadow(0px 48px 69px var(--dark-bg));
     backdrop-filter: blur(20px);
-    padding: 1em;
+    padding: .75em;
 }
 
 .word-base .start-signal-wrapper{
@@ -29,7 +28,7 @@
     filter: drop-shadow(0px 0px 35px var(--dark-bg));
     color: var(--text-color);
     /* animation: breathing 5s infinite forwards; */
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: bold;
     border-style: solid;
     border-width: 1px;
@@ -90,7 +89,7 @@
     font-family: Almarai;
     font-style: normal;
     font-weight: bold;
-    font-size: 36px;
+    font-size: 2em;
     text-align: left;
     letter-spacing: .03em;
 }
@@ -109,12 +108,21 @@
 
 .timer-wrapper{
     height: auto;
-    width: 65ch;
+    width: 57ch;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     font-size: xx-large;
     align-items: flex-end;
+}
+
+.timer-wrapper-multiplayer{
+    height: auto;
+    width: 65ch;
+    display: flex;
+    flex-direction: row;
+    font-size: xx-large;
+    justify-content: center;
 }
 
 .timer-wrapper .right-elements{
@@ -137,7 +145,7 @@
     cursor: pointer;
 }
 
-.timer-wrapper .timer{
+.timer{
     font-size: 50px;
 }
 
@@ -178,4 +186,11 @@
 .cursor{
   background-color: var(--selection-color);
   padding-left: 2px;
+}
+
+.multiplayer-player-name{
+    text-align: center;
+    color: var(--text-color);
+    font-size: 2em;
+    font-weight: bold;
 }

@@ -7,12 +7,27 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    color: #75749C;
+    color: var(--text-color);
 }
 
 .account-photo{
+    height: auto;
+    position: relative;
+    overflow: hidden;
     background: #75749C;
     border-radius: 50%;
+}
+
+.account-photo img{
+    display: block;
+    margin: 0 auto;
+    height: auto;
+    width: 100%; 
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;  
 }
 
 .account-icon{
@@ -31,7 +46,7 @@
 .logout{
     padding: .5em;
     border-style: solid;
-    border-color: #75749C;
+    border-color: var(--text-color);
     height: auto;
     border-radius: 2em;
 }
@@ -45,7 +60,7 @@
 
 .acc-name{
     align-self: flex-start;
-    font-size: xx-large;
+    font-size: 3em;
     font-weight: 600;
 }
 
