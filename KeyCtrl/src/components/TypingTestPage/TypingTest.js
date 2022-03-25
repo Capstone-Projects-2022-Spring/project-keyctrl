@@ -258,7 +258,6 @@ export const TypingTest = (props) => {
 
                 {timerActive ? null : <div className="start-signal-wrapper">
 
-                    Correct Entries: {props.numEntries} <br />
                     Your WPM: {props.grossWPM()} <br /> <br />
                     <div className="start-signal">
                         Press Enter To Start!

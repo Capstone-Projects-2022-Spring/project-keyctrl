@@ -1,22 +1,26 @@
 .maincontainer {
     width: 300px;
     height: 100%;
-    background: #262353;
+    background: var(--bg-color);
 }
 
-table{
-    table-layout: fixed;
+.friends-list-header{
+    padding: 1em;
+    display: flex;
+    flex-direction: row;
 }
 
-h1{
-    display: inline-block;
-    margin: 0px;
+.friends-list-header-username{
+    padding-left: .5em;
+    padding-top: .4em;
+    font-family: 'Almarai';
+    font-size: 1.5em;
+    color: var(--text-color);
 }
 
-h2{
-    display: inline-block;
-    margin: 0px;
-    color: rgb(80 227 194);
+.friends-list-add{
+    padding-left: 1em;
+    padding-right: 1em;
 }
 
 .status{

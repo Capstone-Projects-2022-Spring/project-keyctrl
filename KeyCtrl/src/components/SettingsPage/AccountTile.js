@@ -1,7 +1,10 @@
+/** @jsxImportSource theme-ui */
+
 import React from 'react'
 import '../../styles/AccountTile.css'
 import { MdAccountBox, MdRemoveRedEye } from 'react-icons/md'
 import Image from "../../assets/colin-profile.png"
+import { Avatar } from '@material-ui/core'
 
 /**
  * @module AccountTile
@@ -15,21 +18,24 @@ import Image from "../../assets/colin-profile.png"
 
 
 const AccountTile = ({ accountInfo, logout }) => {
-   console.log("ac: " + accountInfo);
+    console.log("ac: " + accountInfo);
 
     return (
-        
+
         <div className="base">
-            <div className="account-photo">
-                 <img src={accountInfo.photo} />
-            </div>
+            <Avatar
+                src={accountInfo.photo}
+                sx={{
+                    height: '10em',
+                    width: '10em',
+                    borderColor: 'var(--text-color)',
+                    borderStyle: 'solid',
+                    borderWidth: '2px'
+                }}
+            />
+
             <div className="account-info">
                 <div className="acc-name">{accountInfo.display_name}</div>
-            </div>
-            <div>
-                <div onClick={logout} className="logout">
-                    Logout
-                </div>
             </div>
         </div>
     )

@@ -1,10 +1,53 @@
+/** @jsxImportSource theme-ui */
+
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components';
+import { Avatar, Badge, TextField } from '@material-ui/core';
+import ColoredLine from '../../SettingsPage/ColoredLine';
 import '../../../styles/FriendsList.css'
+import Image from "../../../assets/colin-profile.png"
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        backgroundColor: '#44b700',
+        color: '#44b700',
+        width: '1.5em',
+        height: '1.5em',
+        fontSize: '1em',
+        borderRadius: '50%',
+        boxShadow: `0 0 0 .3em var(--bg-color)`
+    }
+}));
+
+const RedditTextField = styled((props) => (
+    <TextField InputProps={{ disableUnderline: true }} {...props} />
+))(({ theme }) => ({
+    '& .MuiFormLabel-root' : {
+        color: 'var(--text-color)'
+    },
+    '& .MuiFilledInput-root': {
+        border: '1px solid transparent',
+        overflow: 'hidden',
+        borderRadius: 4,
+        backgroundColor: 'var(--dark-bg)',
+        color: 'var(--text-color)',
+        '&:hover': {
+            border: '1px solid var(--selection-color)',
+            backgroundColor: 'transparent',
+        },
+        '&.Mui-focused': {
+            border: '1px solid var(--selection-color)',
+            backgroundColor: 'transparent',
+            boxShadow: `var(--dark-bg) 0 0 0 2px`,
+            borderColor: 'var(--selection-color)',
+        },
+    },
+}));
 
 
-function changeStat(current){
-    switch(current){
+function changeStat(current) {
+    switch (current) {
         case "Online":
             console.log('STATUS CHANGED FROM ONLINE TO AWAY');
             alert(`STATUS CHANGED FROM ONLINE TO AWAY`);
@@ -18,42 +61,58 @@ function changeStat(current){
     }
 }
 
-function collapse(){
+function collapse() {
     alert(`this will collapse the menu`);
 }
 
-function addFriend(){
+function addFriend() {
     alert(`this will bring a popup to add a friend`);
 }
 
 
-const FriendsList = ({status, username, pfp}) => {
-  return (
-    <div className='maincontainer'>
-        <table width="100%">
-            <tr>
-                <td width="100px"><img className='pfp' src={pfp} alt="Profile"/></td>
-                <td><h2>{username}</h2><p className='status' onClick={() =>changeStat(`${status}`)}>🟢{status}</p></td>
-                <td width="50px"><img src="https://cdn.discordapp.com/attachments/682927634904252474/952800742522109962/right-arrow-1438234-1216195.png" alt="Expand" width="50" height="50" onClick={() =>collapse()}/></td>
-            </tr>
-        </table>
-        <div className='lookup'>
-            <img src="https://cdn.discordapp.com/attachments/682927634904252474/952833865750294538/search-13-xxl_114196.png" alt="filter person" width="30" height="30" style={{margin:"5px", float:"left"}}></img>
-            <input placeholder="Filter" id="filter" onkeyup="filter()" style={{margin:"8px", height:"20px"}}></input>
-            <img src="https://cdn.discordapp.com/attachments/682927634904252474/952834095128403978/add-person-1767897-1502150.png" alt="add person" width="30" height="30"  onClick={() =>addFriend()} style={{margin:"5px", float:"right"}}></img>
+const FriendsList = ({ status, username, pfp }) => {
+    return (
+        <div className='maincontainer'>
+            <div className='friends-list-header'>
+                <div>
+                    <StyledBadge
+                        overlap="circular"
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                        variant="dot"
+                    >
+                        <Avatar
+                            src={Image}
+                            sx={{ 
+                                width: '4em',
+                                height: '4em', 
+                                borderColor: 'var(--text-color)',
+                                borderStyle: 'solid',
+                                borderWidth: '2px' }}
+                        />
+                    </StyledBadge>
+                </div>
+                <div className='friends-list-header-username'>
+                    {username}
+                </div>
+            </div>
+            <div className='friends-list-add'>
+                <RedditTextField
+                    label="Search"
+                    id="reddit-input"
+                    variant="filled"
+                    fullWidth
+                    sx={{height: '3em'}}
+                />
+            </div>
+            <div className='friends-list-friends'>
+                
+            </div>
         </div>
-        <table id="friends">
-            <tr>
-                <td><img className='pfpfriend' src={pfp} alt="Friend's Profile"/></td>
-                <td><h2>Alex</h2><p className='status'>🟢Status:</p></td>
-            </tr>
-        </table>
-    </div>
-  )
+    )
 }
 
 FriendsList.defaultProps = {
-    username: 'no one',
+    username: 'Colin Harker',
     status: 'Online',
     pfp: 'https://polybit-apps.s3.amazonaws.com/stdlib/users/notedwin/profile/image.png?1630540464656'
 }
@@ -66,21 +125,21 @@ Headers.propTypes = {
 
 export default FriendsList
 
-function filter(){
+function filter() {
     var input, filter, table, tr, td, i, txtValue;
-      input = document.getElementById("filter");
-      filter = input.value.toUpperCase();
-      table = document.getElementById("friends");
-      tr = table.getElementsByTagName("tr");
-      for (i = 0; i < tr.length; i++) {
+    input = document.getElementById("filter");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("friends");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[0];
         if (td) {
-          txtValue = td.textContent || td.innerText;
-          if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
-          }
-        }       
-      }
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
     }
+}
