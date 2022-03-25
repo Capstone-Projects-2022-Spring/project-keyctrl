@@ -37,6 +37,7 @@
     "socket.io": "^4.4.1",
     "socket.io-client": "^2.4.0",
     "styled-components": "^5.3.3",
+    "theme-ui": "^0.14.1",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

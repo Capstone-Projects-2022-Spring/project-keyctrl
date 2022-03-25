@@ -1,3 +1,5 @@
+/** @jsxImportSource theme-ui */
+
 import { React, useState } from 'react'
 import '../../styles/Account.css'
 import SingleStatDisplay from './SingleStatDisplay.js'
@@ -6,6 +8,7 @@ import StatKeyboard from './StatKeyboard.js'
 import Image from "../../assets/colin-profile.png"
 import Unranked from '../../assets/unranked.png'
 import History from './History'
+import { Avatar } from '@material-ui/core'
 
 /**
  * @module Account
@@ -21,13 +24,10 @@ const Account = ({ accountInfo_ }) => {
 
     const [inSummary, setInSummary] = useState(true);
 
-    const triggerInSummary = () => {
-        setInSummary(true)
+    const triggerInSummary = (state) => {
+        setInSummary(state)
     }
 
-     const triggerNotInSummary = () => {
-        setInSummary(false)
-    }
 
     var accountInfo = {
         top_wpm: 73.25,
@@ -43,8 +43,8 @@ const Account = ({ accountInfo_ }) => {
     return (
         <div>
             <div className='stat-tab'>
-                <div onClick={triggerInSummary} className='stat-tab-selection' style={ inSummary ? { color: 'var(--selection-color)'} : null }>Summary</div>
-                <div onClick={triggerNotInSummary} className='stat-tab-selection' style={ !inSummary ? { color: 'var(--selection-color)'} : null }>History</div>
+                <div onClick={() => triggerInSummary(true)} className='stat-tab-selection' style={inSummary ? { color: 'var(--selection-color)' } : null}>Summary</div>
+                <div onClick={() => triggerInSummary(false)} className='stat-tab-selection' style={!inSummary ? { color: 'var(--selection-color)' } : null}>History</div>
             </div>
 
             {inSummary ?
@@ -52,9 +52,18 @@ const Account = ({ accountInfo_ }) => {
                     <div className="stat-container">
                         <div className="acc-id">
                             <div className='profile'>
-                                <div className="account-stat-photo">
-                                    <img src={Image} />
-                                </div>
+
+                                <Avatar
+                                    src={Image}
+                                    sx={{
+                                        height: '4em',
+                                        width: '4em',
+                                        borderColor: 'var(--text-color)',
+                                        borderStyle: 'solid',
+                                        borderWidth: '2px'
+                                    }}
+                                />
+
                                 <div className='profile-user'>
                                     Colin Harker
                                 </div>

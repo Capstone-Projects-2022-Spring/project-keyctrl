@@ -37,6 +37,10 @@ const HistoryList = ({ title }) => {
                     }
                 </div>
 
+
+
+                
+
                  <div className='base-game-container'>
                     <div className="game-container">
                         <div className='hl-inner-element' style={{ color: '#30DA37' }}> Victory! </div>

@@ -9,7 +9,7 @@ const LoadingSpinner = () => {
             <div className="loader">
                 <Loader
                     type="TailSpin"
-                    color="#50E3C2"
+                    color="var(--selection-color)"
                     height={150}
                     width={150}
                     timeout={4000} //4 secs

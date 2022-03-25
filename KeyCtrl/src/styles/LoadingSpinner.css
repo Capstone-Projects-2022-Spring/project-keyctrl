@@ -7,8 +7,8 @@
 }
 
 .loader{
-    position: absolute;
-    left: 44%;
+    position: fixed;
+    left: calc(50% - 75px);
     top: 2%;
     z-index: 11;
 }
