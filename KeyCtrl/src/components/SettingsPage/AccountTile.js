@@ -24,7 +24,7 @@ const AccountTile = ({ accountInfo, logout }) => {
 
         <div className="base">
             <Avatar
-                src={Image}
+                src={accountInfo.photo}
                 sx={{
                     height: '10em',
                     width: '10em',
@@ -35,7 +35,7 @@ const AccountTile = ({ accountInfo, logout }) => {
             />
 
             <div className="account-info">
-                <div className="acc-name">Colin Harker</div>
+                <div className="acc-name">{accountInfo.display_name}</div>
             </div>
         </div>
     )

@@ -210,13 +210,7 @@ const MultiplayerGame = (props) => {
 
   function sortLeaderBoard(matchResultsArray){
     function compare(a, b) {
-      if (a.WPM < b.WPM) {
-        return -1;
-      }
-      if (a.WPM > b.WPM) {
-        return 1;
-      }
-      return 0;
+      return b.WPM - a.WPM
     }
 
     var sortedArray = matchResultsArray.sort(compare);

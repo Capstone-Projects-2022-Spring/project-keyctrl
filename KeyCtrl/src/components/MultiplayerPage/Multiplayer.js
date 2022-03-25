@@ -6,6 +6,12 @@ import { Modal } from './Modal.js'
 import '../../styles/Modal.css'
 import '../../styles/MultiplayerPage.css'
 import MultiplayerGame from "./MultiplayerGame.js"
+import { MdSettings } from "react-icons/md"
+import { GiMagnifyingGlass } from "react-icons/gi"
+import { GiThreeFriends } from "react-icons/gi"
+import {MdPrivateConnectivity} from "react-icons/md"
+
+
 
 const Button = styled.button`
   background: var(--primary-color);
@@ -42,8 +48,34 @@ const Multiplayer = () => {
   return (
     <div>
       <div className='multiplayer-base'>
-        {joinLobby ? null : <Button onClick={findMatch} >Find Match</Button>}
-        {joinLobby ? null : <Button onClick={enterLobbyModal} >Join Custom Lobby</Button>}
+        {joinLobby ? null : 
+        <div className="multiplayer-Icons"> 
+              <div onClick={findMatch} className = 'find-game' > 
+                <GiMagnifyingGlass style={{fontSize: '17em'}}/>
+                <div className="multiplayer-select-text">
+                  Find Game
+                </div>
+            
+              </div>
+
+
+
+        </div>
+        }
+        
+        {joinLobby ? null : 
+        <div className="multiplayer-Icons">
+          <div onClick={enterLobbyModal} className='find-game'>
+            <MdPrivateConnectivity style={{fontSize: '17em'}}/>
+            <div className="multiplayer-select-text">
+            Private Match
+          </div>
+
+          </div>
+        </div>
+        }
+
+        
         {showModal ? <Modal setShowModal={setShowModal} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
         {/* {joinLobby ? <Lobby lobbyID={lobbyID}/> : null} */}
         {joinLobby ? <MultiplayerGame lobbyID={lobbyID} username={name} /> : null}
