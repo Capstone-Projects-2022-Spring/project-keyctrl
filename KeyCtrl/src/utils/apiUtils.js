@@ -14,13 +14,14 @@ var account = {
 };
 
 
-export function callLogin(email) {
+export function callLogin(email, photoUrl, name) {
     account = {
         account_id: -1,
-        display_name: "",
+        display_name: name,
         user_email: "",
-        photo: -1
+        photo: photoUrl
     };
+    console.log(email)
 
     var options = {
         url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/login?email='
@@ -33,13 +34,13 @@ export function callLogin(email) {
             if(acc != "Fail"){//instead of invalid, "does not exist"
                 var info = JSON.parse(acc);
                 account.account_id = info[0].account_id;
-                account.display_name = info[0].display_name;
+                //account.display_name = info[0].display_name;
                 account.user_email = info[0].user_email;
-                account.photo = info[0].photo;
+                //account.photo = info[0].photo;
                 console.log(account);
-                getStats(account.account_id);
+                //getStats(account.account_id);
             }else{ 
-                callRegisterAccount(email);// if it returns invalid login recentials, it registers the account
+                callRegisterAccount(email, photoUrl);// if it returns invalid login recentials, it registers the account
             }
         })
         .finally(function(){
@@ -52,12 +53,12 @@ export function callLogin(email) {
 
 }
 
-export function callRegisterAccount(email) {
+export function callRegisterAccount(email, photoUrl) {
     account = {
         account_id: -1,
         display_name: "",
         user_email: "",
-        photo: -1
+        photo: photoUrl
     };
     var options = {
         method: 'POST',
@@ -73,10 +74,10 @@ export function callRegisterAccount(email) {
             console.log(acc);
             var info = JSON.parse(acc);
             account.account_id = info[0].account_id;
-            account.display_name = info[0].display_name;
+            //account.display_name = info[0].display_name;
             account.user_email = info[0].user_email;
-            account.photo = info[0].photo;
-            getStats(account.account_id);
+            //account.photo = info[0].photo;
+            //getStats(account.account_id);
             console.log(account);
         })
         .finally(function(){
