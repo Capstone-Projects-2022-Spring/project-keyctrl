@@ -62,3 +62,14 @@
     font-size: inherit;
     margin: 3%;
 }
+
+
+.friends-list-button{
+    color: var(--text-color);
+}
+
+.friends-list-button:hover{
+    color: var(--selection-color);
+    transition: .25s;
+    cursor: pointer;
+}

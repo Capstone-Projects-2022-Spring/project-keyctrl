@@ -287,7 +287,6 @@ export const TypingTest = (props) => {
             </div>
         </div>
         // <TypingSettings />
-    </div>
 )
 
 }
