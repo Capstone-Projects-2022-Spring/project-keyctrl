@@ -55,10 +55,6 @@ function App() {
  
   const onLogin = async (account_, accountStats_) => {
 
-    setLoading(true);
-    
-    await (delay(4000));
-
     setLoading(false);
 
     console.log(accountStats_)
@@ -184,6 +180,7 @@ function App() {
               openSignIn={openSignIn}
               logout={logout}
               setState={setState} />
+
             <div className="main-window">
               {loading ? <LoadingSpinner /> : null}
 
@@ -226,7 +223,7 @@ function App() {
             </SlidingPane>
 
           </div>
-          <SignInModal loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
+          <SignInModal setLoading={setLoading} loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
         </div>
       </Scrollbars>
     </div>

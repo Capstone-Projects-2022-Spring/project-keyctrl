@@ -21,7 +21,7 @@ import * as api from '../../../../utils/apiUtils.js'
  * <SignInModal onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
  */
 
-const SignInModal = ({ loggedIn, onLogin, showSignIn, setShowSignIn }) => {
+const SignInModal = ({ setLoading ,loggedIn, onLogin, showSignIn, setShowSignIn }) => {
 
     const modalRef = useRef();
 
@@ -57,8 +57,9 @@ const SignInModal = ({ loggedIn, onLogin, showSignIn, setShowSignIn }) => {
         var hash = sha256(email)
         console.log(hash.toString() + " " + hash.toString().length)
 
+        setLoading(true)
         onLogin(
-            api.callLogin(hash.toString(), photo, name),
+            await api.callLogin(hash.toString(), photo, name),
             await api.getStats(1)
             );
     }
