@@ -3,10 +3,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components';
-import { Avatar, Badge, TextField } from '@material-ui/core';
-import ColoredLine from '../../SettingsPage/ColoredLine';
+import { Avatar, Badge, TextField, Paper, IconButton } from '@material-ui/core';
 import '../../../styles/FriendsList.css'
+import { MdPersonAdd } from 'react-icons/md'
 import Image from "../../../assets/colin-profile.png"
+import Friend from './Friend';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -20,10 +21,10 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     }
 }));
 
-const RedditTextField = styled((props) => (
+const MyTextField = styled((props) => (
     <TextField InputProps={{ disableUnderline: true }} {...props} />
 ))(({ theme }) => ({
-    '& .MuiFormLabel-root' : {
+    '& .MuiFormLabel-root': {
         color: 'var(--text-color)'
     },
     '& .MuiFilledInput-root': {
@@ -32,16 +33,17 @@ const RedditTextField = styled((props) => (
         borderRadius: 4,
         backgroundColor: 'var(--dark-bg)',
         color: 'var(--text-color)',
-        '&:hover': {
-            border: '1px solid var(--selection-color)',
-            backgroundColor: 'transparent',
-        },
-        '&.Mui-focused': {
-            border: '1px solid var(--selection-color)',
-            backgroundColor: 'transparent',
-            boxShadow: `var(--dark-bg) 0 0 0 2px`,
-            borderColor: 'var(--selection-color)',
-        },
+        // '&:hover': {
+        //     border: '1px solid var(--selection-color)',
+        //     backgroundColor: 'transparent',
+        // }
+        // },
+        // '&.Mui-focused': {
+        //     border: '1px solid var(--selection-color)',
+        //     backgroundColor: 'transparent',
+        //     boxShadow: `var(--dark-bg) 0 0 0 2px`,
+        //     borderColor: 'var(--selection-color)',
+        // },
     },
 }));
 
@@ -61,14 +63,29 @@ function changeStat(current) {
     }
 }
 
-function collapse() {
-    alert(`this will collapse the menu`);
-}
-
-function addFriend() {
-    alert(`this will bring a popup to add a friend`);
-}
-
+var friends = [
+    {
+        username: "Peter",
+        imageUrl: "https://lh3.googleusercontent.com/a-/AOh14Gi9yAeSw0MHQt3ZOd6HhVqx_XPri0Lr5Klz08bBrQ=s96-c",
+        status: true
+    }, {
+        username: "Frank",
+        imageUrl: "https://lh3.googleusercontent.com/a-/AOh14Gi9yAeSw0MHQt3ZOd6HhVqx_XPri0Lr5Klz08bBrQ=s96-c",
+        status: true
+    }, {
+        username: "Charlie",
+        imageUrl: "https://lh3.googleusercontent.com/a-/AOh14Gi9yAeSw0MHQt3ZOd6HhVqx_XPri0Lr5Klz08bBrQ=s96-c",
+        status: true
+    }, {
+        username: "Brook",
+        imageUrl: "https://lh3.googleusercontent.com/a-/AOh14Gi9yAeSw0MHQt3ZOd6HhVqx_XPri0Lr5Klz08bBrQ=s96-c",
+        status: false
+    }, {
+        username: "Daisy",
+        imageUrl: "https://lh3.googleusercontent.com/a-/AOh14Gi9yAeSw0MHQt3ZOd6HhVqx_XPri0Lr5Klz08bBrQ=s96-c",
+        status: false
+    }
+]
 
 const FriendsList = ({ status, username, pfp }) => {
     return (
@@ -82,12 +99,13 @@ const FriendsList = ({ status, username, pfp }) => {
                     >
                         <Avatar
                             src={Image}
-                            sx={{ 
+                            sx={{
                                 width: '4em',
-                                height: '4em', 
+                                height: '4em',
                                 borderColor: 'var(--text-color)',
                                 borderStyle: 'solid',
-                                borderWidth: '2px' }}
+                                borderWidth: '2px'
+                            }}
                         />
                     </StyledBadge>
                 </div>
@@ -96,16 +114,41 @@ const FriendsList = ({ status, username, pfp }) => {
                 </div>
             </div>
             <div className='friends-list-add'>
-                <RedditTextField
-                    label="Search"
-                    id="reddit-input"
-                    variant="filled"
-                    fullWidth
-                    sx={{height: '3em'}}
-                />
+                <Paper
+                    component="form"
+                    sx={{
+                        background: 'var(--dark-bg)',
+                        padding: '0',
+                        display: 'flex',
+                        justifyContent: 'space-around',
+                        alignItems: 'center',
+                        textAlign: 'center',
+                        verticalAlign: 'center'
+                    }}
+                >
+                    <MyTextField
+                        label="Add Friend"
+                        id="reddit-input"
+                        variant="filled"
+                        fullWidth
+                        sx={{ height: '3em' }}
+                    />
+                    <IconButton>
+                        <MdPersonAdd className='friends-list-button' />
+                    </IconButton>
+
+                </Paper>
             </div>
             <div className='friends-list-friends'>
-                
+                {friends.map(function (obj, idx) {
+                    return (
+                        <Friend
+                            username={obj.username}
+                            imageUrl={obj.imageUrl}
+                            status={obj.status}
+                        />
+                    )
+                })}
             </div>
         </div>
     )
