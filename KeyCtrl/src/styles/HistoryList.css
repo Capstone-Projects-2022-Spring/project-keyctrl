@@ -32,7 +32,6 @@
     background: var(--text-container);
     font-family: 'Almarai Bold';
     font-style: normal;
-    font-weight: bold;
     font-size: .75em;
     text-align: left;
     letter-spacing: .03em;
@@ -43,7 +42,7 @@
 }
 
 .hl-inner-element{
-
+    font-family: "Almarai Light";
 }
 
 .expand-game-button{

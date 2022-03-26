@@ -1,21 +1,8 @@
 const request = require('postman-request');
 const rp = require('request-promise');
 
-var account = {
-    account_id: -1,//When account_id != -1, App.js setAccountInfo(account) setLoggedIn(true)
-    display_name: "",
-    user_email: "",
-    photo: -1,
-    avg_wpm: -1,
-    top_wpm: -1,
-    letter_misses: "",
-    total_words: -1,
-    total_time: -1
-};
-
-
 export function callLogin(email, photoUrl, name) {
-    account = {
+    var account = {
         account_id: -1,
         display_name: name,
         user_email: "",
@@ -54,7 +41,7 @@ export function callLogin(email, photoUrl, name) {
 }
 
 export function callRegisterAccount(email, photoUrl) {
-    account = {
+    var account = {
         account_id: -1,
         display_name: "",
         user_email: "",
@@ -121,32 +108,28 @@ export function updateStats(avgWPM, topWPM, letterMisses, totalWords, totalTime,
         .catch(function (err) {
 
     });
-    return account;
+    // return account;
 }
 
 export function getStats(id) {
 
     var options = {
-        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/getstatbyid?accId=' + id
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/getstatbyid?userId=' + id
     };
 
-    rp(options)
+    var info = "wrong";
+    return rp(options)
         .then(function(acc){
             console.log(acc);
-            var info = JSON.parse(acc);
-            account.avg_wpm = info[0].avg_wpm;
-            account.top_wpm = info[0].top_wpm;
-            account.letter_misses = info[0].letter_misses;
-            account.total_words = info[0].total_words;
-            account.total_time = info[0].total_time;
-            console.log(account);
-        
+            // info = 
+            return JSON.parse(acc);
         })
         .finally(function(){
-            console.log(account);
+            console.log(info);
         })
         .catch(function (err) {
     
     });
-    return account;
+    // console.log(info)
+    // return info;
 }

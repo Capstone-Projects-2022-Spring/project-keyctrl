@@ -26,7 +26,7 @@ const SignInModal = ({ loggedIn, onLogin, showSignIn, setShowSignIn }) => {
     const modalRef = useRef();
 
     const [showSignUp, setShowSignUp] = useState(false);
-    
+
 
 
     /**
@@ -42,19 +42,25 @@ const SignInModal = ({ loggedIn, onLogin, showSignIn, setShowSignIn }) => {
      * @description Api call to register new account and passes result to onLogin()
      */
     const register = () => {
-        onLogin(api.callRegisterAccount(values.email, values.username, values.password));
+        onLogin(
+            api.callRegisterAccount(values.email, values.username, values.password),
+            api.getStats(1));
     }
 
-     
+
     /**
       @function HashedEmail
       @description Api call to log in but the email is HASHED and passes result to onLogin(). THIS IS A WORKING METHOD TO BE USED IN THE FUTURE
      */
 
-      const login = (email, photo, name) => {
+    const login = async(email, photo, name) => {
         var hash = sha256(email)
         console.log(hash.toString() + " " + hash.toString().length)
-        onLogin(api.callLogin(hash.toString(), photo, name));
+
+        onLogin(
+            api.callLogin(hash.toString(), photo, name),
+            await api.getStats(1)
+            );
     }
 
     /**
@@ -138,22 +144,22 @@ const SignInModal = ({ loggedIn, onLogin, showSignIn, setShowSignIn }) => {
                 <div className='Background' onClick={closeModal} ref={modalRef}>
 
                     <animated.div >
-                            <div className='ModalWrapper' showSignIn={showSignIn}>
-                                <MdClose
-                                    aria-label='Close modal'
-                                    className='close-modal'
-                                    onClick={() => setShowSignIn(prev => !prev)}
-                                />
-                                <div className='ModalContent'>
+                        <div className='ModalWrapper' showSignIn={showSignIn}>
+                            <MdClose
+                                aria-label='Close modal'
+                                className='close-modal'
+                                onClick={() => setShowSignIn(prev => !prev)}
+                            />
+                            <div className='ModalContent'>
 
-                                    <GoogleLogin
-                                        clientId="568691465172-6a0kbo3t147jc4oi2bfomq8fjcq6cj2k.apps.googleusercontent.com"
-                                        buttonText="Login with Google"
-                                        onSuccess={responseGoogle}
-                                        onFailure={responseGoogle}
-                                        cookiePolicy="single_host_origin" />  
-                                </div>
+                                <GoogleLogin
+                                    clientId="568691465172-6a0kbo3t147jc4oi2bfomq8fjcq6cj2k.apps.googleusercontent.com"
+                                    buttonText="Login with Google"
+                                    onSuccess={responseGoogle}
+                                    onFailure={responseGoogle}
+                                    cookiePolicy="single_host_origin" />
                             </div>
+                        </div>
                     </animated.div>
                 </div>
             ) : null}

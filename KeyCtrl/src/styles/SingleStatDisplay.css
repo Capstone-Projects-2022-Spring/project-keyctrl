@@ -1,9 +1,6 @@
 .ssd-base{
-    margin-top: 1em;
-    margin-bottom: 1em;
     background: var(--bg-color); 
     backdrop-filter: blur(23px);
-    border-radius: 10px;
     display: flex;
     flex-direction: column;
     padding: 2em;

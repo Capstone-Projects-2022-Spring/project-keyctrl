@@ -20,7 +20,7 @@ import { Avatar } from '@material-ui/core'
  */
 
 
-const Account = ({ accountInfo_ }) => {
+const Account = ({ accountStats }) => {
 
     const [inSummary, setInSummary] = useState(true);
 
@@ -28,6 +28,13 @@ const Account = ({ accountInfo_ }) => {
         setInSummary(state)
     }
 
+    console.log(accountStats[0][0])
+
+    var trainingStats = accountStats[0][0]
+    var speedStats = accountStats[1][0]
+    var rankedStats = accountStats[2][0]
+
+    console.log(trainingStats, speedStats, rankedStats)
 
     var accountInfo = {
         top_wpm: 73.25,
@@ -36,7 +43,7 @@ const Account = ({ accountInfo_ }) => {
     }
 
     var jObj = JSON.parse(accountInfo.letter_misses);
-    console.log(Object.entries(jObj).sort((a, b) => b[1] - a[1]));
+    // console.log(Object.entries(jObj).sort((a, b) => b[1] - a[1]));
     //var topWPM = accountInfo.top_wpm;
     var sortedMisses = Object.entries(jObj).sort((a, b) => b[1] - a[1]);
 
@@ -67,7 +74,16 @@ const Account = ({ accountInfo_ }) => {
                                 <div className='profile-user'>
                                     Colin Harker
                                 </div>
-                                <div className='acc-stat'>
+                                
+                            </div>
+
+                            <div className='acc-ranked'>
+                                <div>Rank</div>
+                                <div style={{ color: 'var(--selection-color)' }}>Unranked</div>
+                                <img src={Unranked} />
+                            </div>
+
+                            <div className='acc-stat'>
                                     <div className='stat'>
                                         <div className='title'>Playtime</div>
                                         <div className='data'>3h 46m 20s</div>
@@ -77,23 +93,16 @@ const Account = ({ accountInfo_ }) => {
                                         <div className='data'>3/18/2022</div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className='acc-ranked'>
-                                <div>Rank</div>
-                                <div style={{ color: 'var(--selection-color)' }}>Unranked</div>
-                                <img src={Unranked} />
-                            </div>
 
                         </div>
-
+                                        
                         <StatKeyboard letter_misses={accountInfo.letter_misses} />
-
+                                    
 
                     </div>
 
                     <div className='stat-container'>
-                        <SingleStatDisplay title="Top WPM" data={accountInfo.top_wpm == null ? 0 : Number(accountInfo.top_wpm).toFixed(2)} />
+                        <SingleStatDisplay title="Top WPM" data={accountStats[0][0].wpm_top == null ? 0 : Number(accountStats[0][0].wpm_top).toFixed(2)} />
                         <SingleStatDisplay title="Avg WPM" data={accountInfo.avg_wpm == null ? 0 : accountInfo.avg_wpm.toFixed(2)} />
                         <SingleStatDisplay title="Most Missed" data={sortedMisses[0][0].toUpperCase()} />
                         <SingleStatDisplay title="Least Missed" data={sortedMisses[25][0].toUpperCase()} />

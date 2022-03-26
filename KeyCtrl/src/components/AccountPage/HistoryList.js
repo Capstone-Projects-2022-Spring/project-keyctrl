@@ -2,6 +2,7 @@ import { React, useState } from 'react'
 import Scrollbars from 'react-custom-scrollbars-2'
 import '../../styles/HistoryList.css'
 import { MdOutlineExpandLess, MdOutlineExpandMore } from 'react-icons/md'
+import RankedExpandedHistory from './MatchHistory/RankedExpandedHistory'
 
 const HistoryList = ({ title }) => {
 
@@ -29,11 +30,8 @@ const HistoryList = ({ title }) => {
                             : <MdOutlineExpandMore onClick={() => expandGame(0, true)} className='expand-game-button' />}
                     </div>
                     {expandedGameindex[0] === true ?
-                        <div className='expanded-game-container'>
-                            Game Details
-                            <div>I will have</div>
-                            <div>Lots of stats here</div>
-                            </div> : null
+                            <RankedExpandedHistory />
+                            : null
                     }
                 </div>
 
