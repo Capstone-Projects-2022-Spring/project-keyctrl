@@ -16,7 +16,7 @@ import SlidingPane from "react-sliding-pane"
 import "react-sliding-pane/dist/react-sliding-pane.css"
 import FriendsList from './components/Base/FriendsList/FriendsList.js';
 import Scrollbars from 'react-custom-scrollbars-2'
-import {RemoveScrollBar} from 'react-remove-scroll-bar'
+import { RemoveScrollBar } from 'react-remove-scroll-bar'
 
 
 // Set default theme on first initialization
@@ -33,7 +33,15 @@ function App() {
   const [numEntries, setNumEntries] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
   const [WPMTime, setWPMTime] = useState(1);
-  const [accountInfo, setAccountInfo] = useState({})
+  const [accountInfo, setAccountInfo] = useState({
+    account_id: null,
+    display_name: "",
+    photo: "",
+    user_email: null
+  })
+
+  const [accountStats, setAccountStats] = useState({})
+
   const [updateOnce, setUpdateOnce] = useState(false)
 
   const [state, setState] = useState({
@@ -44,17 +52,17 @@ function App() {
   const [showFriendList, setShowFriendList] = useState(false)
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
-  const onLogin = async (account) => {
-
-    setLoading(true);
-
-    await (delay(4000));
+ 
+  const onLogin = async (account_, accountStats_) => {
 
     setLoading(false);
 
-    console.log(account);
-    if (account.account_id !== -1) {
-      setAccountInfo(account);
+    console.log(accountStats_)
+    console.log(account_);
+
+    if (account_ !== null) {
+      setAccountInfo(account_);
+      setAccountStats(accountStats_)
       setLoggedIn(true);
     } else {
       alert('Account does not exist');
@@ -153,8 +161,8 @@ function App() {
   return (
     <div className="App">
       <Scrollbars autoHeight autoHeightMin={window.innerHeight}>
-      <div className="window">
-        {/* <div className="task-bar">
+        <div className="window">
+          {/* <div className="task-bar">
           <TaskBar 
             page={page}
             setPage={setPage}
@@ -162,60 +170,62 @@ function App() {
             setShowFriendList={setShowFriendList}
             showFriendList={showFriendList} />
         </div> */}
-        <div className="landing">
-          <TitleBar
-            page={page}
-            setPage={setPage}
-            loggedIn={loggedIn}
-            setShowFriendList={setShowFriendList}
-            showFriendList={showFriendList}
-            openSignIn={openSignIn}
-            logout={logout}
-            setState={setState} />
-          <div className="main-window">
-            {loading ? <LoadingSpinner /> : null}
+          <div className="landing">
+            <TitleBar
+              page={page}
+              setPage={setPage}
+              loggedIn={loggedIn}
+              setShowFriendList={setShowFriendList}
+              showFriendList={showFriendList}
+              openSignIn={openSignIn}
+              logout={logout}
+              setState={setState} />
 
-            <Routes>
-              <Route exact path="/project-keyctrl" element={
-                <TypingTest
-                  setUpdateOnce={setUpdateOnce}
-                  setIndex={setIndex}
-                  index={index}
-                  accountInfo={accountInfo}
-                  setAccountInfo={setAccountInfo}
-                  loggedIn={loggedIn}
-                  incrementMissed={incrementMissed}
-                  updateAccInfo={updateAccInfo}
-                  numEntries={numEntries}
-                  setNumEntries={setNumEntries}
-                  WPMTime={WPMTime}
-                  setWPMTime={setWPMTime}
-                  grossWPM={grossWPM}
-                />
-              } />
-              <Route exact path="/training" element={<Training />} />
-              <Route exact path="/multiplayer" element={<Multiplayer />} />
-              <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} /> : <OfflineAccount />)} />
-              <Route exact path="/settings" element={<Settings setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
-            </Routes>
+            <div className="main-window">
+              {loading ? <LoadingSpinner /> : null}
+
+              <Routes>
+                <Route exact path="/project-keyctrl" element={
+                  <TypingTest
+                    setUpdateOnce={setUpdateOnce}
+                    setIndex={setIndex}
+                    index={index}
+                    accountInfo={accountInfo}
+                    setAccountInfo={setAccountInfo}
+                    loggedIn={loggedIn}
+                    incrementMissed={incrementMissed}
+                    updateAccInfo={updateAccInfo}
+                    numEntries={numEntries}
+                    setNumEntries={setNumEntries}
+                    WPMTime={WPMTime}
+                    setWPMTime={setWPMTime}
+                    grossWPM={grossWPM}
+                  />
+                } />
+                <Route exact path="/training" element={<Training />} />
+                <Route exact path="/multiplayer" element={<Multiplayer />} />
+                <Route exact path="/account" element={(loggedIn ? <Account accountStats={accountStats} /> : <OfflineAccount />)} />
+                <Route exact path="/settings" element={<Settings setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
+              </Routes>
+
+            </div>
+
+            <SlidingPane
+              className='friends-list-popup'
+              closeIcon={<div>Some div containing custom close icon.</div>}
+              hideHeader={true}
+              isOpen={state.isPaneOpen}
+              from="right"
+              width="300px"
+              onRequestClose={() => setState({ isPaneOpen: false })}
+            >
+              <FriendsList accountInfo={accountInfo}/>
+            </SlidingPane>
 
           </div>
 
-          <SlidingPane
-            className='friends-list-popup'
-            closeIcon={<div>Some div containing custom close icon.</div>}
-            hideHeader={true}
-            isOpen={state.isPaneOpen}
-            from="right"
-            width="300px"
-            onRequestClose={() => setState({ isPaneOpen: false })}
-          >
-            <FriendsList  accountInfo={accountInfo} />
-          </SlidingPane>
-
+          <SignInModal setLoading={setLoading} loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
         </div>
-        <SignInModal loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
-      </div>
       </Scrollbars>
     </div>
   );

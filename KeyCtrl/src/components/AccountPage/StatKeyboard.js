@@ -73,7 +73,7 @@ const StatKeyboard = ({ letter_misses }) => {
     calcTotal();
 
     return (
-        <div className="keyboard-base">
+        <div >
             <div style={{ backgroundColor: getColor("q") }} className="key" id="q" />
             <div style={{ backgroundColor: getColor("w") }} className="key" id="w" />
             <div style={{ backgroundColor: getColor("e") }} className="key" id="e" />
