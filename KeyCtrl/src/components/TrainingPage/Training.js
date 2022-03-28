@@ -22,8 +22,7 @@ const Training = (props) => {
     var randWordsFunc = require('random-words');          //Must require random-words
 
     //Custom input states-----------------------------------------------
-    const [choppedArr, setchopped] = useState([]);//Contains all the lines that will be used for custom words
-    const [customIndx, setCustomIndx] = useState(0);//custom index records what line we are a
+    const [wordBank, setWordBank] = useState([]);//Contains all the lines that will be used for custom words
 
     const showFile = async (e) => {//takes in and chops text of min 1 and max 60 into chopped
         e.preventDefault()
@@ -31,48 +30,46 @@ const Training = (props) => {
         reader.onload = async (e) => {
             if (e.target.result != null) {
                 var textTemp = e.target.result
-                textTemp = textTemp.replace(/(\r\n|\n|\r)/gm, "");
+                textTemp = textTemp.replace(/\s\s+/g, ' ');//remove all multiple spaces with single space
                 console.log(textTemp)
-                var parts = textTemp.match(/.{1,60}/g) || [];
+                //var parts = textTemp.match(/.{1,60}/g) || [];//chop 60 per arr
+                var parts = textTemp.split(" ")//split words by space
                 console.log(parts)
-                setchopped(parts)
+                setWordBank(parts)
             }
         };
         reader.readAsText(e.target.files[0])
 
     }
+
+    function customWordsFunc(amount) {
+        var words = wordBank[Math.floor(Math.random() * wordBank.length)]
+        console.log(wordBank)
+        for (let i = 0; i < amount  - 1; i++) {
+            words = words + " " + wordBank[Math.floor(Math.random() * wordBank.length)]
+        }
+        console.log(words)
+        return words
+    }
+
     //--------------------------------------------------------------------
 
 
     async function newWords() {
         var startingLine
         var nextUpLine
-        var useCustom = false
-        var indx = customIndx
 
-        console.log(choppedArr.length)
-        if (choppedArr.length > 0) { useCustom = true }
-        console.log(useCustom)
-        if (useCustom) {
-            startingLine = choppedArr[indx]
-            if (indx + 1 >= choppedArr.length) { indx = 0 } else { indx++ }
-            nextUpLine = choppedArr[indx]
-            if (indx + 1 >= choppedArr.length) { indx = 0 } else { indx++ }
-            setCustomIndx(indx)
-            setCurrentRandomWords(startingLine)
-            setNextUpRandomWords(nextUpLine)
-        } else {//use custom = false then use get randoms
-            startingLine = getNewWordsLine()
-            nextUpLine = getNewWordsLine()
-            setCurrentRandomWords(startingLine)
-            setNextUpRandomWords(chopLineToLength(nextUpLine))
-        }
+        startingLine = getNewWordsLine()
+        nextUpLine = getNewWordsLine()
+        setCurrentRandomWords(startingLine)
+        setNextUpRandomWords(chopLineToLength(nextUpLine))
+
         console.log(startingLine)
     }
 
     useEffect(() => {   //using another useEffect so random words does not refresh everytime.
         newWords();  //Setting how many words given for the test right here.
-    }, [choppedArr])
+    }, [wordBank])
 
     /**
      * @function reset
@@ -135,25 +132,23 @@ const Training = (props) => {
     }
 
     function getNewWordsLine() {
-        const words = randWordsFunc({ exactly: 20, join: ' ' });
-        const letters = words.length;
-        console.log("letter", letters, "words", words);
-
+        var words = []
+        var letters = ""
+        if (wordBank.length > 0) {// if there are words in wordbank, use it
+            words = customWordsFunc(20)
+            letters = words.length;
+            console.log("Custom letter", letters, "words", words);
+        } else {//default
+            words = randWordsFunc({ exactly: 20, join: ' ' });
+            letters = words.length;
+            console.log("letter", letters, "words", words);
+        }
         return words
     }
 
     async function onLineChange() {
-        var indx = customIndx
-        var useCustom = false
         setCurrentRandomWords(nextUpRandomWords)
-        if (useCustom) {
-            var nextUpLine = choppedArr[indx]
-            if (indx + 1 >= choppedArr.length) { indx = 0 } else { indx++ }
-            setCustomIndx(indx)
-            setNextUpRandomWords(nextUpLine)
-        } else {
-            setNextUpRandomWords(chopLineToLength(getNewWordsLine()))
-        }
+        setNextUpRandomWords(chopLineToLength(getNewWordsLine()))
         setLineIndex(0)
     }
 
