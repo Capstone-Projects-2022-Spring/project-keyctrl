@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 
-import React from 'react'
+import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components';
 import { Avatar, Badge, TextField, Paper, IconButton } from '@material-ui/core';
@@ -8,6 +8,9 @@ import '../../../styles/FriendsList.css'
 import { MdPersonAdd } from 'react-icons/md'
 import Image from "../../../assets/colin-profile.png"
 import Friend from './Friend';
+import { callAddFriend } from '../../../utils/apiUtils';
+import sha256 from 'crypto-js/sha256';
+import * as api from '../../../utils/apiUtils.js'
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -46,8 +49,6 @@ const MyTextField = styled((props) => (
         // },
     },
 }));
-
-
 function changeStat(current) {
     switch (current) {
         case "Online":
@@ -87,7 +88,18 @@ var friends = [
     }
 ]
 
-const FriendsList = ({ status, username, pfp }) => {
+
+ 
+const FriendsList = ({ accountInfo, status, username, pfp }) => {
+
+    const [addFriend, setAddFriend] = useState([]);
+  
+    const handleClick = () => {
+      console.log("Name:",addFriend);
+      
+     api.callAddFriend(accountInfo.account_id,addFriend);
+    };
+    
     return (
         <div className='maincontainer'>
             <div className='friends-list-header'>
@@ -132,9 +144,12 @@ const FriendsList = ({ status, username, pfp }) => {
                         variant="filled"
                         fullWidth
                         sx={{ height: '3em' }}
+                        value={addFriend}
+                        onChange={(event) => {setAddFriend(event.target.value)}}
                     />
                     <IconButton>
-                        <MdPersonAdd className='friends-list-button' />
+                        <MdPersonAdd className='friends-list-button' 
+                        onClick={handleClick}/>
                     </IconButton>
 
                 </Paper>
