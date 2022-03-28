@@ -102,8 +102,6 @@ export function getStats(id) {
         })
         .catch(function (err) {
     });
-
-    return account;
 }
 export function callAddFriend(AccountId, FriendName) {
     
