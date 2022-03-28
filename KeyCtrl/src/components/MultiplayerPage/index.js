@@ -97,6 +97,13 @@ io.on('connection', (socket) => {
     matchResultsArray[room].push({player, WPM})
     if(matchResultsArray[room].length === numClients[room]) {
       io.in(room).emit('matchResults', matchResultsArray[room])
+
+      //room reset
+      matchResultsArray[room] = null
+      for(var i=0; i<10; i++) {
+        wordsArray[i] = getNewWordsLine()
+      }
+      roomWordsArray[room] = wordsArray
     }
   })
 
