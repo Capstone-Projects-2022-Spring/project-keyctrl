@@ -63,49 +63,69 @@ const Account = ({ accountStats }) => {
                                 <Avatar
                                     src={Image}
                                     sx={{
-                                        height: '4em',
-                                        width: '4em',
+                                        height: '7em',
+                                        width: '7em',
                                         borderColor: 'var(--text-color)',
                                         borderStyle: 'solid',
                                         borderWidth: '2px'
                                     }}
                                 />
 
-                                <div className='profile-user'>
-                                    Colin Harker
+
+                            </div>
+                            <div className='profile-user'>
+                                Colin Harker
+                            </div>
+
+                            <div className='acc-stat'>
+                                <div className='stat'>
+                                    <div className='title'>Current MMR</div>
+                                    <div className='data'>3h 46m 20s</div>
                                 </div>
-                                
+                                <div className='stat'>
+                                    <div className='title'>Global Position</div>
+                                    <div className='data'>3/18/2022</div>
+                                </div>
+                            </div>
+
+                            <div className='acc-stat'>
+                                <div className='stat'>
+                                    <div className='title'>Playtime</div>
+                                    <div className='data'>3h 46m 20s</div>
+                                </div>
+                                <div className='stat'>
+                                    <div className='title'>Joined</div>
+                                    <div className='data'>3/18/2022</div>
+                                </div>
                             </div>
 
                             <div className='acc-ranked'>
                                 <div>Rank</div>
-                                <div style={{ color: 'var(--selection-color)' }}>Unranked</div>
                                 <img src={Unranked} />
+                                <div style={{ color: 'var(--selection-color)' }}>Unranked</div>
                             </div>
 
-                            <div className='acc-stat'>
-                                    <div className='stat'>
-                                        <div className='title'>Playtime</div>
-                                        <div className='data'>3h 46m 20s</div>
-                                    </div>
-                                    <div className='stat'>
-                                        <div className='title'>Joined</div>
-                                        <div className='data'>3/18/2022</div>
-                                    </div>
-                                </div>
-
                         </div>
-                                        
-                        <StatKeyboard letter_misses={accountInfo.letter_misses} />
-                                    
 
                     </div>
 
                     <div className='stat-container'>
+                        <div className='stat-keyboard-base'>
+                            <StatKeyboard letter_misses={accountInfo.letter_misses} />
+                        </div>
+                        <div style={{
+                            display: 'flex', 
+                            flexDirection: 'column',
+                            justifyContent: 'space-evenly',
+                            }}>
+                            <SingleStatDisplay title="Most Missed" data={sortedMisses[0][0].toUpperCase()} />
+                            <SingleStatDisplay title="Least Missed" data={sortedMisses[25][0].toUpperCase()} />
+                        </div>
+                    </div>
+
+                    <div className='stats-wing-base'>
                         <SingleStatDisplay title="Top WPM" data={accountStats[0][0].wpm_top == null ? 0 : Number(accountStats[0][0].wpm_top).toFixed(2)} />
                         <SingleStatDisplay title="Avg WPM" data={accountInfo.avg_wpm == null ? 0 : accountInfo.avg_wpm.toFixed(2)} />
-                        <SingleStatDisplay title="Most Missed" data={sortedMisses[0][0].toUpperCase()} />
-                        <SingleStatDisplay title="Least Missed" data={sortedMisses[25][0].toUpperCase()} />
                     </div>
 
                     <div className='stat-container' style={{ height: '20em', paddingRight: '5em' }}>

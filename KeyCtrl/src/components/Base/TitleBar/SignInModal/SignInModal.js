@@ -21,7 +21,7 @@ import * as api from '../../../../utils/apiUtils.js'
  * <SignInModal onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
  */
 
-const SignInModal = ({ setLoading ,loggedIn, onLogin, showSignIn, setShowSignIn }) => {
+const SignInModal = ({ setLoading, loggedIn, onLogin, showSignIn, setShowSignIn }) => {
 
     const modalRef = useRef();
 
@@ -53,15 +53,24 @@ const SignInModal = ({ setLoading ,loggedIn, onLogin, showSignIn, setShowSignIn 
       @description Api call to log in but the email is HASHED and passes result to onLogin(). THIS IS A WORKING METHOD TO BE USED IN THE FUTURE
      */
 
-    const login = async(email, photo, name) => {
+    const login = async (email, photo, name) => {
         var hash = sha256(email)
         console.log(hash.toString() + " " + hash.toString().length)
 
         setLoading(true)
+
+        var account = await api.callLogin(hash.toString(), photo, name)
+        var account_stats = await api.getStats(1);
+
+        if (account === null) {
+            var socialId = Math.floor(Math.random() * (9999 - 1000) + 1000)
+            account = await api.callRegisterAccount(hash.toString(), photo, name, name + "#" + socialId.toString())
+        }
+
         onLogin(
-            await api.callLogin(hash.toString(), photo, name),
-            await api.getStats(1)
-            );
+            account,
+            account_stats
+        );
     }
 
     /**

@@ -2,12 +2,7 @@ const request = require('postman-request');
 const rp = require('request-promise');
 
 export function callLogin(email, photoUrl, name) {
-    var account = {
-        account_id: -1,
-        display_name: name,
-        user_email: "",
-        photo: photoUrl
-    };
+
     console.log(email)
 
     var options = {
@@ -21,30 +16,27 @@ export function callLogin(email, photoUrl, name) {
             if(acc != "Fail"){//instead of invalid, "does not exist"
                 return JSON.parse(acc)[0];
             }else{ 
-                return callRegisterAccount(email, photoUrl);// if it returns invalid login recentials, it registers the account
+                return null// if it returns invalid login recentials, it registers the account
             }
         })
         .finally(function(){
-            console.log(account);
         })
         .catch(function (err) {
     
     });
 }
 
-export function callRegisterAccount(email, photoUrl) {
-    var account = {
-        account_id: -1,
-        display_name: "",
-        user_email: "",
-        photo: photoUrl
-    };
+export function callRegisterAccount(email, photoUrl, name, socialId) {
+
     var options = {
         method: 'POST',
         headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
         url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/signup',
         body: JSON.stringify( {
         "email": email,
+        "pic": photoUrl,
+        "dName": name,
+        "sId": socialId
         })
     };
 
@@ -52,10 +44,8 @@ export function callRegisterAccount(email, photoUrl) {
         .then(function(acc){
             console.log(acc);
             return JSON.parse(acc)[0];
-
         })
         .finally(function(){
-            console.log(account);
         })
         .catch(function (err) {
 

@@ -60,7 +60,7 @@ function App() {
     console.log(accountStats_)
     console.log(account_);
 
-    if (account_.account_id !== -1) {
+    if (account_ !== null) {
       setAccountInfo(account_);
       setAccountStats(accountStats_)
       setLoggedIn(true);
