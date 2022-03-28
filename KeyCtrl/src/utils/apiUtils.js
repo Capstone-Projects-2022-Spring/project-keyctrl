@@ -150,3 +150,22 @@ export function getStats(id) {
     });
     return account;
 }
+export function callAddFriend(AccountId, FriendName) {
+    
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/addfriend',
+        body: JSON.stringify( {
+        "userId": AccountId,
+        "friendName":FriendName
+        })
+    };
+
+    rp(options)
+        .then(function(res){
+            console.log(res);
+        })
+        
+       
+}

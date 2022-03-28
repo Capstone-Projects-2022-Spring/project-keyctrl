@@ -210,7 +210,7 @@ function App() {
             width="300px"
             onRequestClose={() => setState({ isPaneOpen: false })}
           >
-            <FriendsList />
+            <FriendsList  accountInfo={accountInfo} />
           </SlidingPane>
 
         </div>
