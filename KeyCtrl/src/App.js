@@ -219,10 +219,11 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList />
+              <FriendsList accountInfo={accountInfo}/>
             </SlidingPane>
 
           </div>
+
           <SignInModal setLoading={setLoading} loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
         </div>
       </Scrollbars>
