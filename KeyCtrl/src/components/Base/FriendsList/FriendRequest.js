@@ -11,7 +11,6 @@ const FriendRequest = ({ object }) => {
     const requestResponce = (resp) => {
         api.respondToRequest(object.request_id, resp)
     }
-
     return (
         <div>
             <div className='friend-request-container'>
@@ -35,11 +34,13 @@ const FriendRequest = ({ object }) => {
                 <div className='friend-request-button-container'>
                     <Tooltip title="Accept" arrow>
                         <div onClick={() => requestResponce(1)} className='friend-request-button'>
+
                             <AiOutlineCheckCircle />
                         </div>
                     </Tooltip>
                     <Tooltip title="Decline" arrow>
                         <div onClick={() => requestResponce(0)} className='friend-request-button'>
+
                             <MdOutlineCancel />
                         </div>
                     </Tooltip>
