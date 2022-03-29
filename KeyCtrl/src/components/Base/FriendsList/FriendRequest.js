@@ -4,8 +4,14 @@ import '../../../styles/Friend.css'
 import { AiOutlineCheckCircle } from "react-icons/ai"
 import { MdOutlineCancel } from 'react-icons/md';
 import { Tooltip } from '@material-ui/core';
+import * as api from '../../../utils/apiUtils.js'
 
 const FriendRequest = ({ object }) => {
+
+    const requestResponce = (resp) => {
+        api.respondToRequest(object.request_id, resp)
+    }
+
     return (
         <div>
             <div className='friend-request-container'>
@@ -28,12 +34,12 @@ const FriendRequest = ({ object }) => {
                 </div>
                 <div className='friend-request-button-container'>
                     <Tooltip title="Accept" arrow>
-                        <div className='friend-request-button'>
+                        <div onClick={() => requestResponce(1)} className='friend-request-button'>
                             <AiOutlineCheckCircle />
                         </div>
                     </Tooltip>
                     <Tooltip title="Decline" arrow>
-                        <div className='friend-request-button'>
+                        <div onClick={() => requestResponce(0)} className='friend-request-button'>
                             <MdOutlineCancel />
                         </div>
                     </Tooltip>

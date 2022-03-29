@@ -16,7 +16,7 @@ export function callLogin(email, photoUrl, name) {
             if(acc != "Fail"){//instead of invalid, "does not exist"
                 return JSON.parse(acc)[0];
             }else{ 
-                return -1// if it returns invalid login recentials, it registers the account
+                return null// if it returns invalid login recentials, it registers the account
             }
         })
         .finally(function(){
@@ -84,6 +84,7 @@ export function updateStats(avgWPM, topWPM, letterMisses, totalWords, totalTime,
         .catch(function (err) {
 
     });
+    // return account;
 }
 
 export function getStats(id) {
@@ -101,8 +102,10 @@ export function getStats(id) {
         })
         .catch(function (err) {
     });
+
+    return account;
 }
-export function callAddFriend(AccountId, socialId) {
+export function callAddFriend(AccountId, FriendName) {
     
     var options = {
         method: 'POST',
@@ -110,18 +113,13 @@ export function callAddFriend(AccountId, socialId) {
         url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/addfriend',
         body: JSON.stringify( {
         "userId": AccountId,
-        "socialId":socialId
+        "friendName":FriendName
         })
     };
 
-    return rp(options)
+    rp(options)
         .then(function(res){
             console.log(res);
-            if(res == 'Unable to add friend, user not found')
-            {
-                alert('Unable to add friend, user not found')
-            }
-            return res
         })
            
 }
@@ -160,3 +158,22 @@ export function getFriendRequests(id) {
     });
 }
 
+export function respondToRequest(requestId, resp) {
+    
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/resolvereq',
+        body: JSON.stringify( {
+        "reqId": requestId,
+        "reqRes": resp
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log(res);
+            return res
+        })
+           
+}
