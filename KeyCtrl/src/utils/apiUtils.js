@@ -101,6 +101,8 @@ export function getStats(id) {
         })
         .catch(function (err) {
     });
+
+    return account;
 }
 export function callAddFriend(AccountId, socialId) {
     
@@ -158,5 +160,25 @@ export function getFriendRequests(id) {
         })
         .catch(function (err) {
     });
+}
+
+export function respondToRequest(requestId, resp) {
+    
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/resolvereq',
+        body: JSON.stringify( {
+        "reqId": requestId,
+        "reqRes": resp
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log(res);
+            return res
+        })
+           
 }
 
