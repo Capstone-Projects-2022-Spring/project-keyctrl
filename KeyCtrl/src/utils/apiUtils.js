@@ -123,3 +123,59 @@ export function callAddFriend(AccountId, FriendName) {
         })
            
 }
+
+export function getFriends(id) {
+
+    var options = {
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updatefriends?userId=' + id
+    };
+
+    return rp(options)
+        .then(function(acc){
+            console.log(acc);
+            return JSON.parse(acc);
+        })
+        .finally(function(){
+        })
+        .catch(function (err) {
+    });
+}
+
+export function getFriendRequests(id) {
+
+    var options = {
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/getfriendreq?socialId=' + id
+    };
+
+    return rp(options)
+        .then(function(acc){
+            console.log(acc);
+            return JSON.parse(acc);
+        })
+        .finally(function(){
+        })
+        .catch(function (err) {
+    });
+}
+
+export function respondToRequest(requestId, resp) {
+    
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/resolvereq',
+        body: JSON.stringify( {
+        "reqId": requestId,
+        "reqRes": resp
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log(res);
+            return res
+        })
+           
+}
+
+
