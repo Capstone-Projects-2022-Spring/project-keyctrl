@@ -45,6 +45,7 @@ const Multiplayer = () => {
         //Finding Match code...
         socketRef.current.on('findMatchSuccess', (lobby) => {
           console.log(socketRef.current.id + " found a match")
+          socketRef.current.disconnect()
           setLobbyID(lobby)
           setName('username' + Math.random() * 10000) //PLACE USERNAME LOGIC HERE (dont forget to handle logged out)
           setShowModal(false)
