@@ -48,7 +48,8 @@ const MultiplayerGame = (props) => {
   useEffect(
     () => {
 
-      socketRef.current = io.connect("http://lbox.ddns.net:4000") //LOCALHOST for local testing
+      socketRef.current = io.connect("https://generated-respected-python.glitch.me") //LOCALHOST for local testing
+
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', { lobbyID }, username)
 
@@ -210,13 +211,7 @@ const MultiplayerGame = (props) => {
 
   function sortLeaderBoard(matchResultsArray){
     function compare(a, b) {
-      if (a.WPM < b.WPM) {
-        return -1;
-      }
-      if (a.WPM > b.WPM) {
-        return 1;
-      }
-      return 0;
+      return b.WPM - a.WPM
     }
 
     var sortedArray = matchResultsArray.sort(compare);

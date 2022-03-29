@@ -1,7 +1,24 @@
 import React from 'react'
 import '../../styles/StatKeyboard.css'
-import Image from "../../assets/keyboard_shell.png"
+import { ReactComponent as KeyBoard } from "../../assets/keyboard_shell.svg"
+import { Tooltip, withStyles } from '@material-ui/core';
 
+
+// ------------------ PROCEDE WITH CAUTION -----------------------------------
+//-----------------THIS CODE IS AN ABOMINATION -------------------------------
+
+
+const LightTooltip = withStyles(theme => ({
+    tooltip: {
+        backgroundColor: 'var(--primary-color)',
+        color: 'var(--text-color)',
+        width: '10em',
+        fontSize: 11,
+        borderStyle: 'solid',
+        borderWidth: '2px',
+        borderColor: 'var(--selection-color)'
+    }
+}))(Tooltip);
 
 /**
  * @module StatKeyboard
@@ -16,20 +33,21 @@ const StatKeyboard = ({ letter_misses }) => {
 
     var total = null;
     var max = null;
-    const map = JSON.parse(letter_misses);
+    const mode_map = fuckYouJason(letter_misses);
+    var sortedMap;
 
     /**
      * @function calcTotal
      * @description Finds max missed letter and sorts letter map in decending order
      */
-    const calcTotal = () => {
+    const calcTotal = (map) => {
         total = 0;
         max = Number.MIN_SAFE_INTEGER;
         Object.keys(map).map(el => {
             total += map[el];
             max = (max < map[el]) ? map[el] : max;
         });
-        //console.log(total);
+        return map
     }
 
     /**
@@ -40,7 +58,7 @@ const StatKeyboard = ({ letter_misses }) => {
      */
     const getColor = (key) => {
 
-        const ratio = map[key] / max;
+        const ratio = sortedMap[key] / max;
 
         if (ratio === 1) {
             return '#f25c54';
@@ -58,10 +76,10 @@ const StatKeyboard = ({ letter_misses }) => {
 
     }
 
-    calcTotal();
+    sortedMap = calcTotal(mode_map.misses);
 
     return (
-        <div className="keyboard-base">
+        <div >
             <div style={{ backgroundColor: getColor("q") }} className="key" id="q" />
             <div style={{ backgroundColor: getColor("w") }} className="key" id="w" />
             <div style={{ backgroundColor: getColor("e") }} className="key" id="e" />
@@ -88,8 +106,16 @@ const StatKeyboard = ({ letter_misses }) => {
             <div style={{ backgroundColor: getColor("b") }} className="key" id="b" />
             <div style={{ backgroundColor: getColor("n") }} className="key" id="n" />
             <div style={{ backgroundColor: getColor("m") }} className="key" id="m" />
-            <img className="keyboard-img" src={Image} />
-            <div className="key1" id="q" />
+            {/* <img className="keyboard-img" src={KeyBoard} /> */}
+            <KeyBoard className="keyboard-img" fill="var(--primary-color)" />
+            {/* <LightTooltip title={
+                <React.Fragment>
+                    <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
+                    {"It's very engaging. Right?"}
+                </React.Fragment>
+            }> */}
+                <div className="key1" id="q" />
+            {/* </LightTooltip> */}
             <div className="key1" id="w" />
             <div className="key1" id="e" />
             <div className="key1" id="r" />
@@ -120,3 +146,27 @@ const StatKeyboard = ({ letter_misses }) => {
 }
 
 export default StatKeyboard
+
+function fuckYouJason(map) {
+    // I hate everything about this
+
+    var newMap = {
+        misses: {},
+        times: {},
+        occurrences: {}
+    };
+
+    for (var key in map) {
+        if (key.toString().includes("misses")) {
+            newMap.misses[key[0]] = map[key]
+        } else if (key.toString().includes("occurrences")) {
+            newMap.occurrences[key[0]] = map[key]
+        } else if (key.toString().includes("times")) {
+            newMap.times[key[0]] = map[key]
+        }
+    }
+
+    console.log(newMap)
+
+    return newMap
+}

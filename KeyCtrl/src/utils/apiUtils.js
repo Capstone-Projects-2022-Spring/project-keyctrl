@@ -1,91 +1,55 @@
 const request = require('postman-request');
 const rp = require('request-promise');
 
-var account = {
-    account_id: -1,//When account_id != -1, App.js setAccountInfo(account) setLoggedIn(true)
-    display_name: "",
-    user_email: "",
-    photo: -1,
-    avg_wpm: -1,
-    top_wpm: -1,
-    letter_misses: "",
-    total_words: -1,
-    total_time: -1
-};
+export function callLogin(email, photoUrl, name) {
 
-
-export function callLogin(email) {
-    account = {
-        account_id: -1,
-        display_name: "",
-        user_email: "",
-        photo: -1
-    };
+    console.log(email)
 
     var options = {
         url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/login?email='
         + email
     };
 
-    rp(options)
+    return rp(options)
         .then(function(acc){
             console.log(acc);
             if(acc != "Fail"){//instead of invalid, "does not exist"
-                var info = JSON.parse(acc);
-                account.account_id = info[0].account_id;
-                account.display_name = info[0].display_name;
-                account.user_email = info[0].user_email;
-                account.photo = info[0].photo;
-                console.log(account);
-                getStats(account.account_id);
+                return JSON.parse(acc)[0];
             }else{ 
-                callRegisterAccount(email);// if it returns invalid login recentials, it registers the account
+                return -1// if it returns invalid login recentials, it registers the account
             }
         })
         .finally(function(){
-            console.log(account);
         })
         .catch(function (err) {
     
     });
-    return account;
-
 }
 
-export function callRegisterAccount(email) {
-    account = {
-        account_id: -1,
-        display_name: "",
-        user_email: "",
-        photo: -1
-    };
+export function callRegisterAccount(email, photoUrl, name, socialId) {
+
     var options = {
         method: 'POST',
         headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
         url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/signup',
         body: JSON.stringify( {
         "email": email,
+        "pic": photoUrl,
+        "dName": name,
+        "sId": socialId
         })
     };
 
-    rp(options)
+    return rp(options)
         .then(function(acc){
             console.log(acc);
-            var info = JSON.parse(acc);
-            account.account_id = info[0].account_id;
-            account.display_name = info[0].display_name;
-            account.user_email = info[0].user_email;
-            account.photo = info[0].photo;
-            getStats(account.account_id);
-            console.log(account);
+            return JSON.parse(acc)[0];
         })
         .finally(function(){
-            console.log(account);
         })
         .catch(function (err) {
 
     });
-    return account;
 }
 
 export function updateStats(avgWPM, topWPM, letterMisses, totalWords, totalTime, id) {
@@ -120,32 +84,101 @@ export function updateStats(avgWPM, topWPM, letterMisses, totalWords, totalTime,
         .catch(function (err) {
 
     });
-    return account;
 }
 
 export function getStats(id) {
 
     var options = {
-        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/getstatbyid?accId=' + id
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/getstatbyid?userId=' + id
     };
 
-    rp(options)
+    return rp(options)
         .then(function(acc){
             console.log(acc);
-            var info = JSON.parse(acc);
-            account.avg_wpm = info[0].avg_wpm;
-            account.top_wpm = info[0].top_wpm;
-            account.letter_misses = info[0].letter_misses;
-            account.total_words = info[0].total_words;
-            account.total_time = info[0].total_time;
-            console.log(account);
-        
+            return JSON.parse(acc);
         })
         .finally(function(){
-            console.log(account);
         })
         .catch(function (err) {
-    
     });
+
     return account;
 }
+export function callAddFriend(AccountId, socialId) {
+    
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/addfriend',
+        body: JSON.stringify( {
+        "userId": AccountId,
+        "socialId":socialId
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log(res);
+            if(res == 'Unable to add friend, user not found')
+            {
+                alert('Unable to add friend, user not found')
+            }
+            return res
+        })
+           
+}
+
+export function getFriends(id) {
+
+    var options = {
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updatefriends?userId=' + id
+    };
+
+    return rp(options)
+        .then(function(acc){
+            console.log(acc);
+            return JSON.parse(acc);
+        })
+        .finally(function(){
+        })
+        .catch(function (err) {
+    });
+}
+
+export function getFriendRequests(id) {
+
+    var options = {
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/getfriendreq?socialId=' + id
+    };
+
+    return rp(options)
+        .then(function(acc){
+            console.log(acc);
+            return JSON.parse(acc);
+        })
+        .finally(function(){
+        })
+        .catch(function (err) {
+    });
+}
+
+export function respondToRequest(requestId, resp) {
+    
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/resolvereq',
+        body: JSON.stringify( {
+        "reqId": requestId,
+        "reqRes": resp
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log(res);
+            return res
+        })
+           
+}
+

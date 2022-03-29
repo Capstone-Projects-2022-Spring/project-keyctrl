@@ -1,11 +1,17 @@
-import React, { useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import styled from 'styled-components'
-import { Lobby } from './Lobby.js'
+import io from "socket.io-client"
 import { Modal } from './Modal.js'
 
 import '../../styles/Modal.css'
 import '../../styles/MultiplayerPage.css'
 import MultiplayerGame from "./MultiplayerGame.js"
+import { MdSettings } from "react-icons/md"
+import { GiMagnifyingGlass } from "react-icons/gi"
+import { GiThreeFriends } from "react-icons/gi"
+import {MdPrivateConnectivity} from "react-icons/md"
+
+
 
 const Button = styled.button`
   background: var(--primary-color);
@@ -28,24 +34,71 @@ const Multiplayer = () => {
   const [joinLobby, setJoinLobby] = useState(false)
   const [lobbyID, setLobbyID] = useState(0)
   const [name, setName] = useState("")
+  const [isFindMatch, setFindMatch] = useState(false)
+
+  const socketRef = useRef()
+    useEffect(
+      () => {
+        if(socketRef.current == null) {
+          socketRef.current = io.connect("https://generated-respected-python.glitch.me")
+        }
+        //Finding Match code...
+        socketRef.current.on('findMatchSuccess', (lobby) => {
+          console.log(socketRef.current.id + " found a match")
+          socketRef.current.disconnect()
+          setLobbyID(lobby)
+          setName('username' + Math.floor(Math.random() * 10000)) //PLACE USERNAME LOGIC HERE (dont forget to handle logged out)
+          setShowModal(false)
+          setJoinLobby(true)
+        })
+      })
 
   //Enter lobby modal
   const [showModal, setShowModal] = useState(false)
   function findMatch() {
-    //find match code
+    setFindMatch(true)
+    setShowModal(true)
+    socketRef.current.emit('findMatch')
+  }
+
+  function cancelFindMatch() {
+    socketRef.current.emit('cancelFindMatch')
+    setFindMatch(false)
+    setShowModal(false)
   }
 
   function enterLobbyModal() {
     setShowModal(true)
   }
 
+
   return (
     <div>
       <div className='multiplayer-base'>
-        {joinLobby ? null : <Button onClick={findMatch} >Find Match</Button>}
-        {joinLobby ? null : <Button onClick={enterLobbyModal} >Join Custom Lobby</Button>}
-        {showModal ? <Modal setShowModal={setShowModal} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
-        {/* {joinLobby ? <Lobby lobbyID={lobbyID}/> : null} */}
+        {showModal ? <Modal setShowModal={setShowModal} cancelFindMatch={cancelFindMatch} isFindMatch={isFindMatch} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
+        {joinLobby ? null : 
+        <div className="multiplayer-Icons"> 
+              <div onClick={findMatch} className = 'find-game' > 
+                <GiMagnifyingGlass style={{fontSize: '17em'}}/>
+                <div className="multiplayer-select-text">
+                  Find Game
+                </div>
+              </div>
+        </div>
+
+        }
+        
+        {joinLobby ? null : 
+        <div className="multiplayer-Icons">
+          <div onClick={enterLobbyModal} className='find-game'>
+            <MdPrivateConnectivity style={{fontSize: '17em'}}/>
+            <div className="multiplayer-select-text">
+            Private Match
+          </div>
+
+          </div>
+        </div>
+        }
         {joinLobby ? <MultiplayerGame lobbyID={lobbyID} username={name} /> : null}
       </div>
       <div id='portal'></div>

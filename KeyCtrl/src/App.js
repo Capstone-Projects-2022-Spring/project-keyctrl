@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import TypingTest from './components/TypingTestPage/TypingTest.js';
 import SignInModal from './components/Base/TitleBar/SignInModal/SignInModal.js';
 import TitleBar from './components/Base/TitleBar/TitleBar.js';
@@ -12,12 +12,24 @@ import LoadingSpinner from './components/Base/LoadingSpinner/LoadingSpinner.js';
 import * as api from './utils/apiUtils.js'
 import { Route, Routes } from 'react-router-dom';
 import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
+import SlidingPane from "react-sliding-pane"
+import "react-sliding-pane/dist/react-sliding-pane.css"
+import FriendsList from './components/Base/FriendsList/FriendsList.js';
+import Scrollbars from 'react-custom-scrollbars-2'
+import { RemoveScrollBar } from 'react-remove-scroll-bar'
+import { ToastContainer, toast } from 'react-toastify'
+
 
 // Set default theme on first initialization
 document.documentElement.setAttribute('data-theme', 'default');
 
-function App() {
+const Msg = ({ display_name }) => (
+  <div>
+    Login Success!
+  </div>
+)
 
+function App() {
 
   const [index, setIndex] = useState(0);
   const [page, setPage] = useState(0);
@@ -28,23 +40,46 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [WPMTime, setWPMTime] = useState(1);
   const [accountInfo, setAccountInfo] = useState({})
+  const [friendsList, setFriendsList] = useState({})
+  const [accountStats, setAccountStats] = useState({})
+  const [friendRequests, setFriendRequests] = useState({})
+
   const [updateOnce, setUpdateOnce] = useState(false)
+
+  const [state, setState] = useState({
+    isPaneOpen: false,
+    isPaneOpenLeft: false,
+  });
 
   const [showFriendList, setShowFriendList] = useState(false)
 
+  const displayMsg = () => {
+    toast.success(<Msg />, {
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    })
+    // toast(Msg) would also work
+  }
+
   const delay = ms => new Promise(res => setTimeout(res, ms));
-  const onLogin = async (account) => {
 
-    setLoading(true);
-
-    await (delay(4000));
+  const onLogin = async (account_, accountStats_, friendsList_, friendRequests_) => {
 
     setLoading(false);
 
-    console.log(account);
-    if (account.account_id !== -1) {
-      setAccountInfo(account);
+    console.log(accountStats_)
+    console.log(account_);
+
+    if (account_ !== null) {
+      setAccountInfo(account_);
+      setAccountStats(accountStats_)
+      setFriendsList(friendsList_)
+      setFriendRequests(friendRequests_)
       setLoggedIn(true);
+      // displayMsg()
     } else {
       alert('Account does not exist');
     }
@@ -63,7 +98,7 @@ function App() {
     setAccountInfo({ ...accountInfo, letter_misses: JSON.stringify(jObj) });
 
   }
-  
+
   async function updateApiStats(avgWPM, topWpm, total_words, total_time) {
 
     console.log("Before Update Stats",
@@ -141,49 +176,85 @@ function App() {
 
   return (
     <div className="App">
-      <div className="window">
-        <div className="task-bar">
+      <Scrollbars autoHeight autoHeightMin={window.innerHeight}>
+        <div className="window">
+          {/* <div className="task-bar">
           <TaskBar 
             page={page}
             setPage={setPage}
             loggedIn={loggedIn}
             setShowFriendList={setShowFriendList}
             showFriendList={showFriendList} />
-        </div>
-        <div className="landing">
-          <TitleBar loggedIn={loggedIn} openSignIn={openSignIn} />
-          <div className="main-window">
-            {loading ? <LoadingSpinner /> : null}
+        </div> */}
+          <div className="landing">
+            {/* <ToastContainer
+              position="top-center"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            /> */}
+            <TitleBar
+              page={page}
+              setPage={setPage}
+              loggedIn={loggedIn}
+              setShowFriendList={setShowFriendList}
+              showFriendList={showFriendList}
+              openSignIn={openSignIn}
+              logout={logout}
+              setState={setState}
+              friendsList={friendsList} />
 
-            <Routes>
-              <Route exact path="/project-keyctrl" element={
-                <TypingTest
-                  setUpdateOnce={setUpdateOnce}
-                  setIndex={setIndex}
-                  index={index}
-                  accountInfo={accountInfo}
-                  setAccountInfo={setAccountInfo}
-                  loggedIn={loggedIn}
-                  incrementMissed={incrementMissed}
-                  updateAccInfo={updateAccInfo}
-                  numEntries={numEntries}
-                  setNumEntries={setNumEntries}
-                  WPMTime={WPMTime}
-                  setWPMTime={setWPMTime}
-                  grossWPM={grossWPM}
-                />
-              } />
-              <Route exact path="/training" element={<Training />} />
-              <Route exact path="/multiplayer" element={<Multiplayer />} />
-              <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} /> : <OfflineAccount />)} />
-              <Route exact path="/settings" element={<Settings setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
-            </Routes>
+            <div className="main-window">
+              {loading ? <LoadingSpinner /> : null}
+
+              <Routes>
+                <Route exact path="/project-keyctrl" element={
+                  <TypingTest
+                    setUpdateOnce={setUpdateOnce}
+                    setIndex={setIndex}
+                    index={index}
+                    accountInfo={accountInfo}
+                    setAccountInfo={setAccountInfo}
+                    loggedIn={loggedIn}
+                    incrementMissed={incrementMissed}
+                    updateAccInfo={updateAccInfo}
+                    numEntries={numEntries}
+                    setNumEntries={setNumEntries}
+                    WPMTime={WPMTime}
+                    setWPMTime={setWPMTime}
+                    grossWPM={grossWPM}
+                  />
+                } />
+                <Route exact path="/training" element={<Training />} />
+                <Route exact path="/multiplayer" element={<Multiplayer />} />
+                <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} accountStats={accountStats} /> : <OfflineAccount />)} />
+                <Route exact path="/settings" element={<Settings setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
+              </Routes>
+
+            </div>
+
+            <SlidingPane
+              className='friends-list-popup'
+              closeIcon={<div>Some div containing custom close icon.</div>}
+              hideHeader={true}
+              isOpen={state.isPaneOpen}
+              from="right"
+              width="300px"
+              onRequestClose={() => setState({ isPaneOpen: false })}
+            >
+              <FriendsList accountInfo={accountInfo} friendsList={friendsList} friendRequests={friendRequests} />
+            </SlidingPane>
 
           </div>
-        </div>
-        <SignInModal onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
-      </div>
 
+          <SignInModal setLoading={setLoading} loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
+        </div>
+      </Scrollbars>
     </div>
   );
 }

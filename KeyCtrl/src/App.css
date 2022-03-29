@@ -13,10 +13,22 @@
     --selection-color: #50E3C2;
     --text-color: #75749C;
     --next-up-text-color: #585774;
+    background: var(--dark-bg);
+}
+
+/* ::-webkit-scrollbar {
+  display: none;
+} */
+
+.MuiBadge-colorPrimary {
+    color: white !important;
+    background-color: #d62828 !important;
 }
 
 .App {
-  text-align: center;
+    background: var(--dark-bg);
+    height: 100%;
+    text-align: center;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -25,9 +37,6 @@
             user-select: none;
 }
 
-.App-header {
-
-}
 
 .window{
   display: flex;
@@ -35,7 +44,7 @@
 }
 
 .landing{
-  width: 100%;
+    width: 100%;
 }
 
 .task-bar{
@@ -45,7 +54,15 @@
 
 .main-window{
   background: var(--dark-bg);
-  min-height: 95vh;
+  justify-content: center;
+  height: auto;
+}
+
+.friends-list-popup{
+    background: var(--bg-color) !important;
+}
+.friends-list-popup .slide-pane__content{
+    padding: 0 !important;
 }
 
 [data-theme="default"]{
