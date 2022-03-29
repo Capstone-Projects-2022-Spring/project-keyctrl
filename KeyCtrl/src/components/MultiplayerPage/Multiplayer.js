@@ -40,14 +40,14 @@ const Multiplayer = () => {
     useEffect(
       () => {
         if(socketRef.current == null) {
-          socketRef.current = io.connect("http://localhost:4000")
+          socketRef.current = io.connect("https://generated-respected-python.glitch.me")
         }
         //Finding Match code...
         socketRef.current.on('findMatchSuccess', (lobby) => {
           console.log(socketRef.current.id + " found a match")
           socketRef.current.disconnect()
           setLobbyID(lobby)
-          setName('username' + Math.random() * 10000) //PLACE USERNAME LOGIC HERE (dont forget to handle logged out)
+          setName('username' + Math.floor(Math.random() * 10000)) //PLACE USERNAME LOGIC HERE (dont forget to handle logged out)
           setShowModal(false)
           setJoinLobby(true)
         })
