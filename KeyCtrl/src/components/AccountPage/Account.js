@@ -122,18 +122,18 @@ const Account = ({ accountInfo, accountStats }) => {
                             <div className='acc-stat'>
                                 <div className='stat'>
                                     <div className='title'>Current MMR</div>
-                                    <div className='data'>3h 46m 20s</div>
+                                    <div className='data'>650</div>
                                 </div>
                                 <div className='stat'>
                                     <div className='title'>Global Position</div>
-                                    <div className='data'>3/18/2022</div>
+                                    <div className='data'>1</div>
                                 </div>
                             </div>
 
                             <div className='acc-stat'>
                                 <div className='stat'>
                                     <div className='title'>Playtime</div>
-                                    <div className='data'>3h 46m 20s</div>
+                                    <div className='data'>10h 46m 20s</div>
                                 </div>
                                 <div className='stat'>
                                     <div className='title'>Joined</div>

@@ -40,6 +40,9 @@
     font-weight: bold;
     font-size: 2em;
     text-align: center;
+    margin-left: .5em;
+    align-self: flex-start;
+    padding-top: 1em;
 }
 
 .stat-tab{
@@ -82,6 +85,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-self: stretch;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
 .acc-stat .stat{

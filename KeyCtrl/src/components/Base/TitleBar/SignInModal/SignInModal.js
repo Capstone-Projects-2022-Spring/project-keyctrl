@@ -9,6 +9,7 @@ import GoogleLogin from 'react-google-login';
 import sha256 from 'crypto-js/sha256';
 
 import * as api from '../../../../utils/apiUtils.js'
+import { AiFillPicture } from 'react-icons/ai';
 
 /**
  * @module SignInModal
@@ -63,18 +64,23 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
 
         if (account == -1) {
             var socialId = Math.floor(Math.random() * (9999 - 1000) + 1000)
-            await api.callRegisterAccount(hash.toString(), photo, name, name + "#" + socialId.toString())
+            var noSpaceName = name.replace(/\s+/g, '')
+            await api.callRegisterAccount(hash.toString(), photo, name, noSpaceName + "" + socialId.toString())
             var account = await api.callLogin(hash.toString(), photo, name)
         }
 
         var account_stats = await api.getStats(account.account_id);
+        var friends_list = await api.getFriends(account.account_id);
+        var friend_requests = await api.getFriendRequests(account.social_id)
 
 
         console.log(account)
 
         onLogin(
             account,
-            account_stats
+            account_stats,
+            friends_list,
+            friend_requests
         );
     }
 

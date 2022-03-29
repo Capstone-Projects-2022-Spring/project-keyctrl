@@ -20,6 +20,11 @@
   display: none;
 } */
 
+.MuiBadge-colorPrimary {
+    color: white !important;
+    background-color: #d62828 !important;
+}
+
 .App {
     background: var(--dark-bg);
     height: 100%;

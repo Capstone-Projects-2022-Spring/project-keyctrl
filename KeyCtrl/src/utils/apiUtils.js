@@ -102,7 +102,7 @@ export function getStats(id) {
         .catch(function (err) {
     });
 }
-export function callAddFriend(AccountId, FriendName) {
+export function callAddFriend(AccountId, socialId) {
     
     var options = {
         method: 'POST',
@@ -110,13 +110,52 @@ export function callAddFriend(AccountId, FriendName) {
         url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/addfriend',
         body: JSON.stringify( {
         "userId": AccountId,
-        "friendName":FriendName
+        "socialId":socialId
         })
     };
 
-    rp(options)
+    return rp(options)
         .then(function(res){
             console.log(res);
+            if(res == 'Unable to add friend, user not found')
+            {
+                alert('Unable to add friend, user not found')
+            }
+            return res
         })
            
+}
+
+export function getFriends(id) {
+
+    var options = {
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updatefriends?userId=' + id
+    };
+
+    return rp(options)
+        .then(function(acc){
+            console.log(acc);
+            return JSON.parse(acc);
+        })
+        .finally(function(){
+        })
+        .catch(function (err) {
+    });
+}
+
+export function getFriendRequests(id) {
+
+    var options = {
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/getfriendreq?socialId=' + id
+    };
+
+    return rp(options)
+        .then(function(acc){
+            console.log(acc);
+            return JSON.parse(acc);
+        })
+        .finally(function(){
+        })
+        .catch(function (err) {
+    });
 }

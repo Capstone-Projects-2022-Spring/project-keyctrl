@@ -10,7 +10,7 @@ import { blue, green, purple, red } from '@material-ui/core/colors';
 
 const StyledBadge = styled(Badge)(({ status }) => ({
     '& .MuiBadge-badge': {
-        backgroundColor: status ? '#44b700' : "#e01e37",
+        backgroundColor: '#44b700',
         color: '#44b700',
         width: '1em',
         height: '1em',
@@ -109,6 +109,7 @@ const Friend = ({ imageUrl, username, status }) => {
                             'aria-labelledby': 'basic-button',
                         }}
                     >
+                        <MenuItem onClick={handleClose}>View Profile</MenuItem>
                         <MenuItem onClick={handleClose}>Invite</MenuItem>
                         <MenuItem onClick={handleClose}>Message</MenuItem>
                         <MenuItem onClick={handleClose}>Remove Friend</MenuItem>

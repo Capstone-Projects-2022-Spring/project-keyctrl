@@ -3,6 +3,11 @@ import '../../styles/StatKeyboard.css'
 import { ReactComponent as KeyBoard } from "../../assets/keyboard_shell.svg"
 import { Tooltip, withStyles } from '@material-ui/core';
 
+
+// ------------------ PROCEDE WITH CAUTION -----------------------------------
+//-----------------THIS CODE IS AN ABOMINATION -------------------------------
+
+
 const LightTooltip = withStyles(theme => ({
     tooltip: {
         backgroundColor: 'var(--primary-color)',
@@ -103,14 +108,14 @@ const StatKeyboard = ({ letter_misses }) => {
             <div style={{ backgroundColor: getColor("m") }} className="key" id="m" />
             {/* <img className="keyboard-img" src={KeyBoard} /> */}
             <KeyBoard className="keyboard-img" fill="var(--primary-color)" />
-            <LightTooltip title={
+            {/* <LightTooltip title={
                 <React.Fragment>
                     <em>{"And here's"}</em> <b>{'some'}</b> <u>{'amazing content'}</u>.{' '}
                     {"It's very engaging. Right?"}
                 </React.Fragment>
-            }>
+            }> */}
                 <div className="key1" id="q" />
-            </LightTooltip>
+            {/* </LightTooltip> */}
             <div className="key1" id="w" />
             <div className="key1" id="e" />
             <div className="key1" id="r" />
@@ -143,6 +148,8 @@ const StatKeyboard = ({ letter_misses }) => {
 export default StatKeyboard
 
 function fuckYouJason(map) {
+    // I hate everything about this
+
     var newMap = {
         misses: {},
         times: {},
