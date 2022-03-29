@@ -36,31 +36,31 @@ npm start
 ```
 
 ## Using the Release: How to Test
-<p>This release involves three major components: Google Sign In for account creation, multiplayer, and theme selection. The testing steps for each element are listed below.</p>  
-Google Sign In
+<p>This release adds two new components and updates an existing one: Friend List, Multiplayer find match, and the UI respectively. The testing steps for each element are listed below.</p>  
+Updated UI:
+  
+    -New UI can now be found at the top of the screen as 5 buttons that can be highlighted over for a description of each.
+    
+Friend List 
 
-    -Navigate to KeyCTRL  
-    -Click "Login" in the top right corner  
+    -Login to the site from the button on the far right of the top UI 
     -Click "Login with Google" in the popup modal  
-    -Verify that you now have access to your account statistics page    
-Multiplayer (can be tested solo or with up to 4 friends)  
+    -Sign in with your respective Google Account
+    -The friend list should now be available on the right side of the screen click the text to uncollapse (and off the friend list to recollapse)
+    -From here you can see your own ID and your own (currently empty) friend list
+    -You can add another player by entering their name and clicking the button besides the add friend box
+    -The person you added will receive the request and be prompted to either deny or accept your friend request on their side of things
+    
+Multiplayer (requires 4 players for a match to be created)
 
     -Click the World icon on the left navigation bar  
-    -Click "Join Custom Lobby"  
-    -Enter any lobby ID and name  
-    -The game will not start until 4 people are in the lobby  
-      -To start the game solo, you can open 3 other tabs and navigate to the same place. Make sure to join the same lobby!  
-      -You can also have your friends join you. All they need to do is enter the same lobby ID that you did.  
-    -After the timer runs out, the match results will appear in a popup modal in the center of your screen.    
-Theme Selection  
-```
-  -Navigate to the Settings tab located on the bottom of the task bar
-  -Click the 'Change Theme' button
-  -Select new theme to use
-```
+    -Click "Find Game"  
+    -The game will start once atleast 4 people are searching  
+    -After the timer runs out, the match results will appear in a popup modal in the center of your screen.
 
 ## Patch Notes
 - Release notes indicating what is new
+v1.0 Milestone 1
 ```
 -Google Sign In 
   -Use your Google account to login to our application.
@@ -70,7 +70,15 @@ Theme Selection
   -Change the look and feel of KeyCTRL with theme selection.
 
 ```
-
+v2.0 Milestone 2
+```
+-New UI
+    -New, more compact and easily navigable UI
+-Friend List
+    -Add friends by ID, receive requests from other players and either accept or deny them.
+-Multiplayer Find Match
+    -Find game option added in addition to private lobbies to be automatically paired with other currently searching players
+```
 
 - Source Code For Release
 ```
