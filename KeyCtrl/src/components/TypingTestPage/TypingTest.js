@@ -1,8 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, setState } from "react";
 import '../../styles/TypingTest.css'
 import PropTypes from "prop-types"
+import { IoIosArrowBack } from "react-icons/io";
 import styled from "styled-components"
 import * as api from '../../utils/apiUtils.js'
+import TypingSettings from "./TypingTestSettings";
 
 /**
  * @module TypingTest 
@@ -256,7 +258,6 @@ export const TypingTest = (props) => {
 
                 {timerActive ? null : <div className="start-signal-wrapper">
 
-                    Correct Entries: {props.numEntries} <br />
                     Your WPM: {props.grossWPM()} <br /> <br />
                     <div className="start-signal">
                         Press Enter To Start!
@@ -285,7 +286,9 @@ export const TypingTest = (props) => {
                 </div>
             </div>
         </div>
-    )
+        // <TypingSettings />
+)
+
 }
 
 // Starting to introduce proptypes

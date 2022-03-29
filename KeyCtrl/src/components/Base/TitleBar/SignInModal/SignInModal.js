@@ -21,12 +21,12 @@ import * as api from '../../../../utils/apiUtils.js'
  * <SignInModal onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
  */
 
-const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
+const SignInModal = ({ setLoading, loggedIn, onLogin, showSignIn, setShowSignIn }) => {
 
     const modalRef = useRef();
 
     const [showSignUp, setShowSignUp] = useState(false);
-    
+
 
 
     /**
@@ -42,19 +42,35 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
      * @description Api call to register new account and passes result to onLogin()
      */
     const register = () => {
-        onLogin(api.callRegisterAccount(values.email, values.username, values.password));
+        onLogin(
+            api.callRegisterAccount(values.email, values.username, values.password),
+            api.getStats(1));
     }
 
-     
+
     /**
       @function HashedEmail
       @description Api call to log in but the email is HASHED and passes result to onLogin(). THIS IS A WORKING METHOD TO BE USED IN THE FUTURE
      */
 
-      const login = () => {
-        var hash = sha256(values.email)
+    const login = async (email, photo, name) => {
+        var hash = sha256(email)
         console.log(hash.toString() + " " + hash.toString().length)
-        onLogin(api.callLogin(hash.toString()));
+
+        setLoading(true)
+
+        var account = await api.callLogin(hash.toString(), photo, name)
+        var account_stats = await api.getStats(1);
+
+        if (account === null) {
+            var socialId = Math.floor(Math.random() * (9999 - 1000) + 1000)
+            account = await api.callRegisterAccount(hash.toString(), photo, name, name + "#" + socialId.toString())
+        }
+
+        onLogin(
+            account,
+            account_stats
+        );
     }
 
     /**
@@ -123,9 +139,11 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
     );
 
     const responseGoogle = response => {
+        setShowSignIn(false)
         console.log(response);
+        console.log(response.profileObj.imageUrl)
         console.log(response.profileObj.email)
-        login(response.profileObj.email)
+        login(response.profileObj.email, response.profileObj.imageUrl, response.profileObj.name)
         //after login in on google login, we call login
     };
 
@@ -136,22 +154,22 @@ const SignInModal = ({ onLogin, showSignIn, setShowSignIn }) => {
                 <div className='Background' onClick={closeModal} ref={modalRef}>
 
                     <animated.div >
-                            <div className='ModalWrapper' showSignIn={showSignIn}>
-                                <MdClose
-                                    aria-label='Close modal'
-                                    className='close-modal'
-                                    onClick={() => setShowSignIn(prev => !prev)}
-                                />
-                                <div className='ModalContent'>
+                        <div className='ModalWrapper' showSignIn={showSignIn}>
+                            <MdClose
+                                aria-label='Close modal'
+                                className='close-modal'
+                                onClick={() => setShowSignIn(prev => !prev)}
+                            />
+                            <div className='ModalContent'>
 
-                                    <GoogleLogin
-                                        clientId="568691465172-6a0kbo3t147jc4oi2bfomq8fjcq6cj2k.apps.googleusercontent.com"
-                                        buttonText="Login with Google"
-                                        onSuccess={responseGoogle}
-                                        onFailure={responseGoogle}
-                                        cookiePolicy="single_host_origin" />  
-                                </div>
+                                <GoogleLogin
+                                    clientId="568691465172-6a0kbo3t147jc4oi2bfomq8fjcq6cj2k.apps.googleusercontent.com"
+                                    buttonText="Login with Google"
+                                    onSuccess={responseGoogle}
+                                    onFailure={responseGoogle}
+                                    cookiePolicy="single_host_origin" />
                             </div>
+                        </div>
                     </animated.div>
                 </div>
             ) : null}

@@ -15,7 +15,8 @@
     z-index: 1;
     width: 350px;
     height: 220px;
-    background: white;
+    color: var(--text-color);
+    background: var(--bg-color);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,7 +35,7 @@
     top: 7px;
     right: 7px;
     padding: 8px 11px;
-    background: crimson;
+    background: var(--selection-color);;
     color: white;
     font-weight: bold;
     border: none;

@@ -1,0 +1,77 @@
+.history-container{
+    margin-top: 3em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.hl-base{
+    background: var(--bg-color);
+    padding: .25em;
+    padding-top: 0;
+    font-family: 'Almarai';
+    font-size: 2em;
+    width: 30%;
+}
+
+.hl-title{
+    padding-top: .25em;
+    padding-bottom: .25em;
+    color: var(--text-color);
+}
+
+.base-game-container{
+    margin-bottom: .3em;
+}
+
+.game-container{
+    padding-top: .5em;
+    padding-bottom: .5em;
+    padding-left: 1ch;
+    padding-right: 3ch;
+    background: var(--text-container);
+    font-family: 'Almarai Bold';
+    font-style: normal;
+    font-size: .75em;
+    text-align: left;
+    letter-spacing: .03em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+}
+
+.hl-inner-element{
+    font-family: "Almarai Light";
+}
+
+.expand-game-button{
+    color: var(--text-color);
+    align-self: center;
+    position: absolute;
+    right: .4em;
+}
+
+.expand-game-button:hover{
+    cursor: pointer;
+    color: var(--selection-color);
+}
+
+.expanded-game-container{
+    background: var(--text-container);
+    padding-top: .5em;
+    padding-bottom: .5em;
+    padding-left: 1ch;
+    padding-right: 1ch;
+}
+.expanded-game-container{
+    border-style: solid;
+    border-width: .2em;
+    border-color: var(--text-container);
+    background: var(--bg-color);
+    padding-top: .5em;
+    padding-bottom: .5em;
+    padding-left: 1ch;
+    padding-right: 1ch;
+    color: var(--text-color);
+}
