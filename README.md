@@ -60,6 +60,7 @@ Multiplayer (requires 4 players for a match to be created)
 
 ## Patch Notes
 - Release notes indicating what is new
+
 v1.0 Milestone 1
 ```
 -Google Sign In 
@@ -68,8 +69,8 @@ v1.0 Milestone 1
   -Connect to a custom lobby and play with your friends to see who has the highest words per minute!
 -Theme Select 
   -Change the look and feel of KeyCTRL with theme selection.
-
 ```
+
 v2.0 Milestone 2
 ```
 -New UI
