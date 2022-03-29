@@ -16,7 +16,7 @@ export function callLogin(email, photoUrl, name) {
             if(acc != "Fail"){//instead of invalid, "does not exist"
                 return JSON.parse(acc)[0];
             }else{ 
-                return null// if it returns invalid login recentials, it registers the account
+                return -1// if it returns invalid login recentials, it registers the account
             }
         })
         .finally(function(){
@@ -84,7 +84,6 @@ export function updateStats(avgWPM, topWPM, letterMisses, totalWords, totalTime,
         .catch(function (err) {
 
     });
-    // return account;
 }
 
 export function getStats(id) {
@@ -103,7 +102,7 @@ export function getStats(id) {
         .catch(function (err) {
     });
 }
-export function callAddFriend(AccountId, FriendName) {
+export function callAddFriend(AccountId, socialId) {
     
     var options = {
         method: 'POST',
@@ -111,13 +110,53 @@ export function callAddFriend(AccountId, FriendName) {
         url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/addfriend',
         body: JSON.stringify( {
         "userId": AccountId,
-        "friendName":FriendName
+        "socialId":socialId
         })
     };
 
-    rp(options)
+    return rp(options)
         .then(function(res){
             console.log(res);
+            if(res == 'Unable to add friend, user not found')
+            {
+                alert('Unable to add friend, user not found')
+            }
+            return res
         })
            
 }
+
+export function getFriends(id) {
+
+    var options = {
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updatefriends?userId=' + id
+    };
+
+    return rp(options)
+        .then(function(acc){
+            console.log(acc);
+            return JSON.parse(acc);
+        })
+        .finally(function(){
+        })
+        .catch(function (err) {
+    });
+}
+
+export function getFriendRequests(id) {
+
+    var options = {
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/getfriendreq?socialId=' + id
+    };
+
+    return rp(options)
+        .then(function(acc){
+            console.log(acc);
+            return JSON.parse(acc);
+        })
+        .finally(function(){
+        })
+        .catch(function (err) {
+    });
+}
+

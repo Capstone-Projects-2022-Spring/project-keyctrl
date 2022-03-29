@@ -40,6 +40,9 @@
     font-weight: bold;
     font-size: 2em;
     text-align: center;
+    margin-left: .5em;
+    align-self: flex-start;
+    padding-top: 1em;
 }
 
 .stat-tab{
@@ -82,6 +85,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-self: stretch;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 
 .acc-stat .stat{
@@ -142,4 +148,27 @@
     align-items: center;
     background: var(--bg-color);
     width: 60%;
+}
+
+.gamemode-tab-container{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2em;
+    background: var(--bg-color);
+    padding: .75em;
+    border-style: solid;
+    border-color: var(--selection-color);
+    border-width: 1px;
+}
+
+.gamemode-tab{
+    margin-left: 1em;
+    margin-right: 1em;
+    color: var(--text-color);
+}
+
+.gamemode-tab:hover{
+    cursor: pointer;
+    color: var(--selection-color);
+    transition: .25s;
 }

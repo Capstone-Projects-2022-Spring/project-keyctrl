@@ -17,13 +17,19 @@ import "react-sliding-pane/dist/react-sliding-pane.css"
 import FriendsList from './components/Base/FriendsList/FriendsList.js';
 import Scrollbars from 'react-custom-scrollbars-2'
 import { RemoveScrollBar } from 'react-remove-scroll-bar'
+import { ToastContainer, toast } from 'react-toastify'
 
 
 // Set default theme on first initialization
 document.documentElement.setAttribute('data-theme', 'default');
 
-function App() {
+const Msg = ({ display_name }) => (
+  <div>
+    Login Success!
+  </div>
+)
 
+function App() {
 
   const [index, setIndex] = useState(0);
   const [page, setPage] = useState(0);
@@ -33,14 +39,10 @@ function App() {
   const [numEntries, setNumEntries] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
   const [WPMTime, setWPMTime] = useState(1);
-  const [accountInfo, setAccountInfo] = useState({
-    account_id: null,
-    display_name: "",
-    photo: "",
-    user_email: null
-  })
-
+  const [accountInfo, setAccountInfo] = useState({})
+  const [friendsList, setFriendsList] = useState({})
   const [accountStats, setAccountStats] = useState({})
+  const [friendRequests, setFriendRequests] = useState({})
 
   const [updateOnce, setUpdateOnce] = useState(false)
 
@@ -51,9 +53,20 @@ function App() {
 
   const [showFriendList, setShowFriendList] = useState(false)
 
+  const displayMsg = () => {
+    toast.success(<Msg />, {
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    })
+    // toast(Msg) would also work
+  }
+
   const delay = ms => new Promise(res => setTimeout(res, ms));
- 
-  const onLogin = async (account_, accountStats_) => {
+
+  const onLogin = async (account_, accountStats_, friendsList_, friendRequests_) => {
 
     setLoading(false);
 
@@ -63,7 +76,10 @@ function App() {
     if (account_ !== null) {
       setAccountInfo(account_);
       setAccountStats(accountStats_)
+      setFriendsList(friendsList_)
+      setFriendRequests(friendRequests_)
       setLoggedIn(true);
+      // displayMsg()
     } else {
       alert('Account does not exist');
     }
@@ -171,6 +187,17 @@ function App() {
             showFriendList={showFriendList} />
         </div> */}
           <div className="landing">
+            {/* <ToastContainer
+              position="top-center"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            /> */}
             <TitleBar
               page={page}
               setPage={setPage}
@@ -179,7 +206,8 @@ function App() {
               showFriendList={showFriendList}
               openSignIn={openSignIn}
               logout={logout}
-              setState={setState} />
+              setState={setState}
+              friendsList={friendsList} />
 
             <div className="main-window">
               {loading ? <LoadingSpinner /> : null}
@@ -204,7 +232,7 @@ function App() {
                 } />
                 <Route exact path="/training" element={<Training />} />
                 <Route exact path="/multiplayer" element={<Multiplayer />} />
-                <Route exact path="/account" element={(loggedIn ? <Account accountStats={accountStats} /> : <OfflineAccount />)} />
+                <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} accountStats={accountStats} /> : <OfflineAccount />)} />
                 <Route exact path="/settings" element={<Settings setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
 
@@ -219,7 +247,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList accountInfo={accountInfo}/>
+              <FriendsList accountInfo={accountInfo} friendsList={friendsList} friendRequests={friendRequests} />
             </SlidingPane>
 
           </div>

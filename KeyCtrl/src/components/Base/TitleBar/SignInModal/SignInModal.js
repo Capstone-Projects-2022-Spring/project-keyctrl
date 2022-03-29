@@ -9,6 +9,7 @@ import GoogleLogin from 'react-google-login';
 import sha256 from 'crypto-js/sha256';
 
 import * as api from '../../../../utils/apiUtils.js'
+import { AiFillPicture } from 'react-icons/ai';
 
 /**
  * @module SignInModal
@@ -21,7 +22,7 @@ import * as api from '../../../../utils/apiUtils.js'
  * <SignInModal onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
  */
 
-const SignInModal = ({ setLoading, loggedIn, onLogin, showSignIn, setShowSignIn }) => {
+const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, setShowSignIn }) => {
 
     const modalRef = useRef();
 
@@ -37,15 +38,15 @@ const SignInModal = ({ setLoading, loggedIn, onLogin, showSignIn, setShowSignIn 
     //     onLogin(api.callLogin(email));
     // }
 
-    /**
-     * @function register
-     * @description Api call to register new account and passes result to onLogin()
-     */
-    const register = () => {
-        onLogin(
-            api.callRegisterAccount(values.email, values.username, values.password),
-            api.getStats(1));
-    }
+    // /**
+    //  * @function register
+    //  * @description Api call to register new account and passes result to onLogin()
+    //  */
+    // const register = () => {
+    //     onLogin(
+    //         api.callRegisterAccount(values.email, values.username, values.password),
+    //         api.getStats());
+    // }
 
 
     /**
@@ -60,16 +61,26 @@ const SignInModal = ({ setLoading, loggedIn, onLogin, showSignIn, setShowSignIn 
         setLoading(true)
 
         var account = await api.callLogin(hash.toString(), photo, name)
-        var account_stats = await api.getStats(1);
 
-        if (account === null) {
+        if (account == -1) {
             var socialId = Math.floor(Math.random() * (9999 - 1000) + 1000)
-            account = await api.callRegisterAccount(hash.toString(), photo, name, name + "#" + socialId.toString())
+            var noSpaceName = name.replace(/\s+/g, '')
+            await api.callRegisterAccount(hash.toString(), photo, name, noSpaceName + "" + socialId.toString())
+            var account = await api.callLogin(hash.toString(), photo, name)
         }
+
+        var account_stats = await api.getStats(account.account_id);
+        var friends_list = await api.getFriends(account.account_id);
+        var friend_requests = await api.getFriendRequests(account.social_id)
+
+
+        console.log(account)
 
         onLogin(
             account,
-            account_stats
+            account_stats,
+            friends_list,
+            friend_requests
         );
     }
 
@@ -83,7 +94,7 @@ const SignInModal = ({ setLoading, loggedIn, onLogin, showSignIn, setShowSignIn 
             login();
         } else if (showSignUp) {
             console.log("SignUp Pressed");
-            register();
+            // register();
         }
 
         setShowSignIn(false);

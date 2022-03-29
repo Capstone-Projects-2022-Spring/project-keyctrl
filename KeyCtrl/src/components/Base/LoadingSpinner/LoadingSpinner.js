@@ -12,7 +12,6 @@ const LoadingSpinner = () => {
                     color="var(--selection-color)"
                     height={150}
                     width={150}
-                    timeout={4000} //4 secs
                 />
             </div>
         </div>

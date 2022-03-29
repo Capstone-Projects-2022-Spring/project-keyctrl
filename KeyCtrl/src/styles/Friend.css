@@ -14,6 +14,14 @@
     color: var(--text-color);
 }
 
+.friend-request-username{
+      padding-left: .5em;
+    padding-top: .4em;
+    font-family: 'Almarai Light';
+    font-size: 1.25em;
+    color: var(--text-color);
+}
+
 .friend-options-button{
     position: absolute;
     top: 35%;
@@ -25,4 +33,31 @@
     color: var(--selection-color);
     transition: .25s;
     cursor: pointer;
+}
+
+.friend-request-container{
+    padding: 1em;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+}
+
+.friend-request-button-container{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    right: 10%;
+}
+
+.friend-request-button{
+    color: var(--text-color);
+    font-size: 2em;
+}
+
+.friend-request-button:hover{
+    cursor: pointer;
+    color: var(--selection-color);
+    transition: .25s;
 }

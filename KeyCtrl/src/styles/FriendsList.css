@@ -21,6 +21,7 @@
 .friends-list-add{
     padding-left: 1em;
     padding-right: 1em;
+    margin-bottom: 1em;
 }
 
 .status{
@@ -71,5 +72,34 @@
 .friends-list-button:hover{
     color: var(--selection-color);
     transition: .25s;
+    cursor: pointer;
+}
+
+.friends-list-notif-icon{
+    font-size: 1.5em;
+    color: var(--text-color);
+}
+
+.friends-list-notif-icon:hover{
+    cursor: pointer;
+    color: var(--selection-color);
+    transition: .25s;
+}
+
+.display-friend-list-box{
+    background: var(--dark-bg);
+    margin-top: .1em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: .25em;
+    padding-top: .25em;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.display-friend-list-box:hover{
     cursor: pointer;
 }

@@ -84,7 +84,8 @@ const Multiplayer = () => {
                   Find Game
                 </div>
               </div>
-         </div>
+        </div>
+
         }
         
         {joinLobby ? null : 
