@@ -33,7 +33,9 @@ const Multiplayer = () => {
   const socketRef = useRef()
     useEffect(
       () => {
-        socketRef.current = io.connect("http://localhost:4000")
+        if(socketRef.current == null) {
+          socketRef.current = io.connect("http://localhost:4000")
+        }
         //Finding Match code...
         socketRef.current.on('findMatchSuccess', (lobby) => {
           console.log(socketRef.current.id + " found a match")
