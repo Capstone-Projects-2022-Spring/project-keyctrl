@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components';
 import { Avatar, Badge, TextField, Paper, IconButton } from '@material-ui/core';
@@ -11,6 +11,7 @@ import Friend from './Friend';
 import { callAddFriend } from '../../../utils/apiUtils';
 import sha256 from 'crypto-js/sha256';
 import * as api from '../../../utils/apiUtils.js'
+import { IoNotificationsSharp } from 'react-icons/io5'
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -89,17 +90,18 @@ var friends = [
 ]
 
 
- 
+
 const FriendsList = ({ accountInfo, status, username, pfp }) => {
 
     const [addFriend, setAddFriend] = useState([]);
-  
+    const [count, setCount] = useState(1);
+
     const handleClick = () => {
-      console.log("Name:",addFriend);
-      
-     api.callAddFriend(accountInfo.account_id,addFriend);
+        console.log("Name:", addFriend);
+
+        api.callAddFriend(accountInfo.account_id, addFriend);
     };
-    
+
     return (
         <div className='maincontainer'>
             <div className='friends-list-header'>
@@ -124,6 +126,12 @@ const FriendsList = ({ accountInfo, status, username, pfp }) => {
                 <div className='friends-list-header-username'>
                     {username}
                 </div>
+                <div style={{paddingLeft: '.75em', paddingTop: '10%'}}>
+                    <Badge color="primary" badgeContent={count} >
+                        <IoNotificationsSharp className="friends-list-notif-icon"/>
+                    </Badge>
+                </div>
+
             </div>
             <div className='friends-list-add'>
                 <Paper
@@ -145,11 +153,11 @@ const FriendsList = ({ accountInfo, status, username, pfp }) => {
                         fullWidth
                         sx={{ height: '3em' }}
                         value={addFriend}
-                        onChange={(event) => {setAddFriend(event.target.value)}}
+                        onChange={(event) => { setAddFriend(event.target.value) }}
                     />
                     <IconButton>
-                        <MdPersonAdd className='friends-list-button' 
-                        onClick={handleClick}/>
+                        <MdPersonAdd className='friends-list-button'
+                            onClick={handleClick} />
                     </IconButton>
 
                 </Paper>

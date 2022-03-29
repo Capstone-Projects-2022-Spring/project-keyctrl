@@ -1,4 +1,4 @@
-import React from 'react'
+import { React, useState } from 'react'
 import '../../../styles/TitleBar.css'
 import { MdRemove, MdCropSquare, MdClose } from 'react-icons/md'
 import '../../../styles/TaskBar.css'
@@ -6,7 +6,8 @@ import { MdAccountCircle, MdSettings, MdKeyboard, MdFitnessCenter, MdPublic } fr
 import { Link } from 'react-router-dom'
 import { IoIosArrowBack } from "react-icons/io"
 import { FiLogIn, FiLogOut } from "react-icons/fi"
-import { Avatar, Tooltip } from "@material-ui/core"
+import { Avatar, Tooltip, Badge } from "@material-ui/core"
+import { FaUserFriends } from "react-icons/fa"
 
 import PropTypes from 'prop-types'
 
@@ -21,6 +22,8 @@ import PropTypes from 'prop-types'
  */
 
 const TitleBar = ({ setState, page, setPage, loggedIn, logout, setShowFriendList, showFriendList, openSignIn }) => {
+    const [count, setCount] = useState(1);
+
     return (
         <div>
             <header className="titlebar">
@@ -69,9 +72,14 @@ const TitleBar = ({ setState, page, setPage, loggedIn, logout, setShowFriendList
                             </Tooltip>
 
                             {loggedIn ?
-                                <div onClick={() => setState({ isPaneOpen: true })} className='friends-list-popup-button'>
-                                    <IoIosArrowBack className="fl-button" /> Friends List
-                                </div>
+                                <Tooltip title="Friends List" arrow>
+                                    <div onClick={() => setState({ isPaneOpen: true })} className='friends-list-popup-button'>
+                                        <IoIosArrowBack style={{ fontSize: '1.25em' }} />
+                                        {/* <Badge color="primary" badgeContent={count} > */}
+                                            <FaUserFriends style={{ fontSize: '1.75em' }}/>
+                                        {/* </Badge> */}
+                                    </div>
+                                </Tooltip>
                                 : null}
 
                         </div>

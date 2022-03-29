@@ -21,7 +21,7 @@ import * as api from '../../../../utils/apiUtils.js'
  * <SignInModal onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
  */
 
-const SignInModal = ({ setLoading, loggedIn, onLogin, showSignIn, setShowSignIn }) => {
+const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, setShowSignIn }) => {
 
     const modalRef = useRef();
 
@@ -37,15 +37,15 @@ const SignInModal = ({ setLoading, loggedIn, onLogin, showSignIn, setShowSignIn 
     //     onLogin(api.callLogin(email));
     // }
 
-    /**
-     * @function register
-     * @description Api call to register new account and passes result to onLogin()
-     */
-    const register = () => {
-        onLogin(
-            api.callRegisterAccount(values.email, values.username, values.password),
-            api.getStats(1));
-    }
+    // /**
+    //  * @function register
+    //  * @description Api call to register new account and passes result to onLogin()
+    //  */
+    // const register = () => {
+    //     onLogin(
+    //         api.callRegisterAccount(values.email, values.username, values.password),
+    //         api.getStats());
+    // }
 
 
     /**
@@ -60,12 +60,17 @@ const SignInModal = ({ setLoading, loggedIn, onLogin, showSignIn, setShowSignIn 
         setLoading(true)
 
         var account = await api.callLogin(hash.toString(), photo, name)
-        var account_stats = await api.getStats(1);
 
-        if (account === null) {
+        if (account == -1) {
             var socialId = Math.floor(Math.random() * (9999 - 1000) + 1000)
-            account = await api.callRegisterAccount(hash.toString(), photo, name, name + "#" + socialId.toString())
+            await api.callRegisterAccount(hash.toString(), photo, name, name + "#" + socialId.toString())
+            var account = await api.callLogin(hash.toString(), photo, name)
         }
+
+        var account_stats = await api.getStats(account.account_id);
+
+
+        console.log(account)
 
         onLogin(
             account,
@@ -83,7 +88,7 @@ const SignInModal = ({ setLoading, loggedIn, onLogin, showSignIn, setShowSignIn 
             login();
         } else if (showSignUp) {
             console.log("SignUp Pressed");
-            register();
+            // register();
         }
 
         setShowSignIn(false);

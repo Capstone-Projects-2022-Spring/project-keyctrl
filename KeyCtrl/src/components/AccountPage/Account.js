@@ -8,7 +8,8 @@ import StatKeyboard from './StatKeyboard.js'
 import Image from "../../assets/colin-profile.png"
 import Unranked from '../../assets/unranked.png'
 import History from './History'
-import { Avatar } from '@material-ui/core'
+import { Avatar, Tab, Tabs, Box, Typography } from '@material-ui/core'
+import ColoredLine from '../SettingsPage/ColoredLine'
 
 /**
  * @module Account
@@ -20,32 +21,72 @@ import { Avatar } from '@material-ui/core'
  */
 
 
-const Account = ({ accountStats }) => {
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`vertical-tabpanel-${index}`}
+            aria-labelledby={`vertical-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+
+function a11yProps(index) {
+    return {
+        id: `vertical-tab-${index}`,
+        'aria-controls': `vertical-tabpanel-${index}`,
+    };
+}
+
+const Account = ({ accountInfo, accountStats }) => {
 
     const [inSummary, setInSummary] = useState(true);
+    const [value, setValue] = useState(0);
+    const [currentStats, setCurrentStats] = useState(0)
+
+    const handleChange = (event, newValue) => {
+        setCurrentStats(newValue);
+    };
 
     const triggerInSummary = (state) => {
         setInSummary(state)
     }
 
-    console.log(accountStats[0][0])
+    const getTime = () => {
+        return new Date(getCurrentGameMode().wpm_total_time * 1000).toISOString().substr(11, 8);
+    }
+
+    const getCurrentGameMode = () => {
+        if (currentStats === 0) {
+            return trainingStats
+        } else if (currentStats === 1) {
+            return speedStats
+        } else if (currentStats === 2) {
+            return rankedStats
+        }
+    }
+
+    console.log(accountStats)
 
     var trainingStats = accountStats[0][0]
     var speedStats = accountStats[1][0]
     var rankedStats = accountStats[2][0]
 
-    console.log(trainingStats, speedStats, rankedStats)
-
-    var accountInfo = {
-        top_wpm: 73.25,
-        avg_wpm: 54.54,
-        letter_misses: '{"a": "12", "b": "23", "c": "76", "d": "35", "e": "35", "f": "8", "g":"4","h":"14","i":"65","j":"15","k":"35","l":"76","m":"43","n":"76","o":"45","p":"45","q":"76","r":"36","s":"27","t":"98","u":"45","v":"87","w":"34","x":"76","y":"34","z":"54"}'
-    }
-
-    var jObj = JSON.parse(accountInfo.letter_misses);
+    // var jObj = JSON.parse(accountInfo_.letter_misses);
     // console.log(Object.entries(jObj).sort((a, b) => b[1] - a[1]));
     //var topWPM = accountInfo.top_wpm;
-    var sortedMisses = Object.entries(jObj).sort((a, b) => b[1] - a[1]);
+    // var sortedMisses = Object.entries(jObj).sort((a, b) => b[1] - a[1]);
 
     return (
         <div>
@@ -61,20 +102,21 @@ const Account = ({ accountStats }) => {
                             <div className='profile'>
 
                                 <Avatar
-                                    src={Image}
+                                    src={accountInfo.photo}
+                                    referrerPolicy="no-referrer"
                                     sx={{
                                         height: '7em',
                                         width: '7em',
-                                        borderColor: 'var(--text-color)',
+                                        borderColor: 'var(--selection-color)',
                                         borderStyle: 'solid',
-                                        borderWidth: '2px'
+                                        borderWidth: '3px'
                                     }}
                                 />
 
 
                             </div>
                             <div className='profile-user'>
-                                Colin Harker
+                                {accountInfo.display_name}
                             </div>
 
                             <div className='acc-stat'>
@@ -109,28 +151,55 @@ const Account = ({ accountStats }) => {
 
                     </div>
 
-                    <div className='stat-container'>
-                        <div className='stat-keyboard-base'>
-                            <StatKeyboard letter_misses={accountInfo.letter_misses} />
-                        </div>
-                        <div style={{
-                            display: 'flex', 
-                            flexDirection: 'column',
-                            justifyContent: 'space-evenly',
-                            }}>
-                            <SingleStatDisplay title="Most Missed" data={sortedMisses[0][0].toUpperCase()} />
-                            <SingleStatDisplay title="Least Missed" data={sortedMisses[25][0].toUpperCase()} />
-                        </div>
+                    <ColoredLine
+                        color="var(--primary-color)"
+                        width='80%'
+                    />
+
+                    <div style={{ color: 'var(--text-color)', marginBottom: '.4em', marginTop: '2em' }}>
+                        Game Mode
+                    </div>
+                    <div className='gamemode-tab-container'>
+                        <div style={currentStats === 0 ? { color: 'var(--selection-color' } : null} onClick={() => setCurrentStats(0)} className='gamemode-tab'>Training</div>
+                        <div style={currentStats === 1 ? { color: 'var(--selection-color' } : null} onClick={() => setCurrentStats(1)} className='gamemode-tab'>Speed</div>
+                        <div style={currentStats === 2 ? { color: 'var(--selection-color' } : null} onClick={() => setCurrentStats(2)} className='gamemode-tab'>Ranked</div>
                     </div>
 
                     <div className='stats-wing-base'>
-                        <SingleStatDisplay title="Top WPM" data={accountStats[0][0].wpm_top == null ? 0 : Number(accountStats[0][0].wpm_top).toFixed(2)} />
-                        <SingleStatDisplay title="Avg WPM" data={accountInfo.avg_wpm == null ? 0 : accountInfo.avg_wpm.toFixed(2)} />
+                        <SingleStatDisplay title="Top WPM" data={getCurrentGameMode().wpm_top == null ? 0 : Number(getCurrentGameMode().wpm_top).toFixed(2)} />
+                        <SingleStatDisplay title="Avg WPM" data={getCurrentGameMode().wpm_average == null ? 0 : getCurrentGameMode().wpm_average.toFixed(2)} />
+                        <SingleStatDisplay title="Games Played" data={getCurrentGameMode().wpm_total_tests} />
+                        <SingleStatDisplay title="Mode Playtime" data={getTime()} />
                     </div>
 
-                    <div className='stat-container' style={{ height: '20em', paddingRight: '5em' }}>
-                        <StatisticGraph />
+                    <div className='stat-container'>
+                    <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-evenly',
+                        }}>
+                            <SingleStatDisplay title="Most Missed" data={"A"} />
+                        </div>
+                        <div className='stat-keyboard-base'>
+                            <StatKeyboard letter_misses={getCurrentGameMode()} />
+
+                        </div>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-evenly',
+                        }}>
+                            <SingleStatDisplay title="Least Missed" data={"B"} />
+                        </div>
                     </div>
+
+                    <ColoredLine
+                        color="var(--primary-color)"
+                        width='80%'
+                    />
+
+                    <StatisticGraph dataAvg={accountStats[3]} dataTop={accountStats[4]} dataRank={accountStats[5]} gameMode={currentStats} />
+
                 </div>
                 : <History />}
         </div>

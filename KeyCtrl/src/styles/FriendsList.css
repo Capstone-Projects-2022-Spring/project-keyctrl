@@ -73,3 +73,14 @@
     transition: .25s;
     cursor: pointer;
 }
+
+.friends-list-notif-icon{
+    font-size: 1.5em;
+    color: var(--text-color);
+}
+
+.friends-list-notif-icon:hover{
+    cursor: pointer;
+    color: var(--selection-color);
+    transition: .25s;
+}

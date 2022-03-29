@@ -16,7 +16,7 @@ export function callLogin(email, photoUrl, name) {
             if(acc != "Fail"){//instead of invalid, "does not exist"
                 return JSON.parse(acc)[0];
             }else{ 
-                return null// if it returns invalid login recentials, it registers the account
+                return -1// if it returns invalid login recentials, it registers the account
             }
         })
         .finally(function(){
@@ -84,7 +84,6 @@ export function updateStats(avgWPM, topWPM, letterMisses, totalWords, totalTime,
         .catch(function (err) {
 
     });
-    // return account;
 }
 
 export function getStats(id) {
@@ -102,8 +101,6 @@ export function getStats(id) {
         })
         .catch(function (err) {
     });
-
-    return account;
 }
 export function callAddFriend(AccountId, FriendName) {
     
