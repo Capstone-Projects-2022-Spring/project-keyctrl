@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import styled from 'styled-components'
-import { Lobby } from './Lobby.js'
+import io from "socket.io-client"
 import { Modal } from './Modal.js'
 
 import '../../styles/Modal.css'
@@ -34,20 +34,48 @@ const Multiplayer = () => {
   const [joinLobby, setJoinLobby] = useState(false)
   const [lobbyID, setLobbyID] = useState(0)
   const [name, setName] = useState("")
+  const [isFindMatch, setFindMatch] = useState(false)
+
+  const socketRef = useRef()
+    useEffect(
+      () => {
+        if(socketRef.current == null) {
+          socketRef.current = io.connect("https://generated-respected-python.glitch.me")
+        }
+        //Finding Match code...
+        socketRef.current.on('findMatchSuccess', (lobby) => {
+          console.log(socketRef.current.id + " found a match")
+          socketRef.current.disconnect()
+          setLobbyID(lobby)
+          setName('username' + Math.floor(Math.random() * 10000)) //PLACE USERNAME LOGIC HERE (dont forget to handle logged out)
+          setShowModal(false)
+          setJoinLobby(true)
+        })
+      })
 
   //Enter lobby modal
   const [showModal, setShowModal] = useState(false)
   function findMatch() {
-    //find match code
+    setFindMatch(true)
+    setShowModal(true)
+    socketRef.current.emit('findMatch')
+  }
+
+  function cancelFindMatch() {
+    socketRef.current.emit('cancelFindMatch')
+    setFindMatch(false)
+    setShowModal(false)
   }
 
   function enterLobbyModal() {
     setShowModal(true)
   }
 
+
   return (
     <div>
       <div className='multiplayer-base'>
+        {showModal ? <Modal setShowModal={setShowModal} cancelFindMatch={cancelFindMatch} isFindMatch={isFindMatch} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
         {joinLobby ? null : 
         <div className="multiplayer-Icons"> 
               <div onClick={findMatch} className = 'find-game' > 
@@ -55,10 +83,9 @@ const Multiplayer = () => {
                 <div className="multiplayer-select-text">
                   Find Game
                 </div>
-            
               </div>
-
         </div>
+
         }
         
         {joinLobby ? null : 
@@ -72,10 +99,6 @@ const Multiplayer = () => {
           </div>
         </div>
         }
-
-        
-        {showModal ? <Modal setShowModal={setShowModal} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
-        {/* {joinLobby ? <Lobby lobbyID={lobbyID}/> : null} */}
         {joinLobby ? <MultiplayerGame lobbyID={lobbyID} username={name} /> : null}
       </div>
       <div id='portal'></div>
