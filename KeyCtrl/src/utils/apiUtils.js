@@ -144,23 +144,6 @@ export function getFriends(id, socialId) {
     });
 }
 
-export function getFriendRequests(id) {
-
-    var options = {
-        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/getfriendreq?socialId=' + id
-    };
-
-    return rp(options)
-        .then(function(acc){
-            console.log(acc);
-            return JSON.parse(acc);
-        })
-        .finally(function(){
-        })
-        .catch(function (err) {
-    });
-}
-
 export function respondToRequest(requestId, resp) {
     
     var options = {
@@ -181,3 +164,60 @@ export function respondToRequest(requestId, resp) {
            
 }
 
+export function deleteAccount(id) {
+
+    var options = {
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/deleteaccount?userId=' + id
+    };
+
+    return rp(options)
+        .then(function(acc){
+            console.log(acc);
+            return JSON.parse(acc);
+        })
+        .finally(function(){
+        })
+        .catch(function (err) {
+    });
+}
+
+export function removeFriend(account_id, social_id, friend_name ) {
+    
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/removefriend',
+        body: JSON.stringify( {
+        "userId": account_id,
+        "socialId": social_id,
+        "friendId": friend_name
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log("removeFriend", res);
+            return res
+        })
+           
+}
+
+export function updateOptions(account_id, theme) {
+    
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updateoptions',
+        body: JSON.stringify( {
+        "userId": account_id,
+        "theme": theme,
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log("updateOptions", res);
+            return res
+        })
+           
+}

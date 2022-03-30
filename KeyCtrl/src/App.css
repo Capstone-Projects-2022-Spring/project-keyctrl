@@ -13,6 +13,7 @@
     --selection-color: #50E3C2;
     --text-color: #75749C;
     --next-up-text-color: #585774;
+    --warning: #ff0000;
     background: var(--dark-bg);
 }
 
@@ -22,7 +23,7 @@
 
 .MuiBadge-colorPrimary {
     color: white !important;
-    background-color: #d62828 !important;
+    background-color: #fc4646 !important;
 }
 
 .App {

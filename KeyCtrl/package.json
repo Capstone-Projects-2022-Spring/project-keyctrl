@@ -20,6 +20,7 @@
     "prop-types": "^15.8.1",
     "random-words": "^1.1.1",
     "react": "^17.0.2",
+    "react-confirm-alert": "^2.8.0",
     "react-custom-scrollbars-2": "^4.4.0",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",

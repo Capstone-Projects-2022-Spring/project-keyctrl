@@ -73,6 +73,7 @@ function App() {
     console.log(account_);
 
     if (account_ !== null) {
+      document.documentElement.setAttribute('data-theme', account_.o_theme);
       setAccountInfo(account_);
       setAccountStats(accountStats_)
       setFriendsList(friendsList_)
