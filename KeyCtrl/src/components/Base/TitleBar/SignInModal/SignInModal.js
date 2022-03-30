@@ -61,8 +61,7 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
 
         var account = await api.callLogin(hash.toString(), photo, name)
 
-
-        if (account == -1) {
+        if (account.account_id === null) {
             var name = name.substring(0, 14)
             var socialId = Math.floor(Math.random() * (9999 - 1000) + 1000)
             var noSpaceName = name.replace(/\s+/g, '')

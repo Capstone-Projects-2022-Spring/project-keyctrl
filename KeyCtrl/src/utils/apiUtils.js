@@ -40,6 +40,7 @@ export function callRegisterAccount(email, photoUrl, name, socialId) {
         })
     };
 
+    console.log(options)
     return rp(options)
         .then(function(acc){
             console.log(acc);
@@ -101,8 +102,6 @@ export function getStats(id) {
         })
         .catch(function (err) {
     });
-
-    return account;
 }
 export function callAddFriend(AccountId, socialId) {
     
