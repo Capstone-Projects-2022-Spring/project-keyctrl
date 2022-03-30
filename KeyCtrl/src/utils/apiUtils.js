@@ -101,6 +101,8 @@ export function getStats(id) {
         })
         .catch(function (err) {
     });
+
+    return account;
 }
 export function callAddFriend(AccountId, socialId) {
     
@@ -181,8 +183,9 @@ export function deleteAccount(id) {
     });
 }
 
+
 export function removeFriend(account_id, social_id, friend_name ) {
-    
+   
     var options = {
         method: 'POST',
         headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
@@ -191,6 +194,7 @@ export function removeFriend(account_id, social_id, friend_name ) {
         "userId": account_id,
         "socialId": social_id,
         "friendId": friend_name
+
         })
     };
 
@@ -221,3 +225,4 @@ export function updateOptions(account_id, theme) {
         })
            
 }
+
