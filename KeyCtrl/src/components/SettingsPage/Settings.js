@@ -21,7 +21,9 @@ import * as api from '../../utils/apiUtils.js'
 const Settings = ({ accountInfo, logout, loggedIn, setShowThemeOptions }) => {
 
     const updateOptions = (theme) => {
-        api.updateOptions(accountInfo.account_id, theme)
+        if (loggedIn) {
+            api.updateOptions(accountInfo.account_id, theme)
+        }
     }
 
     return (
@@ -32,15 +34,15 @@ const Settings = ({ accountInfo, logout, loggedIn, setShowThemeOptions }) => {
             </div>
             <div className="s-line-spacing">
                 <ColoredLine
-                 color="var(--primary-color)"
-                 width='100%'
+                    color="var(--primary-color)"
+                    width='100%'
                 />
             </div>
             {loggedIn ? <AccountTile accountInfo={accountInfo} logout={logout} /> : <SettingsLoginTile />}
             <div className="s-line-spacing">
-                <ColoredLine 
-                color="var(--primary-color)"
-                width='100%' />
+                <ColoredLine
+                    color="var(--primary-color)"
+                    width='100%' />
             </div>
             <div className="sub">
                 Preferences
