@@ -56,13 +56,13 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
 
     const login = async (email, photo, name) => {
         var hash = sha256(email)
-        console.log(hash.toString() + " " + hash.toString().length)
 
         setLoading(true)
 
         var account = await api.callLogin(hash.toString(), photo, name)
 
-        if (account == -1) {
+        if (account.account_id === -1) {
+            var name = name.substring(0, 14)
             var socialId = Math.floor(Math.random() * (9999 - 1000) + 1000)
             var noSpaceName = name.replace(/\s+/g, '')
             await api.callRegisterAccount(hash.toString(), photo, name, noSpaceName + "" + socialId.toString())
@@ -70,8 +70,7 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
         }
 
         var account_stats = await api.getStats(account.account_id);
-        var friends_list = await api.getFriends(account.account_id);
-        var friend_requests = await api.getFriendRequests(account.social_id)
+        var friends_list = await api.getFriends(account.account_id, account.social_id);
 
 
         console.log(account)
@@ -79,8 +78,7 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
         onLogin(
             account,
             account_stats,
-            friends_list,
-            friend_requests
+            friends_list
         );
     }
 

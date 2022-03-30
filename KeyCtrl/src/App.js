@@ -42,7 +42,6 @@ function App() {
   const [accountInfo, setAccountInfo] = useState({})
   const [friendsList, setFriendsList] = useState({})
   const [accountStats, setAccountStats] = useState({})
-  const [friendRequests, setFriendRequests] = useState({})
 
   const [updateOnce, setUpdateOnce] = useState(false)
 
@@ -66,7 +65,7 @@ function App() {
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
-  const onLogin = async (account_, accountStats_, friendsList_, friendRequests_) => {
+  const onLogin = async (account_, accountStats_, friendsList_) => {
 
     setLoading(false);
 
@@ -74,10 +73,10 @@ function App() {
     console.log(account_);
 
     if (account_ !== null) {
+      document.documentElement.setAttribute('data-theme', account_.o_theme);
       setAccountInfo(account_);
       setAccountStats(accountStats_)
       setFriendsList(friendsList_)
-      setFriendRequests(friendRequests_)
       setLoggedIn(true);
       // displayMsg()
     } else {
@@ -247,7 +246,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList accountInfo={accountInfo} friendsList={friendsList} friendRequests={friendRequests} />
+              <FriendsList accountInfo={accountInfo} friendsList={friendsList} />
             </SlidingPane>
 
           </div>

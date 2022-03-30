@@ -83,11 +83,15 @@ const FriendsList = ({ friendsList, accountInfo, friendRequests }) => {
 
         var newFriendName = addFriend.replace('#', '');
         var newFriendName = newFriendName.replace(' ', '');
-        await api.callAddFriend(accountInfo.account_id, newFriendName);
+        if (newFriendName === accountInfo.social_id) {
+            alert("You can't add yourself, find more friends loser.")
+        } else {
+            await api.callAddFriend(accountInfo.account_id, newFriendName);
+        }
         setAddFriend([])
     };
 
-    console.log(friendsList, friendRequests)
+    console.log(friendsList)
 
     return (
         <div className='maincontainer'>
@@ -154,11 +158,11 @@ const FriendsList = ({ friendsList, accountInfo, friendRequests }) => {
             </div>
             <div onClick={() => setFriendRequestsOpen((o) => !o)} className='display-friend-list-box'>
                 Friend Requests
-                {friendRequestsOpen ? <IoIosArrowUp/> : <IoIosArrowDown />}
+                {friendRequestsOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </div>
             {friendRequestsOpen ?
                 <div className='friends-list-friends'>
-                    {friendRequests.map(function (obj, idx) {
+                    {friendsList[1].map(function (obj, idx) {
                         console.log(obj)
                         return (
                             <FriendRequest
@@ -171,15 +175,17 @@ const FriendsList = ({ friendsList, accountInfo, friendRequests }) => {
             }
             <div onClick={() => setFriendListOpen((o) => !o)} className='display-friend-list-box'>
                 Friends
-                {friendListOpen ? <IoIosArrowUp/> : <IoIosArrowDown />}
+                {friendListOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
             </div>
             {friendListOpen ?
                 <div className='friends-list-friends'>
-                    {friendsList.map(function (obj, idx) {
+                    {friendsList[0].map(function (obj, idx) {
                         return (
                             <Friend
+                                accountInfo={accountInfo}
                                 username={obj.display_name}
                                 imageUrl={obj.photo}
+                                socialId={obj.social_id}
                                 status={true}
                             />
                         )

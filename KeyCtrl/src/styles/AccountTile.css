@@ -69,3 +69,10 @@
     flex-direction: row;
     align-self: flex-start;
 }
+
+.delete-account-popup{
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}

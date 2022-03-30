@@ -202,7 +202,7 @@ export const TypingTest = (props) => {
                         }
 
                     } else if (event.key != randomWords[lineIndex] && props.loggedIn) {
-                        props.incrementMissed(randomWords[lineIndex]);
+                        // props.incrementMissed(randomWords[lineIndex]);
                         // console.log(randomWords[index]);
                         // console.log(accountInfo.letter_misses);
                     }

@@ -4,6 +4,7 @@ import ColoredLine from './ColoredLine'
 import AccountTile from './AccountTile'
 import SettingsLoginTile from './SettingsLoginTile'
 import ThemeSelect from './ThemeSelect'
+import * as api from '../../utils/apiUtils.js'
 
 /**
  * @module Settings
@@ -18,6 +19,13 @@ import ThemeSelect from './ThemeSelect'
  */
 
 const Settings = ({ accountInfo, logout, loggedIn, setShowThemeOptions }) => {
+
+    const updateOptions = (theme) => {
+        if (loggedIn) {
+            api.updateOptions(accountInfo.account_id, theme)
+        }
+    }
+
     return (
         <div className="s-wrapper">
 
@@ -26,21 +34,21 @@ const Settings = ({ accountInfo, logout, loggedIn, setShowThemeOptions }) => {
             </div>
             <div className="s-line-spacing">
                 <ColoredLine
-                 color="var(--primary-color)"
-                 width='100%'
+                    color="var(--primary-color)"
+                    width='100%'
                 />
             </div>
             {loggedIn ? <AccountTile accountInfo={accountInfo} logout={logout} /> : <SettingsLoginTile />}
             <div className="s-line-spacing">
-                <ColoredLine 
-                color="var(--primary-color)"
-                width='100%' />
+                <ColoredLine
+                    color="var(--primary-color)"
+                    width='100%' />
             </div>
             <div className="sub">
                 Preferences
             </div>
             <div className="s-section">
-                <ThemeSelect setShowThemeOptions={setShowThemeOptions} />
+                <ThemeSelect updateOptions={updateOptions} setShowThemeOptions={setShowThemeOptions} />
             </div>
         </div>
     )

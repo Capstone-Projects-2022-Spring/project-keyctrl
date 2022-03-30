@@ -40,6 +40,7 @@ export function callRegisterAccount(email, photoUrl, name, socialId) {
         })
     };
 
+    console.log(options)
     return rp(options)
         .then(function(acc){
             console.log(acc);
@@ -101,8 +102,6 @@ export function getStats(id) {
         })
         .catch(function (err) {
     });
-
-    return account;
 }
 export function callAddFriend(AccountId, socialId) {
     
@@ -128,27 +127,11 @@ export function callAddFriend(AccountId, socialId) {
            
 }
 
-export function getFriends(id) {
+export function getFriends(id, socialId) {
 
     var options = {
-        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updatefriends?userId=' + id
-    };
-
-    return rp(options)
-        .then(function(acc){
-            console.log(acc);
-            return JSON.parse(acc);
-        })
-        .finally(function(){
-        })
-        .catch(function (err) {
-    });
-}
-
-export function getFriendRequests(id) {
-
-    var options = {
-        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/getfriendreq?socialId=' + id
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updatefriends?userId='
+         + id + "&socialId=" + socialId
     };
 
     return rp(options)
@@ -177,6 +160,66 @@ export function respondToRequest(requestId, resp) {
     return rp(options)
         .then(function(res){
             console.log(res);
+            return res
+        })
+           
+}
+
+export function deleteAccount(id) {
+
+    var options = {
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/deleteaccount?userId=' + id
+    };
+
+    return rp(options)
+        .then(function(acc){
+            console.log(acc);
+            return JSON.parse(acc);
+        })
+        .finally(function(){
+        })
+        .catch(function (err) {
+    });
+}
+
+
+export function removeFriend(account_id, social_id, friend_name ) {
+   
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/removefriend',
+        body: JSON.stringify( {
+        "userId": account_id,
+        "socialId": social_id,
+        "friendId": friend_name
+
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log("removeFriend", res);
+            return res
+        })
+           
+}
+
+export function updateOptions(account_id, theme) {
+    
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updateoptions',
+        body: JSON.stringify( {
+        "userId": account_id,
+        "theme": theme,
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log("updateOptions", res);
             return res
         })
            
