@@ -68,7 +68,7 @@ function changeStat(current) {
     }
 }
 
-const FriendsList = ({ friendsList, accountInfo }) => {
+const FriendsList = ({ friendsList, accountInfo, friendRequests }) => {
 
     const [addFriend, setAddFriend] = useState([]);
     const [count, setCount] = useState(1);
