@@ -70,8 +70,7 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
         }
 
         var account_stats = await api.getStats(account.account_id);
-        var friends_list = await api.getFriends(account.account_id);
-        var friend_requests = await api.getFriendRequests(account.social_id)
+        var friends_list = await api.getFriends(account.account_id, account.social_id);
 
 
         console.log(account)
@@ -79,8 +78,7 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
         onLogin(
             account,
             account_stats,
-            friends_list,
-            friend_requests
+            friends_list
         );
     }
 

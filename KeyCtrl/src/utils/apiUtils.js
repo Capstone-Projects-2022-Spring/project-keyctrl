@@ -128,10 +128,11 @@ export function callAddFriend(AccountId, socialId) {
            
 }
 
-export function getFriends(id) {
+export function getFriends(id, socialId) {
 
     var options = {
-        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updatefriends?userId=' + id
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updatefriends?userId='
+         + id + "&socialId=" + socialId
     };
 
     return rp(options)
