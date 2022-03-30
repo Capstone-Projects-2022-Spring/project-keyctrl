@@ -56,13 +56,14 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
 
     const login = async (email, photo, name) => {
         var hash = sha256(email)
-        console.log(hash.toString() + " " + hash.toString().length)
 
         setLoading(true)
 
         var account = await api.callLogin(hash.toString(), photo, name)
 
+
         if (account == -1) {
+            var name = name.substring(0, 14)
             var socialId = Math.floor(Math.random() * (9999 - 1000) + 1000)
             var noSpaceName = name.replace(/\s+/g, '')
             await api.callRegisterAccount(hash.toString(), photo, name, noSpaceName + "" + socialId.toString())

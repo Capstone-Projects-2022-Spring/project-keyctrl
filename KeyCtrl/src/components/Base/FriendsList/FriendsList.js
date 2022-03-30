@@ -182,8 +182,10 @@ const FriendsList = ({ friendsList, accountInfo }) => {
                     {friendsList[0].map(function (obj, idx) {
                         return (
                             <Friend
+                                accountInfo={accountInfo}
                                 username={obj.display_name}
                                 imageUrl={obj.photo}
+                                socialId={obj.social_id}
                                 status={true}
                             />
                         )

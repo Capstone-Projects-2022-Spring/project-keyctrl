@@ -4,6 +4,7 @@ import ColoredLine from './ColoredLine'
 import AccountTile from './AccountTile'
 import SettingsLoginTile from './SettingsLoginTile'
 import ThemeSelect from './ThemeSelect'
+import * as api from '../../utils/apiUtils.js'
 
 /**
  * @module Settings
@@ -18,6 +19,11 @@ import ThemeSelect from './ThemeSelect'
  */
 
 const Settings = ({ accountInfo, logout, loggedIn, setShowThemeOptions }) => {
+
+    const updateOptions = (theme) => {
+        api.updateOptions(accountInfo.account_id, theme)
+    }
+
     return (
         <div className="s-wrapper">
 
@@ -40,7 +46,7 @@ const Settings = ({ accountInfo, logout, loggedIn, setShowThemeOptions }) => {
                 Preferences
             </div>
             <div className="s-section">
-                <ThemeSelect setShowThemeOptions={setShowThemeOptions} />
+                <ThemeSelect updateOptions={updateOptions} setShowThemeOptions={setShowThemeOptions} />
             </div>
         </div>
     )

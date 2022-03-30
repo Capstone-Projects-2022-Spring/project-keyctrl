@@ -68,13 +68,14 @@ const StyledPopup = styled(Popup)`
 `;
 
 
-const ThemeSelect = () => {
+const ThemeSelect = ({updateOptions}) => {
 
     const [themeName, setThemeName] = useState(document.documentElement.getAttribute('data-theme'))
 
     const changeTheme = (theme) => {
         document.documentElement.setAttribute('data-theme', theme);
         setThemeName(document.documentElement.getAttribute('data-theme'))
+        updateOptions(theme);
     }
 
     return (
