@@ -7,9 +7,8 @@ import '../../styles/Modal.css'
 import '../../styles/MultiplayerPage.css'
 import MultiplayerGame from "./MultiplayerGame.js"
 import { MdSettings } from "react-icons/md"
-import { GiMagnifyingGlass } from "react-icons/gi"
-import { GiThreeFriends } from "react-icons/gi"
-import {MdPrivateConnectivity} from "react-icons/md"
+import { GiLaurelsTrophy } from "react-icons/gi"
+import { MdPrivateConnectivity, MdSearch } from "react-icons/md"
 
 
 
@@ -29,7 +28,7 @@ const Button = styled.button`
   }
 `
 
-const Multiplayer = () => {  
+const Multiplayer = () => {
   //Set lobby join state and update during button press
   const [joinLobby, setJoinLobby] = useState(false)
   const [lobbyID, setLobbyID] = useState(0)
@@ -37,21 +36,21 @@ const Multiplayer = () => {
   const [isFindMatch, setFindMatch] = useState(false)
 
   const socketRef = useRef()
-    useEffect(
-      () => {
-        if(socketRef.current == null) {
-          socketRef.current = io.connect("https://generated-respected-python.glitch.me")
-        }
-        //Finding Match code...
-        socketRef.current.on('findMatchSuccess', (lobby) => {
-          console.log(socketRef.current.id + " found a match")
-          socketRef.current.disconnect()
-          setLobbyID(lobby)
-          setName('username' + Math.floor(Math.random() * 10000)) //PLACE USERNAME LOGIC HERE (dont forget to handle logged out)
-          setShowModal(false)
-          setJoinLobby(true)
-        })
+  useEffect(
+    () => {
+      if (socketRef.current == null) {
+        socketRef.current = io.connect("https://generated-respected-python.glitch.me")
+      }
+      //Finding Match code...
+      socketRef.current.on('findMatchSuccess', (lobby) => {
+        console.log(socketRef.current.id + " found a match")
+        socketRef.current.disconnect()
+        setLobbyID(lobby)
+        setName('username' + Math.floor(Math.random() * 10000)) //PLACE USERNAME LOGIC HERE (dont forget to handle logged out)
+        setShowModal(false)
+        setJoinLobby(true)
       })
+    })
 
   //Enter lobby modal
   const [showModal, setShowModal] = useState(false)
@@ -76,29 +75,49 @@ const Multiplayer = () => {
     <div>
       <div className='multiplayer-base'>
         {showModal ? <Modal setShowModal={setShowModal} cancelFindMatch={cancelFindMatch} isFindMatch={isFindMatch} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
-        {joinLobby ? null : 
-        <div className="multiplayer-Icons"> 
-              <div onClick={findMatch} className = 'find-game' > 
-                <GiMagnifyingGlass style={{fontSize: '17em'}}/>
-                <div className="multiplayer-select-text">
-                  Find Game
-                </div>
+        {joinLobby ? null :
+          <div className="multiplayer-Icons">
+            <div onClick={findMatch} className='find-game' >
+              <MdSearch style={{ fontSize: '17em' }} />
+              <div className="multiplayer-select-text">
+                Find Game
               </div>
-        </div>
-
-        }
-        
-        {joinLobby ? null : 
-        <div className="multiplayer-Icons">
-          <div onClick={enterLobbyModal} className='find-game'>
-            <MdPrivateConnectivity style={{fontSize: '17em'}}/>
-            <div className="multiplayer-select-text">
-            Private Match
+              <div className="multiplayer-description-text">
+                Join a queue to find a random online game and participate against new foes
+              </div>
+            </div>
           </div>
 
-          </div>
-        </div>
         }
+
+        {joinLobby ? null :
+          <div className="multiplayer-Icons">
+            <div onClick={enterLobbyModal} className='find-game'>
+              <MdPrivateConnectivity style={{ fontSize: '17em' }} />
+              <div className="multiplayer-select-text">
+                Private Match
+              </div>
+              <div className="multiplayer-description-text">
+                Open a private lobby to invite participants to a friendly typing game
+              </div>
+            </div>
+          </div>
+        }
+
+        {joinLobby ? null :
+          <div className="multiplayer-Icons">
+            <div onClick={enterLobbyModal} className='find-game'>
+              <GiLaurelsTrophy style={{ fontSize: '17em' }} />
+              <div className="multiplayer-select-text">
+                Ranked
+              </div>
+              <div className="multiplayer-description-text">
+                Compete in competetive typing matches to earn a spot on the ranked ladder
+              </div>
+            </div>
+          </div>
+        }
+
         {joinLobby ? <MultiplayerGame lobbyID={lobbyID} username={name} /> : null}
       </div>
       <div id='portal'></div>
