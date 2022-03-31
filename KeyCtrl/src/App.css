@@ -7,7 +7,7 @@
     user-select: none;
     --primary-color: #3d3883;
     --secondary-color: #5b5a99;
-    --text-container: #1F1D42;
+    --text-container: #2c285e;
     --dark-bg: #201D47;
     --bg-color: #262353;
     --selection-color: #50E3C2;
@@ -118,7 +118,7 @@
 [data-theme="default"]{
     --primary-color: #3d3883;
     --secondary-color: #5b5a99;
-    --text-container: #1F1D42;
+    --text-container: #2c285e;
     --dark-bg: #201D47;
     --bg-color: #262353;
     --selection-color: #50E3C2;
@@ -133,13 +133,13 @@
     --selection-color: #BD93F9;
     --text-color: #6272A4;
     --next-up-text-color: #6272A4;
-    --text-container: #44475A;
+    --text-container: #343644;
     --dark-bg: #222329;
 }
 
 [data-theme="gruvbox"]{
     --primary-color: #665C54;
-    --text-container: #665C54;
+    --text-container: #3d3733;
     --secondary-color: #928374;
     --text-color: #928374;
     --selection-color: #FE8019;
@@ -150,7 +150,7 @@
 
 [data-theme="sakura"]{
     --primary-color: #C3829E;
-    --text-container: #C3829E;
+    --text-container: #7e4b61;
     --secondary-color: #E9B1CD;
     --text-color: #E9B1CD;
     --selection-color: #FFE7DE;
@@ -172,7 +172,7 @@
 
 [data-theme="kimbie"]{
     --primary-color: #362712;
-    --text-container: #362712;
+    --text-container: #2b1f0e;
     --secondary-color: #6688c1;
     --text-color: #a57a4c;
     --next-up-text-color: #a57a4c;
@@ -183,7 +183,7 @@
 
 [data-theme="monokai"]{
     --primary-color: #646656;
-    --text-container: #646656;
+    --text-container: #3a3b2d;
     --secondary-color: #6688c1;
     --text-color: #888456;
     --next-up-text-color: #888456;
@@ -194,7 +194,7 @@
 
 [data-theme="contrast"]{
     --primary-color: #4c4c4c;
-    --text-container: #4c4c4c;
+    --text-container: #3a3a3a;
     --secondary-color: #6688c1;
     --text-color: #efffff;
     --next-up-text-color: #efffff;
@@ -205,9 +205,9 @@
 
 [data-theme="light"]{
     --primary-color: #e5e5e5;
-    --text-container: #e5e5e5;
+    --text-container: #eceaea;
     --secondary-color: #6688c1;
-    --text-color: #999999;
+    --text-color: #8b8b8b;
     --next-up-text-color: #999999;
     --selection-color: #007acc;
     --bg-color: #f3f3f3;
