@@ -50,7 +50,7 @@ const TitleBar = ({ setState, page, setPage, loggedIn, logout, setShowFriendList
                             </Tooltip>
 
                             <Tooltip title="Typing Test" arrow>
-                                <Link to="project-keyctrl">
+                                <Link to="">
                                     <MdKeyboard onClick={() => setPage(0)} style={page === 0 ? { color: 'var(--selection-color)', backgroundColor: 'var(--bg-color)' } : null} className='tb-button' />
                                 </Link>
                             </Tooltip>
@@ -62,13 +62,11 @@ const TitleBar = ({ setState, page, setPage, loggedIn, logout, setShowFriendList
                             </Tooltip>
 
                             <Tooltip title={loggedIn ? "Logout" : "Login"} arrow>
-                                <Link to="project-keyctrl">
                                     {loggedIn ?
                                         <FiLogOut className='tb-button' onClick={logout} />
                                         :
                                         <FiLogIn className='tb-button' onClick={openSignIn} />
                                     }
-                                </Link>
                             </Tooltip>
 
                             {loggedIn ?

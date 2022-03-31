@@ -223,7 +223,7 @@ function App() {
               {loading ? <LoadingSpinner /> : null}
 
               <Routes>
-                <Route exact path="/project-keyctrl" element={
+                <Route exact path="/" element={
                   <TypingTest
                     setUpdateOnce={setUpdateOnce}
                     setIndex={setIndex}
