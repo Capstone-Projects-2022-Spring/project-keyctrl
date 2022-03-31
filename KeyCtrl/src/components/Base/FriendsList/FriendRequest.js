@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Avatar, Badge, TextField } from '@material-ui/core';
 import '../../../styles/Friend.css'
 import { AiOutlineCheckCircle } from "react-icons/ai"
@@ -6,11 +6,34 @@ import { MdOutlineCancel } from 'react-icons/md';
 import { Tooltip } from '@material-ui/core';
 import * as api from '../../../utils/apiUtils.js'
 
-const FriendRequest = ({ object }) => {
+const FriendRequest = ({ accountInfo, setFriendsList, friendsList, object, setState }) => {
 
-    const requestResponce = (resp) => {
-        api.respondToRequest(object.request_id, resp)
+    const requestResponce = async(resp) => {
+
+        console.log(friendsList[1]);
+
+        var tempList = friendsList;
+
+        const index = friendsList[1].indexOf(object);
+
+        if (index > -1) {
+            tempList[1].splice(index, 1); // 2nd parameter means remove one item only
+        }
+
+        console.log(tempList);
+
+        setFriendsList(tempList)
+        setState(o => !o);
+        
+        await api.respondToRequest(object.request_id, resp)
+
+        if(resp === 1){
+            tempList = await api.getFriends(accountInfo.account_id, accountInfo.social_id);
+            setFriendsList(tempList)
+            setState(o => !o);
+        }
     }
+
     return (
         <div>
             <div className='friend-request-container'>
@@ -39,7 +62,7 @@ const FriendRequest = ({ object }) => {
                         </div>
                     </Tooltip>
                     <Tooltip title="Decline" arrow>
-                        <div onClick={() => requestResponce(0)} className='friend-request-button'>
+                        <div onClick={() => requestResponce(0)} className='friend-request-button-cancel'>
 
                             <MdOutlineCancel />
                         </div>
