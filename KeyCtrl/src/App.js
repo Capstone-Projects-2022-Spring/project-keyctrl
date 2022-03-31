@@ -18,16 +18,12 @@ import FriendsList from './components/Base/FriendsList/FriendsList.js';
 import Scrollbars from 'react-custom-scrollbars-2'
 import { RemoveScrollBar } from 'react-remove-scroll-bar'
 import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 // Set default theme on first initialization
 document.documentElement.setAttribute('data-theme', 'default');
 
-const Msg = ({ display_name }) => (
-  <div>
-    Login Success!
-  </div>
-)
 
 function App() {
 
@@ -52,18 +48,8 @@ function App() {
 
   const [showFriendList, setShowFriendList] = useState(false)
 
-  const displayMsg = () => {
-    toast.success(<Msg />, {
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    })
-    // toast(Msg) would also work
-  }
-
   const delay = ms => new Promise(res => setTimeout(res, ms));
+
 
   const onLogin = async (account_, accountStats_, friendsList_) => {
 
@@ -82,6 +68,18 @@ function App() {
     } else {
       alert('Account does not exist');
     }
+
+    toast.success('Welcome, ' + account_.display_name, {
+      position: "top-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored'
+    });
+
 
   }
 
@@ -175,6 +173,17 @@ function App() {
 
   return (
     <div className="App">
+      <ToastContainer
+              position="top-left"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss={false}
+              draggable
+              pauseOnHover={false}
+            />
       <Scrollbars autoHeight autoHeightMin={window.innerHeight}>
         <div className="window">
           {/* <div className="task-bar">
@@ -197,6 +206,8 @@ function App() {
               draggable
               pauseOnHover
             /> */}
+            
+
             <TitleBar
               page={page}
               setPage={setPage}
@@ -246,7 +257,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList accountInfo={accountInfo} friendsList={friendsList} />
+              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} />
             </SlidingPane>
 
           </div>

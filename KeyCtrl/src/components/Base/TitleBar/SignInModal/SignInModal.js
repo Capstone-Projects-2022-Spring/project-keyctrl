@@ -60,8 +60,10 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
         setLoading(true)
 
         var account = await api.callLogin(hash.toString(), photo, name)
+         
+        console.log(account)
 
-        if (account.account_id === -1) {
+        if (account === -1) {
             var name = name.substring(0, 14)
             var socialId = Math.floor(Math.random() * (9999 - 1000) + 1000)
             var noSpaceName = name.replace(/\s+/g, '')
@@ -150,8 +152,7 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
     const responseGoogle = response => {
         setShowSignIn(false)
         console.log(response);
-        console.log(response.profileObj.imageUrl)
-        console.log(response.profileObj.email)
+        console.log(response.profileObj.email, response.profileObj.imageUrl, response.profileObj.name)
         login(response.profileObj.email, response.profileObj.imageUrl, response.profileObj.name)
         //after login in on google login, we call login
     };

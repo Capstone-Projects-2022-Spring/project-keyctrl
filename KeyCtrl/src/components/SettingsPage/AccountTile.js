@@ -8,6 +8,7 @@ import { Avatar } from '@material-ui/core'
 import styled from 'styled-components'
 import Popup from 'reactjs-popup'
 import * as api from '../../utils/apiUtils.js'
+import { toast } from 'react-toastify'
 
 /**
  * @module AccountTile
@@ -94,6 +95,17 @@ const AccountTile = ({ accountInfo, logout }) => {
     const deleteAccount = () => {
         api.deleteAccount(accountInfo.account_id)
         logout()
+
+    toast.success('Account successfully deleted' , {
+      position: "top-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored'
+    });
     }
 
     return (

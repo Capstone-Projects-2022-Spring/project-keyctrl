@@ -15,6 +15,55 @@
     --next-up-text-color: #585774;
     --warning: #ff0000;
     background: var(--dark-bg);
+
+    --toastify-color-light: var(--bg-color) !important;
+    --toastify-color-dark: var(--dark-bg) !important;
+    --toastify-color-info: #3498db !important;
+    --toastify-color-success: var(--bg-color) !important;
+    --toastify-color-warning: #f1c40f !important;
+    --toastify-color-error: var(--bg-color) !important;
+    --toastify-color-transparent: var(--selection-color) !important;
+
+    --toastify-icon-color-info: var(--toastify-color-info) !important;
+    --toastify-icon-color-success: var(--selection-color) !important;
+    --toastify-icon-color-warning: var(--toastify-color-warning) !important;
+    --toastify-icon-color-error: var(--warning) !important;
+
+    --toastify-toast-width: 320px;
+    --toastify-toast-background: #fff;
+    --toastify-toast-min-height: 64px;
+    --toastify-toast-max-height: 800px;
+    --toastify-font-family: sans-serif;
+    --toastify-z-index: 9999;
+
+    --toastify-text-color-light: var(--selection-color) !important; 
+    --toastify-text-color-dark: var(--selection-color) !important; 
+
+    /*Used only for colored theme*/
+    --toastify-text-color-info: #fff !important;
+    --toastify-text-color-success: var(--selection-color) !important;
+    --toastify-text-color-warning: #fff !important;
+    --toastify-text-color-error: var(--selection-color) !important;
+
+    --toastify-spinner-color: var(--selection-color) !important;
+    --toastify-spinner-color-empty-area: #e0e0e0 !important;
+
+    /*Used when no type is provided*/
+  --toastify-color-progress-light: linear-gradient(
+    to right,
+    var(--selection-color),
+    #5ac8fa,
+    #007aff,
+    #34aadc,
+    #5856d6,
+    #ff2d55
+  );
+  /* Used when no type is provided */
+  --toastify-color-progress-dark: #bb86fc;
+  --toastify-color-progress-info: var(--toastify-color-info);
+  --toastify-color-progress-success: var(--toastify-color-success);
+  --toastify-color-progress-warning: var(--toastify-color-warning);
+  --toastify-color-progress-error: var(--toastify-color-error);
 }
 
 /* ::-webkit-scrollbar {
