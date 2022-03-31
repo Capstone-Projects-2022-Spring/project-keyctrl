@@ -179,6 +179,27 @@ const ThemeSelect = ({updateOptions}) => {
                     onClick={() => changeTheme('cobalt')}>
                     cobalt
                 </BaseThemeBox>
+                <BaseThemeBox
+                    background="#122738"
+                    border="#b67534"
+                    text="#c0caf5"
+                    onClick={() => changeTheme('bronze')}>
+                    bronze
+                </BaseThemeBox>
+                <BaseThemeBox
+                    background="#282828"
+                    border="#C0C0C0"
+                    text="#c0caf5"
+                    onClick={() => changeTheme('silver')}>
+                    silver
+                </BaseThemeBox>
+                <BaseThemeBox
+                    background="#122738"
+                    border="#fbc401"
+                    text="#fce981"
+                    onClick={() => changeTheme('gold')}>
+                    gold
+                </BaseThemeBox>
             </StyledPopup>
         </div>
     )

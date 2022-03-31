@@ -246,3 +246,25 @@
     --bg-color: #122738;
     --dark-bg: #193549;
 }
+
+[data-theme="silver"]{
+    --primary-color: #ffffff;
+    --text-container: #444444;
+    --secondary-color: #c16666;
+    --text-color: #a7a5a5;
+    --next-up-text-color: #a5a6a7;
+    --selection-color: #C0C0C0;
+    --bg-color: #464646;
+    --dark-bg: #282828;
+}
+
+[data-theme="gold"]{
+    --primary-color: #ffffff;
+    --text-container: #444444;
+    --secondary-color: #c16666;
+    --text-color: #fce981;
+    --next-up-text-color: #ffe96d;
+    --selection-color: #FFD700;
+    --bg-color: #464646;
+    --dark-bg: #282828;
+}
