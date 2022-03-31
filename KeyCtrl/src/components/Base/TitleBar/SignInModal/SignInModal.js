@@ -10,6 +10,7 @@ import sha256 from 'crypto-js/sha256';
 
 import * as api from '../../../../utils/apiUtils.js'
 import { AiFillPicture } from 'react-icons/ai';
+import styled from 'styled-components';
 
 /**
  * @module SignInModal
@@ -60,7 +61,7 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
         setLoading(true)
 
         var account = await api.callLogin(hash.toString(), photo, name)
-         
+
         console.log(account)
 
         if (account === -1) {
