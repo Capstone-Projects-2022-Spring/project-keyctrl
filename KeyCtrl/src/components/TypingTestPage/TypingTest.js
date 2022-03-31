@@ -281,13 +281,16 @@ export const TypingTest = (props) => {
                     })}
                 </div>
 
+
+            </div>
+            {/* <div className="word-base"> */}
                 <div className="test-line-container next-up">
                     {nextUpRandomWords}
                 </div>
-            </div>
+            {/* </div> */}
         </div>
         // <TypingSettings />
-)
+    )
 
 }
 
