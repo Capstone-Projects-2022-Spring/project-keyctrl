@@ -68,6 +68,7 @@ function changeStat(current) {
     }
 }
 
+
 const FriendsList = ({ setFriendsList, friendsList, accountInfo }) => {
 
     const [addFriend, setAddFriend] = useState([]);
