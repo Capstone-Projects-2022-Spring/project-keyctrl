@@ -32,7 +32,7 @@ const Multiplayer = ({accountInfo}) => {
   //Set lobby join state and update during button press
   const [joinLobby, setJoinLobby] = useState(false)
   const [lobbyID, setLobbyID] = useState(0)
-  const [name, setName] = useState('username' + Math.floor(Math.random() * 1000))
+  const [name, setName] = useState('guest' + Math.floor(Math.random() * 1000))
   const [isFindMatch, setFindMatch] = useState(false)
 
   const socketRef = useRef()
