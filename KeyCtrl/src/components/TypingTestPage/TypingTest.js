@@ -176,7 +176,7 @@ export const TypingTest = (props) => {
 
             case "Enter":
                 // setUpdateOnce(true);
-                if (!timerActive) {
+                if (!timerActive && props.showFriendList) {
                     setTimerActive(true);
                     if (countdownToggleChecked)
                         setInCountdown(true);

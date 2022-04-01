@@ -174,16 +174,16 @@ function App() {
   return (
     <div className="App">
       <ToastContainer
-              position="top-left"
-              autoClose={3000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss={false}
-              draggable
-              pauseOnHover={false}
-            />
+        position="top-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+      />
       <Scrollbars autoHeight autoHeightMin={window.innerHeight}>
         <div className="window">
           {/* <div className="task-bar">
@@ -206,7 +206,7 @@ function App() {
               draggable
               pauseOnHover
             /> */}
-            
+
 
             <TitleBar
               page={page}
@@ -238,6 +238,7 @@ function App() {
                     WPMTime={WPMTime}
                     setWPMTime={setWPMTime}
                     grossWPM={grossWPM}
+                    showFriendList={showFriendList}
                   />
                 } />
                 <Route exact path="/training" element={<Training />} />
@@ -261,7 +262,6 @@ function App() {
             </SlidingPane>
 
           </div>
-
           <SignInModal setLoading={setLoading} loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
         </div>
       </Scrollbars>
