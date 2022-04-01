@@ -9,7 +9,7 @@ import Popup from 'reactjs-popup'
 const MultiplayerGame = (props) => {
   const [lobbyPlayers, setLobbyPlayers] = useState(new Map())
 
-  const [staticCountdown, setStaticCountdown] = useState(15);
+  const [staticCountdown, setStaticCountdown] = useState(45);
   const [countdown, setCountdown] = useState(3);
   const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
   const [lineIndex, setLineIndex] = useState(0)
@@ -59,6 +59,16 @@ const MultiplayerGame = (props) => {
       socketRef.current.on("message", ({ name, message }, room) => {
         setChat([...chat, { name, message }])
       })
+
+      socketRef.current.on('findMatchSuccess', (lobby) => {
+        console.log(socketRef.current.id + " found a match")
+        socketRef.current.disconnect()
+        props.setLobbyID(lobby)
+        props.setShowModal(false)
+        props.setJoinLobby(false)
+        props.setJoinLobby(true)
+      })
+
       socketRef.current.on("gameStart", () => {
         console.log("Game Start")
         setInCountdown(true)
@@ -269,6 +279,23 @@ const MultiplayerGame = (props) => {
 
   // ---------------------------------------------------
 
+  function readyUp() {
+    if(props.isFindMatch) {
+      //get back in Find Match queue
+      props.setShowModal(true)
+      socketRef.current.emit('findMatch')
+    } else {
+      socketRef.current.emit('switchLobby', { lobbyID }, username)
+      //reinitiate same private game
+    }
+    closeLeaderBoard()
+  }
+
+  function leaveRoom() {
+      //back to mp menu
+      props.setJoinLobby(false)
+      props.setFindMatch(false)
+  }
 
 
 
@@ -320,6 +347,12 @@ const MultiplayerGame = (props) => {
               )
             })} */}
           </Leaderboard>
+          <PostMatchOptions>
+          <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
+            <button onClick={readyUp}>Ready Up</button>
+            <button onClick={leaveRoom}>Leave</button>
+          </div>
+          </PostMatchOptions>
         </EndingPopup>
 
 
@@ -361,6 +394,16 @@ const EndingPopup = styled(Popup)`
 `;
 
 const Leaderboard = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+  font-family: "almarai";
+  font-size: 2em;
+  justify-content: center;
+  text-align: center;
+`
+
+const PostMatchOptions = styled.div`
   display: flex;
   flex-direction: column;
   color: var(--text-color);
