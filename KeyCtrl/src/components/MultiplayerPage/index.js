@@ -2,7 +2,7 @@ const app = require('express')()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http, {
   cors: {
-    origin: ["https://capstone-projects-2022-spring.github.io", "http://localhost:3000"],  //CHANGE TO HOST URL
+    origin: ["https://capstone-projects-2022-spring.github.io", "http://localhost:3000" ,"https://keyctrl.net"],  //CHANGE TO HOST URL
     methods: ["GET", "POST"],
     credentials: true,
     transports: ['websocket', 'polling']
@@ -75,11 +75,11 @@ io.on('connection', (socket) => {
 
   socket.on('cancelFindMatch', function() {
     findMatchPlayers.splice(findMatchPlayers.indexOf(socket.id), 1)
+    console.log(socket.id + " stopped looking for a match")
   })
 
   //Custom Lobby code
   socket.on('switchLobby', function(newRoom, username) {
-    socket.leave(newRoom.lobbyID)
     socket.join(newRoom.lobbyID);
     socket.emit('updateLobby', newRoom);
 
@@ -151,4 +151,4 @@ io.on('connection', (socket) => {
 
 http.listen(4000, () => {
   console.log('listening on *:4000');
-});
+}); 

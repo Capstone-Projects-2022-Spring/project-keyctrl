@@ -28,16 +28,19 @@ const Button = styled.button`
   }
 `
 
-const Multiplayer = () => {
+const Multiplayer = ({accountInfo}) => {
   //Set lobby join state and update during button press
   const [joinLobby, setJoinLobby] = useState(false)
   const [lobbyID, setLobbyID] = useState(0)
-  const [name, setName] = useState("")
+  const [name, setName] = useState('username' + Math.floor(Math.random() * 1000))
   const [isFindMatch, setFindMatch] = useState(false)
 
   const socketRef = useRef()
+
   useEffect(
     () => {
+      determineName()
+      console.log(typeof name + " " + name)
       if (socketRef.current == null) {
         socketRef.current = io.connect("https://generated-respected-python.glitch.me")
       }
@@ -46,7 +49,6 @@ const Multiplayer = () => {
         console.log(socketRef.current.id + " found a match")
         socketRef.current.disconnect()
         setLobbyID(lobby)
-        setName('username' + Math.floor(Math.random() * 10000)) //PLACE USERNAME LOGIC HERE (dont forget to handle logged out)
         setShowModal(false)
         setJoinLobby(true)
       })
@@ -54,6 +56,12 @@ const Multiplayer = () => {
 
   //Enter lobby modal
   const [showModal, setShowModal] = useState(false)
+  function determineName() {
+    if(typeof accountInfo.display_name !== 'undefined') {
+      console.log(name)
+      setName(accountInfo.display_name)
+    }
+  }
   function findMatch() {
     setFindMatch(true)
     setShowModal(true)
@@ -70,11 +78,10 @@ const Multiplayer = () => {
     setShowModal(true)
   }
 
-
   return (
     <div>
       <div className='multiplayer-base'>
-        {showModal ? <Modal setShowModal={setShowModal} cancelFindMatch={cancelFindMatch} isFindMatch={isFindMatch} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
+        {showModal ? <Modal setShowModal={setShowModal} cancelFindMatch={cancelFindMatch} isFindMatch={isFindMatch} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} name={name} setName={setName} /> : null}
         {joinLobby ? null :
           <div className="multiplayer-Icons">
             <div onClick={findMatch} className='find-game' >
