@@ -9,7 +9,7 @@ import Popup from 'reactjs-popup'
 const MultiplayerGame = (props) => {
   const [lobbyPlayers, setLobbyPlayers] = useState(new Map())
 
-  const [staticCountdown, setStaticCountdown] = useState(15);
+  const [staticCountdown, setStaticCountdown] = useState(45);
   const [countdown, setCountdown] = useState(3);
   const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
   const [lineIndex, setLineIndex] = useState(0)
@@ -283,11 +283,12 @@ const MultiplayerGame = (props) => {
     if(props.isFindMatch) {
       //get back in Find Match queue
       props.setShowModal(true)
-      closeLeaderBoard()
       socketRef.current.emit('findMatch')
     } else {
-      //reinitiate same private game - maybe call switchLobby with the current lobby id?
+      socketRef.current.emit('switchLobby', { lobbyID }, username)
+      //reinitiate same private game
     }
+    closeLeaderBoard()
   }
 
   function leaveRoom() {

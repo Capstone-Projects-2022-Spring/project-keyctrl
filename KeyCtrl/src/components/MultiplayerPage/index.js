@@ -38,7 +38,7 @@ function getNewWordsLine() {
 
 //Server-side networking code
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log(socket.id + ' connected');
 
   /*Find Match
   * ----------
@@ -117,7 +117,10 @@ io.on('connection', (socket) => {
   socket.on('disconnecting', function() {
     //Remove players from lobby/find match queue on disconnecting
     var socketInfo = Array.from(socket.rooms)
-    numClients[socketInfo[1]]--
+    if(numClients[socketInfo[1]] > 0) {
+      numClients[socketInfo[1]]--
+    }
+    
     findMatchPlayers.splice(findMatchPlayers.indexOf(socket.id), 1)
   })
 
@@ -133,6 +136,7 @@ io.on('connection', (socket) => {
     matchResultsArray[room].push({player, WPM})
     if(matchResultsArray[room].length === numClients[room]) {
       io.in(room).emit('matchResults', matchResultsArray[room])
+      numClients[room] = 0
 
       //room reset
       matchResultsArray[room] = null
