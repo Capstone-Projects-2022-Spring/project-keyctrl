@@ -59,6 +59,16 @@ const MultiplayerGame = (props) => {
       socketRef.current.on("message", ({ name, message }, room) => {
         setChat([...chat, { name, message }])
       })
+
+      socketRef.current.on('findMatchSuccess', (lobby) => {
+        console.log(socketRef.current.id + " found a match")
+        socketRef.current.disconnect()
+        props.setLobbyID(lobby)
+        props.setShowModal(false)
+        props.setJoinLobby(false)
+        props.setJoinLobby(true)
+      })
+
       socketRef.current.on("gameStart", () => {
         console.log("Game Start")
         setInCountdown(true)
@@ -269,6 +279,22 @@ const MultiplayerGame = (props) => {
 
   // ---------------------------------------------------
 
+  function readyUp() {
+    if(props.isFindMatch) {
+      //get back in Find Match queue
+      props.setShowModal(true)
+      closeLeaderBoard()
+      socketRef.current.emit('findMatch')
+    } else {
+      //reinitiate same private game - maybe call switchLobby with the current lobby id?
+    }
+  }
+
+  function leaveRoom() {
+      //back to mp menu
+      props.setJoinLobby(false)
+      props.setFindMatch(false)
+  }
 
 
 
@@ -320,6 +346,12 @@ const MultiplayerGame = (props) => {
               )
             })} */}
           </Leaderboard>
+          <PostMatchOptions>
+          <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
+            <button onClick={readyUp}>Ready Up</button>
+            <button onClick={leaveRoom}>Leave</button>
+          </div>
+          </PostMatchOptions>
         </EndingPopup>
 
 
@@ -361,6 +393,16 @@ const EndingPopup = styled(Popup)`
 `;
 
 const Leaderboard = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+  font-family: "almarai";
+  font-size: 2em;
+  justify-content: center;
+  text-align: center;
+`
+
+const PostMatchOptions = styled.div`
   display: flex;
   flex-direction: column;
   color: var(--text-color);

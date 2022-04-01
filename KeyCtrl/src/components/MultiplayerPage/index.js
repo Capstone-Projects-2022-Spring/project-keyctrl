@@ -111,7 +111,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendPlayerIndex', function(playerName, playerIndex, playerLineArrayIndex, room) {
-    console.log(playerName, playerIndex, playerLineArrayIndex, room)
     socket.broadcast.to(room).emit('playerIndexUpdate', playerName, playerIndex, playerLineArrayIndex)
   })
 

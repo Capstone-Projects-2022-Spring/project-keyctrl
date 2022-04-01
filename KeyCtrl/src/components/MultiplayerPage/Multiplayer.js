@@ -40,14 +40,14 @@ const Multiplayer = ({accountInfo}) => {
   useEffect(
     () => {
       determineName()
-      console.log(typeof name + " " + name)
       if (socketRef.current == null) {
+        console.log("creating new connection")
         socketRef.current = io.connect("https://generated-respected-python.glitch.me")
       }
       //Finding Match code...
       socketRef.current.on('findMatchSuccess', (lobby) => {
         console.log(socketRef.current.id + " found a match")
-        socketRef.current.disconnect()
+        //socketRef.current.disconnect()
         setLobbyID(lobby)
         setShowModal(false)
         setJoinLobby(true)
@@ -125,7 +125,17 @@ const Multiplayer = ({accountInfo}) => {
           </div>
         }
 
-        {joinLobby ? <MultiplayerGame lobbyID={lobbyID} username={name} /> : null}
+        {joinLobby ? 
+          <MultiplayerGame 
+            lobbyID={lobbyID} 
+            username={name} 
+            isFindMatch={isFindMatch} 
+            setFindMatch={setFindMatch} 
+            setJoinLobby={setJoinLobby} 
+            setShowModal={setShowModal} 
+            setLobbyID={setLobbyID}
+          /> 
+          : null}
       </div>
       <div id='portal'></div>
       <div id='hiddenLobbyId' css="display:none"></div>
