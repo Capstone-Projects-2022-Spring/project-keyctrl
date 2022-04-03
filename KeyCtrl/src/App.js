@@ -155,7 +155,7 @@ function App() {
     // }
 
     if (updateOnce && loggedIn) {
-      updateAccInfo(numEntries, WPMTime, grossWPM());
+      // updateAccInfo(numEntries, WPMTime, grossWPM());
       setUpdateOnce(false);
     }
 
