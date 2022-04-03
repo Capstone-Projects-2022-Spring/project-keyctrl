@@ -180,7 +180,7 @@ export const TypingTest = (props) => {
 
             case "Enter":
                 // setUpdateOnce(true);
-                if (!timerActive) {
+                if (!timerActive || props.showFriendList) {
                     setTimerActive(true);
                     if (countdownToggleChecked && countdown > 0) {
                         setInCountdown(true);
