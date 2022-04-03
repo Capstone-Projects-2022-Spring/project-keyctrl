@@ -33,7 +33,8 @@ const MyTextField = styled((props) => (
   },
 }));
 
-export const Modal = ({ setShowModal, setJoinLobby, setLobbyID, setName, isFindMatch, cancelFindMatch }) => {
+export const Modal = ({ setShowModal, setJoinLobby, setLobbyID, setName, name, isFindMatch, cancelFindMatch }) => {
+
   // close the modal when clicking outside the modal.
   const modalRef = useRef();
   const closeModal = (e) => {
@@ -84,6 +85,7 @@ export const Modal = ({ setShowModal, setJoinLobby, setLobbyID, setName, isFindM
             label="Name"
             id="lobbyNameInput"
             variant="filled"
+            value={name
             sx={{ height: '2em' }}
           />
           <button style={{ color: 'var(--dark-bg)' }} id="lobbySubmit" onClick={() => lobbySubmit()}>Submit</button>
