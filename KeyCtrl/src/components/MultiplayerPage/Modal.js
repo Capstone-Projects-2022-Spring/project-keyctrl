@@ -85,7 +85,7 @@ export const Modal = ({ setShowModal, setJoinLobby, setLobbyID, setName, name, i
             label="Name"
             id="lobbyNameInput"
             variant="filled"
-            value={name
+            value={name}
             sx={{ height: '2em' }}
           />
           <button style={{ color: 'var(--dark-bg)' }} id="lobbySubmit" onClick={() => lobbySubmit()}>Submit</button>
