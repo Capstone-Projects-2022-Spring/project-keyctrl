@@ -47,7 +47,7 @@ import TypingSettings from "./TypingTestSettings";
 
 export const TypingTest = (props) => {
     const [staticCountdown, setStaticCountdown] = useState(15);
-    const [countdown, setCountdown] = useState(1);
+    const [countdown, setCountdown] = useState(0);
     const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
     const [lineIndex, setLineIndex] = useState(0)
     const [timer, setTimer] = useState(15);
@@ -56,6 +56,7 @@ export const TypingTest = (props) => {
     const [inCountdown, setInCountdown] = useState(false)
     const [currentLineLength, setCurrentLineLength] = useState(0);
 
+    const [letterMisses, setLetterMisses] = useState([])
     const [randomWords, setCurrentRandomWords] = useState(" ");    //setting its use state
     const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
     var randWordsFunc = require('random-words');          //Must require random-words
@@ -82,6 +83,9 @@ export const TypingTest = (props) => {
      */
 
     function reset() {
+        //updating stats here
+
+
         setTimerActive(false);
         props.setIndex(0);
         setLineIndex(0)
@@ -178,8 +182,12 @@ export const TypingTest = (props) => {
                 // setUpdateOnce(true);
                 if (!timerActive) {
                     setTimerActive(true);
-                    if (countdownToggleChecked)
+                    if (countdownToggleChecked && countdown > 0) {
                         setInCountdown(true);
+                        // add occurances at index[0]
+                        if(props.loggedIn)
+                            incrementOccurrances(randomWords[0])
+                    }
                     else
                         setInCountdown(false);
                 }
@@ -187,12 +195,15 @@ export const TypingTest = (props) => {
 
             case "Escape":
                 console.log("correct");
+                reset()
                 break;
             //EDITED TO MAKE LETTER MISSES UPDATE
             default:
                 if (timerActive && !inCountdown) {
-                    console.log(event.key + " " + randomWords[lineIndex])
                     if (event.key === randomWords[lineIndex]) {
+                        // add occurances here for next letter
+                        if(props.loggedIn)
+                            incrementOccurrances(randomWords[lineIndex + 1])
 
                         setLineIndex((lineIndex) => lineIndex + 1)
                         props.setIndex((index) => index + 1);
@@ -202,7 +213,7 @@ export const TypingTest = (props) => {
                         }
 
                     } else if (event.key != randomWords[lineIndex] && props.loggedIn) {
-                        // props.incrementMissed(randomWords[lineIndex]);
+                        incrementMissed(randomWords[lineIndex]);
                         // console.log(randomWords[index]);
                         // console.log(accountInfo.letter_misses);
                     }
@@ -220,6 +231,10 @@ export const TypingTest = (props) => {
                 setInCountdown(false);
                 props.setNumEntries(0);
                 props.setWPMTime(staticCountdown);
+            } else if(countdown === 0){
+                setInCountdown(false);
+                props.setNumEntries(0);
+                props.setWPMTime(staticCountdown);
             } else {
                 setCountdown(countdown => countdown - 1)
             }
@@ -228,6 +243,29 @@ export const TypingTest = (props) => {
             props.setNumEntries(props.index);
         }
     }, timerActive ? 1000 : null);
+
+    function incrementMissed(letter) {
+
+        if (letter != " ") {
+            var jObj = props.accountStats[0][0]
+            jObj[letter + "_misses"] = jObj[letter + "_misses"] + 1;
+            var newAccountStats = props.accountStats
+            newAccountStats[0][0] = jObj
+            props.setAccountStats(newAccountStats);
+        }
+    }
+
+    function incrementOccurrances(letter) {
+
+        if (letter != " ") {
+            var jObj = props.accountStats[0][0]
+            jObj[letter + "_occurrences"] = jObj[letter + "_occurrences"] + 1;
+            var newAccountStats = props.accountStats
+            newAccountStats[0][0] = jObj
+            props.setAccountStats(newAccountStats);
+        }
+    }
+
 
     return (
         <div className="container">
@@ -284,9 +322,9 @@ export const TypingTest = (props) => {
 
             </div>
             {/* <div className="word-base"> */}
-                <div className="test-line-container next-up">
-                    {nextUpRandomWords}
-                </div>
+            <div className="test-line-container next-up">
+                {nextUpRandomWords}
+            </div>
             {/* </div> */}
         </div>
         // <TypingSettings />

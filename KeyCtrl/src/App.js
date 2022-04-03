@@ -88,13 +88,6 @@ function App() {
     setLoggedIn(false);
   }
 
-  //INCREMENTS MISSED LETTER AND UPDATES ACCINFO
-  function incrementMissed(letter) {
-    var jObj = JSON.parse(accountInfo.letter_misses);
-    jObj[letter] = jObj[letter] + 1;
-    setAccountInfo({ ...accountInfo, letter_misses: JSON.stringify(jObj) });
-
-  }
 
   async function updateApiStats(avgWPM, topWpm, total_words, total_time) {
 
@@ -162,7 +155,7 @@ function App() {
     // }
 
     if (updateOnce && loggedIn) {
-      updateAccInfo(numEntries, WPMTime, grossWPM());
+      // updateAccInfo(numEntries, WPMTime, grossWPM());
       setUpdateOnce(false);
     }
 
@@ -230,8 +223,9 @@ function App() {
                     index={index}
                     accountInfo={accountInfo}
                     setAccountInfo={setAccountInfo}
+                    accountStats={accountStats}
+                    setAccountStats={setAccountStats}
                     loggedIn={loggedIn}
-                    incrementMissed={incrementMissed}
                     updateAccInfo={updateAccInfo}
                     numEntries={numEntries}
                     setNumEntries={setNumEntries}
@@ -241,7 +235,7 @@ function App() {
                   />
                 } />
                 <Route exact path="/training" element={<Training />} />
-                <Route exact path="/multiplayer" element={<Multiplayer accountInfo={accountInfo} />} />
+                <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} />} />
                 <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} accountStats={accountStats} /> : <OfflineAccount />)} />
                 <Route exact path="/settings" element={<Settings setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
