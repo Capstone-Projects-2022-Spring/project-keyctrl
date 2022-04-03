@@ -194,7 +194,7 @@ const ThemeSelect = ({updateOptions}) => {
                     silver
                 </BaseThemeBox>
                 <BaseThemeBox
-                    background="#122738"
+                    background="#464646"
                     border="#fbc401"
                     text="#fce981"
                     onClick={() => changeTheme('gold')}>

@@ -248,7 +248,7 @@
 }
 
 [data-theme="silver"]{
-    --primary-color: #ffffff;
+    --primary-color: #464646;
     --text-container: #444444;
     --secondary-color: #c16666;
     --text-color: #a7a5a5;
@@ -259,7 +259,7 @@
 }
 
 [data-theme="gold"]{
-    --primary-color: #ffffff;
+    --primary-color: #464646;
     --text-container: #444444;
     --secondary-color: #c16666;
     --text-color: #fce981;
