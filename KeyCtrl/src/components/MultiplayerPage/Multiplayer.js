@@ -9,6 +9,7 @@ import MultiplayerGame from "./MultiplayerGame.js"
 import { MdSettings } from "react-icons/md"
 import { GiLaurelsTrophy } from "react-icons/gi"
 import { MdPrivateConnectivity, MdSearch } from "react-icons/md"
+import Unranked from '../../assets/unranked.png'
 
 
 
@@ -28,7 +29,7 @@ const Button = styled.button`
   }
 `
 
-const Multiplayer = () => {
+const Multiplayer = ({loggedIn}) => {
   //Set lobby join state and update during button press
   const [joinLobby, setJoinLobby] = useState(false)
   const [lobbyID, setLobbyID] = useState(0)
@@ -77,26 +78,11 @@ const Multiplayer = () => {
         {showModal ? <Modal setShowModal={setShowModal} cancelFindMatch={cancelFindMatch} isFindMatch={isFindMatch} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} setName={setName} /> : null}
         {joinLobby ? null :
           <div className="multiplayer-Icons">
-            <div onClick={findMatch} className='find-game' >
-              <MdSearch style={{ fontSize: '17em' }} />
-              <div className="multiplayer-select-text">
-                Find Game
-              </div>
-              <div className="multiplayer-description-text">
-                Join a queue to find a random online game and participate against new foes
-              </div>
-            </div>
-          </div>
-
-        }
-
-        {joinLobby ? null :
-          <div className="multiplayer-Icons">
             <div onClick={enterLobbyModal} className='find-game'>
-              <MdPrivateConnectivity style={{ fontSize: '17em' }} />
               <div className="multiplayer-select-text">
                 Private Match
               </div>
+              <MdPrivateConnectivity style={{ fontSize: '17em' }} />
               <div className="multiplayer-description-text">
                 Open a private lobby to invite participants to a friendly typing game
               </div>
@@ -106,13 +92,38 @@ const Multiplayer = () => {
 
         {joinLobby ? null :
           <div className="multiplayer-Icons">
+            <div onClick={findMatch} className='find-game' >
+              <div className="multiplayer-select-text">
+                Find Game
+              </div>
+              <MdSearch style={{ fontSize: '17em' }} />
+              <div className="multiplayer-description-text">
+                Join a queue to find a random online game and participate against new foes
+              </div>
+            </div>
+          </div>
+
+        }
+
+        
+        {joinLobby || !loggedIn ? null :
+          <div className="multiplayer-Icons">
             <div onClick={enterLobbyModal} className='find-game'>
-              <GiLaurelsTrophy style={{ fontSize: '17em' }} />
               <div className="multiplayer-select-text">
                 Ranked
               </div>
-              <div className="multiplayer-description-text">
-                Compete in competetive typing matches to earn a spot on the ranked ladder
+              <GiLaurelsTrophy style={{ fontSize: '13em' }} />
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+                <div className="ranked-mmr">
+                  MMR
+                  <div style={{ color: 'var(--selection-color)' }}>
+                    775
+                  </div>
+                </div>
+                <div className='ranked-tile'>
+                  <img src={Unranked} />
+                  <div style={{ color: 'var(--selection-color)' }}>Unranked</div>
+                </div>
               </div>
             </div>
           </div>
