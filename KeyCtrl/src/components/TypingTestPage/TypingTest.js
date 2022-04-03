@@ -86,6 +86,7 @@ export const TypingTest = (props) => {
         //updating stats here
 
 
+        props.updateAccInfo();
         setTimerActive(false);
         props.setIndex(0);
         setLineIndex(0)
@@ -125,6 +126,7 @@ export const TypingTest = (props) => {
     const setCount = (count) => {
         if (!timerActive) {
             setStaticCountdown(count);
+            props.setAppStaticCountdown(count)
             setTimer(count);
         }
     };

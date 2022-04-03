@@ -38,6 +38,8 @@ function App() {
   const [accountInfo, setAccountInfo] = useState({})
   const [friendsList, setFriendsList] = useState({})
   const [accountStats, setAccountStats] = useState({})
+  const [currentGamemode, setCurrentGamemode] = useState(0)
+  const [appStaticCountdown, setAppStaticCountdown] = useState(15);
 
   const [updateOnce, setUpdateOnce] = useState(false)
 
@@ -89,45 +91,39 @@ function App() {
   }
 
 
-  async function updateApiStats(avgWPM, topWpm, total_words, total_time) {
-
-    console.log("Before Update Stats",
-      avgWPM,
-      topWpm,
-      accountInfo)
-
-    api.updateStats(
-      avgWPM,
-      topWpm,
-      accountInfo.letter_misses,
-      total_words,
-      total_time,
-      accountInfo.account_id)
+  async function updateApiStats(tempAccountStats) {
+    await api.updateStats(currentGamemode, tempAccountStats)
   }
 
-  const updateAccInfo = (numEntries, WPMTime, grossWPM) => {
+  const updateAccInfo = () => {
 
     if (loggedIn) {
+      var tempAccountStats = accountStats
+      var typingStats = tempAccountStats[currentGamemode][0]
 
-      var totWords = accountInfo.total_words + (numEntries / 5);
-      var totTime = accountInfo.total_time + WPMTime;
-      var avgWPM = (totWords / totTime) * 60;
-      //setAccountInfo({ ...accountInfo, total_words: totWords, total_time: totTime });
+      typingStats.wpm_total_tests = typingStats.wpm_total_tests + 1
+      typingStats.wpm_total_time = typingStats.wpm_total_time + appStaticCountdown
+      typingStats.wpm_total_words = typingStats.wpm_total_words + (numEntries / 5)
 
-      if ((grossWPM > accountInfo.top_wpm) || (accountInfo.top_wpm == null)) {
-        console.log("Account Top Pre-Update wpm:", accountInfo.top_wpm);
-        setAccountInfo({ ...accountInfo, top_wpm: grossWPM, total_words: totWords, total_time: totTime, avg_wpm: avgWPM });
-        console.log("Account Top Post-Update wpm:", accountInfo.top_wpm);
-      } else {
-        grossWPM = accountInfo.top_wpm;
-        setAccountInfo({ ...accountInfo, total_words: totWords, total_time: totTime, avg_wpm: avgWPM });
-      }
+      var wpm = parseInt(grossWPM())
 
-      //setAccountInfo({ ...accountInfo, avg_wpm: avgWPM });
 
-      console.log(avgWPM, totTime, totWords);
+      if (wpm > typingStats.wpm_top) {
+        //new top wpm
+        typingStats.wpm_top = wpm
+      } 
 
-      updateApiStats(avgWPM, grossWPM, totWords, totTime);
+      // setting new average wpm
+      var minutes = typingStats.wpm_total_time / 60
+      var words = typingStats.wpm_total_words
+      var new_avg_wpm = words / minutes
+      typingStats.wpm_average = new_avg_wpm
+
+      tempAccountStats[currentGamemode][0] = typingStats
+      setAccountStats(tempAccountStats);
+
+      setUpdateOnce(false);
+      updateApiStats(typingStats);
     }
   }
 
@@ -154,10 +150,9 @@ function App() {
     //   updateAccInfo(numEntries, WPMTime, grossWPM());
     // }
 
-    if (updateOnce && loggedIn) {
-      // updateAccInfo(numEntries, WPMTime, grossWPM());
-      setUpdateOnce(false);
-    }
+    // if (updateOnce && loggedIn) {
+    //   updateAccInfo();
+    // }
 
     return () => {
       document.removeEventListener('keydown', emptyForNow);
@@ -233,6 +228,7 @@ function App() {
                     setWPMTime={setWPMTime}
                     grossWPM={grossWPM}
                     showFriendList={showFriendList}
+                    setAppStaticCountdown={setAppStaticCountdown}
                   />
                 } />
                 <Route exact path="/training" element={<Training />} />
