@@ -34,6 +34,7 @@ const Multiplayer = ({accountInfo}) => {
   const [lobbyID, setLobbyID] = useState(0)
   const [name, setName] = useState('guest' + Math.floor(Math.random() * 1000))
   const [isFindMatch, setFindMatch] = useState(false)
+  const [isRanked, setRanked] = useState(false)
 
   const socketRef = useRef()
 
@@ -42,7 +43,8 @@ const Multiplayer = ({accountInfo}) => {
       determineName()
       if (socketRef.current == null) {
         console.log("creating new connection")
-        socketRef.current = io.connect("https://generated-respected-python.glitch.me")
+        //socketRef.current = io.connect("https://generated-respected-python.glitch.me")
+        socketRef.current = io.connect("http://localhost:4000")
       }
       //Finding Match code...
       socketRef.current.on('findMatchSuccess', (lobby) => {
@@ -76,6 +78,12 @@ const Multiplayer = ({accountInfo}) => {
 
   function enterLobbyModal() {
     setShowModal(true)
+  }
+
+  function findRanked() {
+    setFindMatch(true)
+    setShowModal(true)
+    socketRef.current.emit('findRanked', {username: name, mmr: 5})
   }
 
   return (
@@ -113,7 +121,7 @@ const Multiplayer = ({accountInfo}) => {
 
         {joinLobby ? null :
           <div className="multiplayer-Icons">
-            <div onClick={enterLobbyModal} className='find-game'>
+            <div onClick={findRanked} className='find-game'>
               <GiLaurelsTrophy style={{ fontSize: '17em' }} />
               <div className="multiplayer-select-text">
                 Ranked
@@ -130,7 +138,9 @@ const Multiplayer = ({accountInfo}) => {
             lobbyID={lobbyID} 
             username={name} 
             isFindMatch={isFindMatch} 
+            isRanked={isRanked}
             setFindMatch={setFindMatch} 
+            setRanked={setRanked}
             setJoinLobby={setJoinLobby} 
             setShowModal={setShowModal} 
             setLobbyID={setLobbyID}

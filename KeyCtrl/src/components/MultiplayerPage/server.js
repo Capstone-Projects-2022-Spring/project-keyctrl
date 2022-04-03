@@ -1,3 +1,4 @@
+const ioclient = require('socket.io-client')
 const app = require('express')()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http, {
@@ -15,8 +16,10 @@ var wordsArray = {};
 var roomWordsArray = {};
 var matchResultsArray = {};
 var findMatchPlayers = [];
-
 var gameStartPlayers = 4;
+
+//Matchmaking server connection
+var mmServerSocket = ioclient.connect("http://localhost:4001")
 
 //Generate lines to send to players
 var randWordsFunc = require('random-words'); 
@@ -78,7 +81,14 @@ io.on('connection', (socket) => {
     console.log(socket.id + " stopped looking for a match")
   })
 
-  //Custom Lobby code
+  //Ranked Queue
+  socket.on('findRanked', function({username, mmr}) {
+    var socketID = socket.id
+    console.log("sending " + username + " " + mmr + " to matchmaker")
+    mmServerSocket.emit('addToRankedQueue', ({socketID, username, mmr: 5}))
+  })
+
+  //Join Lobby
   socket.on('switchLobby', function(newRoom, username) {
     socket.join(newRoom.lobbyID);
     socket.emit('updateLobby', newRoom);
@@ -145,6 +155,14 @@ io.on('connection', (socket) => {
       }
       roomWordsArray[room] = wordsArray
     }
+  })
+
+  socket.on('rankedGameMatched', function(foundPlayers) {
+    //Create random lobby ID
+    var rankedLobby = 'rankedLobby' + Math.random() * 10000
+    foundPlayers.forEach(player => {
+      io.to(player.socketID).emit('findRankedMatchSuccess', rankedLobby)
+    })
   })
 
   socket.on('message', ({ name, message }, room) => {

@@ -48,7 +48,8 @@ const MultiplayerGame = (props) => {
   useEffect(
     () => {
 
-      socketRef.current = io.connect("https://generated-respected-python.glitch.me") //LOCALHOST for local testing
+      //socketRef.current = io.connect("https://generated-respected-python.glitch.me")
+      socketRef.current = io.connect("http://localhost:4000")
 
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', { lobbyID }, username)
@@ -64,6 +65,15 @@ const MultiplayerGame = (props) => {
         console.log(socketRef.current.id + " found a match")
         socketRef.current.disconnect()
         props.setLobbyID(lobby)
+        props.setShowModal(false)
+        props.setJoinLobby(false)
+        props.setJoinLobby(true)
+      })
+
+      socketRef.current.on('findRankedMatchSuccess', (rankedLobby) => {
+        console.log(socketRef.current.id + " found a ranked match")
+        socketRef.current.disconnect()
+        props.setLobbyID(rankedLobby)
         props.setShowModal(false)
         props.setJoinLobby(false)
         props.setJoinLobby(true)
