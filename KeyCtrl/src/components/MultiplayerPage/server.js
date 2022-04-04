@@ -3,7 +3,7 @@ const app = require('express')()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http, {
   cors: {
-    origin: ["https://capstone-projects-2022-spring.github.io", "http://localhost:3000" ,"https://keyctrl.net"],  //CHANGE TO HOST URL
+    origin: ["https://capstone-projects-2022-spring.github.io", "http://localhost:3000", "https://keyctrl.net"],  //CHANGE TO HOST URL
     methods: ["GET", "POST"],
     credentials: true,
     transports: ['websocket', 'polling']
@@ -16,6 +16,7 @@ var wordsArray = {};
 var roomWordsArray = {};
 var matchResultsArray = {};
 var findMatchPlayers = [];
+var findRankedMatchPlayers = [];
 var gameStartPlayers = 4;
 
 //Matchmaking server connection
@@ -79,13 +80,6 @@ io.on('connection', (socket) => {
   socket.on('cancelFindMatch', function() {
     findMatchPlayers.splice(findMatchPlayers.indexOf(socket.id), 1)
     console.log(socket.id + " stopped looking for a match")
-  })
-
-  //Ranked Queue
-  socket.on('findRanked', function({username, mmr}) {
-    var socketID = socket.id
-    console.log("sending " + username + " " + mmr + " to matchmaker")
-    mmServerSocket.emit('addToRankedQueue', ({socketID, username, mmr: 5}))
   })
 
   //Join Lobby
@@ -157,17 +151,27 @@ io.on('connection', (socket) => {
     }
   })
 
-  socket.on('rankedGameMatched', function(foundPlayers) {
-    //Create random lobby ID
-    var rankedLobby = 'rankedLobby' + Math.random() * 10000
-    foundPlayers.forEach(player => {
-      io.to(player.socketID).emit('findRankedMatchSuccess', rankedLobby)
-    })
-  })
-
   socket.on('message', ({ name, message }, room) => {
     io.in(room).emit('message', { name, message });
   });
+
+  //Ranked Queue
+  socket.on('findRanked', function({username, mmr}) {
+    var socketID = socket.id
+    console.log("sending " + socketID + " " + username + " " + mmr + " to matchmaker")
+    mmServerSocket.emit('addToRankedQueue', ({socketID, username, mmr: 5}))
+  })
+
+  mmServerSocket.on('rankedGameMatched', function(foundPlayers) {
+    console.log("Ranked Match Found! Connecting")
+    //Create random lobby ID
+    var rankedLobby = 'rankedLobby' + Math.random() * 10000
+    foundPlayers.forEach(player => {
+      var socketID = player.socketID
+      console.log(" - " + player.username + "id: " + socketID)
+      io.to(socketID).emit('findRankedMatchSuccess', rankedLobby)
+    })
+  })
 });
 
 http.listen(4000, () => {

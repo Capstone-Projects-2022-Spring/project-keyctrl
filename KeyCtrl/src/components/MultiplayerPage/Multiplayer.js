@@ -54,6 +54,15 @@ const Multiplayer = ({accountInfo}) => {
         setShowModal(false)
         setJoinLobby(true)
       })
+
+      socketRef.current.on('findRankedMatchSuccess', (rankedLobby) => {
+        console.log(socketRef.current.id + " found a ranked match")
+        socketRef.current.disconnect()
+        setLobbyID(rankedLobby)
+        setShowModal(false)
+        setJoinLobby(false)
+        setJoinLobby(true)
+      })
     })
 
   //Enter lobby modal
