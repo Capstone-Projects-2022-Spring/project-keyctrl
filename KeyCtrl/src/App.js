@@ -34,7 +34,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [numEntries, setNumEntries] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [WPMTime, setWPMTime] = useState(1);
+  const [WPMTime, setWPMTime] = useState(15);
   const [accountInfo, setAccountInfo] = useState({})
   const [friendsList, setFriendsList] = useState({})
   const [accountStats, setAccountStats] = useState({})
@@ -130,6 +130,7 @@ function App() {
   const grossWPM = () => {
     var words = (numEntries / 5);
     var wpm = ((words / WPMTime) * 60).toFixed(2);
+    console.log(numEntries, WPMTime)
     return wpm;
   };
 

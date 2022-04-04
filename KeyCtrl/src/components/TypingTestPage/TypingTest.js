@@ -55,6 +55,7 @@ export const TypingTest = (props) => {
     const [countdownToggleChecked, setCountdownToggleChecked] = useState(true);
     const [inCountdown, setInCountdown] = useState(false)
     const [currentLineLength, setCurrentLineLength] = useState(0);
+    const [lastWPM, setLastWPM] = useState(0)
 
     const [letterMisses, setLetterMisses] = useState([])
     const [randomWords, setCurrentRandomWords] = useState(" ");    //setting its use state
@@ -73,6 +74,7 @@ export const TypingTest = (props) => {
 
     useEffect(() => {   //using another useEffect so random words does not refresh everytime.
 
+        props.setWPMTime(staticCountdown)
         newWords();  //Setting how many words given for the test right here.
 
     }, [])
@@ -84,14 +86,12 @@ export const TypingTest = (props) => {
 
     function reset() {
         //updating stats here
-
-
+        setLastWPM(props.grossWPM())
         props.updateAccInfo();
         setTimerActive(false);
         props.setIndex(0);
         setLineIndex(0)
         setTimer(staticCountdown);
-        setCountdown(1);
         newWords();
     }
 
@@ -128,6 +128,7 @@ export const TypingTest = (props) => {
             setStaticCountdown(count);
             props.setAppStaticCountdown(count)
             setTimer(count);
+            props.setWPMTime(count);
         }
     };
 
@@ -185,13 +186,13 @@ export const TypingTest = (props) => {
                 if (!timerActive || props.showFriendList) {
                     setTimerActive(true);
                     if (countdownToggleChecked && countdown > 0) {
-                        setInCountdown(true);
                         // add occurances at index[0]
-                        if(props.loggedIn)
+                        if (props.loggedIn)
                             incrementOccurrances(randomWords[0])
                     }
                     else
                         setInCountdown(false);
+                    props.setNumEntries(0);
                 }
                 break;
 
@@ -204,7 +205,7 @@ export const TypingTest = (props) => {
                 if (timerActive && !inCountdown) {
                     if (event.key === randomWords[lineIndex]) {
                         // add occurances here for next letter
-                        if(props.loggedIn)
+                        if (props.loggedIn)
                             incrementOccurrances(randomWords[lineIndex + 1])
 
                         setLineIndex((lineIndex) => lineIndex + 1)
@@ -230,13 +231,13 @@ export const TypingTest = (props) => {
 
         } else if (inCountdown) {
             if (countdown === 1) {
-                setInCountdown(false);
-                props.setNumEntries(0);
-                props.setWPMTime(staticCountdown);
-            } else if(countdown === 0){
-                setInCountdown(false);
-                props.setNumEntries(0);
-                props.setWPMTime(staticCountdown);
+                // setInCountdown(false);
+                // props.setNumEntries(0);
+                // props.setWPMTime(staticCountdown);
+                // } else if(countdown === 0){
+                //     setInCountdown(false);
+                //     props.setNumEntries(0);
+                //     props.setWPMTime(staticCountdown);
             } else {
                 setCountdown(countdown => countdown - 1)
             }
@@ -298,7 +299,7 @@ export const TypingTest = (props) => {
 
                 {timerActive ? null : <div className="start-signal-wrapper">
 
-                    Your WPM: {props.grossWPM()} <br /> <br />
+                    Your WPM: {lastWPM} <br /> <br />
                     <div className="start-signal">
                         Press Enter To Start!
                     </div>
