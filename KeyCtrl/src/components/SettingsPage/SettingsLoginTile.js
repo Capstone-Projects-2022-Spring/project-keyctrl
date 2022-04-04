@@ -11,12 +11,12 @@ import { MdLock } from 'react-icons/md'
  */
 
 
-const SettingsLoginTile = () => {
+const SettingsLoginTile = ({openSignIn}) => {
     return (
         <div className="slt-wrapper">
             <MdLock style={{color: 'var(--selection-color)', padding: '1em'}}/>
             <div className="slt-text">
-                Login to view account settings
+                <span onClick={openSignIn} className='offline-acc-login'>Login</span> to view account settings
             </div>
         </div>
     )
