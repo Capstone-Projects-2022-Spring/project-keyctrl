@@ -46,11 +46,12 @@ const StatKeyboard = ({ keyboardDisplay, letter_misses }) => {
      * @description Finds max missed letter and sorts letter map in decending order
      */
     const calcTotal = (map) => {
+        console.log(map)
         total = 0;
         max = Number.MIN_SAFE_INTEGER;
         Object.keys(map).map(el => {
-            total += map[el];
-            max = (max < map[el]) ? map[el] : max;
+            total += parseFloat(map[el]);
+            max = (max < parseFloat(map[el])) ? parseFloat(map[el]) : max;
         });
         return map
     }
@@ -63,7 +64,7 @@ const StatKeyboard = ({ keyboardDisplay, letter_misses }) => {
      */
     const getColor = (key) => {
 
-        const ratio = sortedMap[key] / max;
+        const ratio = parseFloat(sortedMap[key]) / parseFloat(max);
 
         if (ratio === 1) {
             return '#f25c54';
@@ -87,7 +88,6 @@ const StatKeyboard = ({ keyboardDisplay, letter_misses }) => {
     sortedMap = calcTotal(keyboardDisplay == 0 ? mode_map.misses : mode_map.miss_percent);
 
     var jObj = sortedMap
-    console.log(Object.entries(jObj).sort((a, b) => b[1] - a[1]));
     var sortedMisses = Object.entries(jObj).sort((a, b) => b[1] - a[1]);
     console.log(sortedMisses)
 
@@ -297,7 +297,7 @@ function fuckYouJason(map) {
     }
 
     for (var key in newMap.misses) {
-        newMap.miss_percent[key] = ((1 - (newMap.occurrences[key] / newMap.misses[key])) * 100).toFixed(2)
+        newMap.miss_percent[key] = (((newMap.misses[key] / newMap.occurrences[key])) * 100).toFixed(2)
     }
 
     return newMap
