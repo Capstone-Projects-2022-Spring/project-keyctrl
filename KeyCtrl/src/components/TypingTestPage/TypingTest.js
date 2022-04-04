@@ -198,7 +198,11 @@ export const TypingTest = (props) => {
 
             case "Escape":
                 console.log("correct");
-                reset()
+                setTimerActive(false);
+                props.setIndex(0);
+                setLineIndex(0)
+                setTimer(staticCountdown);
+                newWords();
                 break;
             //EDITED TO MAKE LETTER MISSES UPDATE
             default:
