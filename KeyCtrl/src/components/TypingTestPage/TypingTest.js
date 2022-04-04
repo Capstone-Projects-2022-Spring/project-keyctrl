@@ -201,9 +201,17 @@ export const TypingTest = (props) => {
                 reset()
                 break;
             //EDITED TO MAKE LETTER MISSES UPDATE
+
+            case "Backspace": //If user presses backspace, the curser moves backwards. It is minus 2, because an incorrect key moves it forward once.
+                setLineIndex((lineIndex) => lineIndex - 1)  //in order to fix this temporarily, I minus 2 so it nullifies the key press forward on an incorrect key.
+                        props.setIndex((index) => index - 1);
+
+                        if (lineIndex === currentLineLength - 1) {
+                            onLineChange()
+                        }
             default:
                 if (timerActive && !inCountdown) {
-                    if (event.key === randomWords[lineIndex]) {
+                    if (event.key === randomWords[lineIndex]) { //This is where the curser is locked.
                         // add occurances here for next letter
                         if (props.loggedIn)
                             incrementOccurrances(randomWords[lineIndex + 1])
@@ -215,7 +223,17 @@ export const TypingTest = (props) => {
                             onLineChange()
                         }
 
-                    } else if (event.key != randomWords[lineIndex] && props.loggedIn) {
+                    } else if (event.key != randomWords[lineIndex] && event.key != "Backspace") {   //Even if the word is wrong, it will still move curser forward.
+                        setLineIndex((lineIndex) => lineIndex + 1)
+                        props.setIndex((index) => index + 1);
+
+                        if (lineIndex === currentLineLength - 1) {
+                            onLineChange()
+                        }
+                        incrementMissed(randomWords[lineIndex]);
+                    }
+                    else if (event.key != randomWords[lineIndex] && props.loggedIn) {
+                        
                         incrementMissed(randomWords[lineIndex]);
                         // console.log(randomWords[index]);
                         // console.log(accountInfo.letter_misses);
