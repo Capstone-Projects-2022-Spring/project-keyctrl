@@ -18,16 +18,12 @@ import FriendsList from './components/Base/FriendsList/FriendsList.js';
 import Scrollbars from 'react-custom-scrollbars-2'
 import { RemoveScrollBar } from 'react-remove-scroll-bar'
 import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 // Set default theme on first initialization
 document.documentElement.setAttribute('data-theme', 'default');
 
-const Msg = ({ display_name }) => (
-  <div>
-    Login Success!
-  </div>
-)
 
 function App() {
 
@@ -38,10 +34,12 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [numEntries, setNumEntries] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [WPMTime, setWPMTime] = useState(1);
+  const [WPMTime, setWPMTime] = useState(15);
   const [accountInfo, setAccountInfo] = useState({})
   const [friendsList, setFriendsList] = useState({})
   const [accountStats, setAccountStats] = useState({})
+  const [currentGamemode, setCurrentGamemode] = useState(0)
+  const [appStaticCountdown, setAppStaticCountdown] = useState(15);
 
   const [updateOnce, setUpdateOnce] = useState(false)
 
@@ -52,18 +50,8 @@ function App() {
 
   const [showFriendList, setShowFriendList] = useState(false)
 
-  const displayMsg = () => {
-    toast.success(<Msg />, {
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    })
-    // toast(Msg) would also work
-  }
-
   const delay = ms => new Promise(res => setTimeout(res, ms));
+
 
   const onLogin = async (account_, accountStats_, friendsList_) => {
 
@@ -83,6 +71,18 @@ function App() {
       alert('Account does not exist');
     }
 
+    toast.success('Welcome, ' + account_.display_name, {
+      position: "top-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored'
+    });
+
+
   }
 
   function logout() {
@@ -90,59 +90,47 @@ function App() {
     setLoggedIn(false);
   }
 
-  //INCREMENTS MISSED LETTER AND UPDATES ACCINFO
-  function incrementMissed(letter) {
-    var jObj = JSON.parse(accountInfo.letter_misses);
-    jObj[letter] = jObj[letter] + 1;
-    setAccountInfo({ ...accountInfo, letter_misses: JSON.stringify(jObj) });
 
+  async function updateApiStats(tempAccountStats) {
+    await api.updateStats(currentGamemode, tempAccountStats)
   }
 
-  async function updateApiStats(avgWPM, topWpm, total_words, total_time) {
-
-    console.log("Before Update Stats",
-      avgWPM,
-      topWpm,
-      accountInfo)
-
-    api.updateStats(
-      avgWPM,
-      topWpm,
-      accountInfo.letter_misses,
-      total_words,
-      total_time,
-      accountInfo.account_id)
-  }
-
-  const updateAccInfo = (numEntries, WPMTime, grossWPM) => {
+  const updateAccInfo = () => {
 
     if (loggedIn) {
+      var tempAccountStats = accountStats
+      var typingStats = tempAccountStats[currentGamemode][0]
 
-      var totWords = accountInfo.total_words + (numEntries / 5);
-      var totTime = accountInfo.total_time + WPMTime;
-      var avgWPM = (totWords / totTime) * 60;
-      //setAccountInfo({ ...accountInfo, total_words: totWords, total_time: totTime });
+      typingStats.wpm_total_tests = typingStats.wpm_total_tests + 1
+      typingStats.wpm_total_time = typingStats.wpm_total_time + appStaticCountdown
+      typingStats.wpm_total_words = typingStats.wpm_total_words + (numEntries / 5)
 
-      if ((grossWPM > accountInfo.top_wpm) || (accountInfo.top_wpm == null)) {
-        console.log("Account Top Pre-Update wpm:", accountInfo.top_wpm);
-        setAccountInfo({ ...accountInfo, top_wpm: grossWPM, total_words: totWords, total_time: totTime, avg_wpm: avgWPM });
-        console.log("Account Top Post-Update wpm:", accountInfo.top_wpm);
-      } else {
-        grossWPM = accountInfo.top_wpm;
-        setAccountInfo({ ...accountInfo, total_words: totWords, total_time: totTime, avg_wpm: avgWPM });
-      }
+      var wpm = parseInt(grossWPM())
 
-      //setAccountInfo({ ...accountInfo, avg_wpm: avgWPM });
 
-      console.log(avgWPM, totTime, totWords);
+      if (wpm > typingStats.wpm_top) {
+        //new top wpm
+        typingStats.wpm_top = wpm
+      } 
 
-      updateApiStats(avgWPM, grossWPM, totWords, totTime);
+      // setting new average wpm
+      var minutes = typingStats.wpm_total_time / 60
+      var words = typingStats.wpm_total_words
+      var new_avg_wpm = words / minutes
+      typingStats.wpm_average = new_avg_wpm
+
+      tempAccountStats[currentGamemode][0] = typingStats
+      setAccountStats(tempAccountStats);
+
+      setUpdateOnce(false);
+      updateApiStats(typingStats);
     }
   }
 
   const grossWPM = () => {
     var words = (numEntries / 5);
     var wpm = ((words / WPMTime) * 60).toFixed(2);
+    console.log(numEntries, WPMTime)
     return wpm;
   };
 
@@ -163,10 +151,9 @@ function App() {
     //   updateAccInfo(numEntries, WPMTime, grossWPM());
     // }
 
-    if (updateOnce && loggedIn) {
-      updateAccInfo(numEntries, WPMTime, grossWPM());
-      setUpdateOnce(false);
-    }
+    // if (updateOnce && loggedIn) {
+    //   updateAccInfo();
+    // }
 
     return () => {
       document.removeEventListener('keydown', emptyForNow);
@@ -175,6 +162,17 @@ function App() {
 
   return (
     <div className="App">
+      <ToastContainer
+        position="top-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+      />
       <Scrollbars autoHeight autoHeightMin={window.innerHeight}>
         <div className="window">
           {/* <div className="task-bar">
@@ -197,6 +195,8 @@ function App() {
               draggable
               pauseOnHover
             /> */}
+
+
             <TitleBar
               page={page}
               setPage={setPage}
@@ -212,27 +212,30 @@ function App() {
               {loading ? <LoadingSpinner /> : null}
 
               <Routes>
-                <Route exact path="/project-keyctrl" element={
+                <Route exact path="/" element={
                   <TypingTest
                     setUpdateOnce={setUpdateOnce}
                     setIndex={setIndex}
                     index={index}
                     accountInfo={accountInfo}
                     setAccountInfo={setAccountInfo}
+                    accountStats={accountStats}
+                    setAccountStats={setAccountStats}
                     loggedIn={loggedIn}
-                    incrementMissed={incrementMissed}
                     updateAccInfo={updateAccInfo}
                     numEntries={numEntries}
                     setNumEntries={setNumEntries}
                     WPMTime={WPMTime}
                     setWPMTime={setWPMTime}
                     grossWPM={grossWPM}
+                    showFriendList={showFriendList}
+                    setAppStaticCountdown={setAppStaticCountdown}
                   />
                 } />
                 <Route exact path="/training" element={<Training />} />
-                <Route exact path="/multiplayer" element={<Multiplayer />} />
-                <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} accountStats={accountStats} /> : <OfflineAccount />)} />
-                <Route exact path="/settings" element={<Settings setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
+                <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} />} />
+                <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} accountStats={accountStats} /> : <OfflineAccount openSignIn={openSignIn}/>)} />
+                <Route exact path="/settings" element={<Settings openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
 
             </div>
@@ -246,11 +249,10 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList accountInfo={accountInfo} friendsList={friendsList} />
+              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} />
             </SlidingPane>
 
           </div>
-
           <SignInModal setLoading={setLoading} loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
         </div>
       </Scrollbars>

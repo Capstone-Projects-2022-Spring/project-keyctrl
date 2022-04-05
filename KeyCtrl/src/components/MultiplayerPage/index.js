@@ -2,7 +2,7 @@ const app = require('express')()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http, {
   cors: {
-    origin: ["https://capstone-projects-2022-spring.github.io", "http://localhost:3000"],  //CHANGE TO HOST URL
+    origin: ["https://capstone-projects-2022-spring.github.io", "http://localhost:3000" ,"https://keyctrl.net"],  //CHANGE TO HOST URL
     methods: ["GET", "POST"],
     credentials: true,
     transports: ['websocket', 'polling']
@@ -38,7 +38,7 @@ function getNewWordsLine() {
 
 //Server-side networking code
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log(socket.id + ' connected');
 
   /*Find Match
   * ----------
@@ -75,11 +75,11 @@ io.on('connection', (socket) => {
 
   socket.on('cancelFindMatch', function() {
     findMatchPlayers.splice(findMatchPlayers.indexOf(socket.id), 1)
+    console.log(socket.id + " stopped looking for a match")
   })
 
   //Custom Lobby code
   socket.on('switchLobby', function(newRoom, username) {
-    socket.leave(newRoom.lobbyID)
     socket.join(newRoom.lobbyID);
     socket.emit('updateLobby', newRoom);
 
@@ -111,14 +111,16 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendPlayerIndex', function(playerName, playerIndex, playerLineArrayIndex, room) {
-    console.log(playerName, playerIndex, playerLineArrayIndex, room)
     socket.broadcast.to(room).emit('playerIndexUpdate', playerName, playerIndex, playerLineArrayIndex)
   })
 
   socket.on('disconnecting', function() {
     //Remove players from lobby/find match queue on disconnecting
     var socketInfo = Array.from(socket.rooms)
-    numClients[socketInfo[1]]--
+    if(numClients[socketInfo[1]] > 0) {
+      numClients[socketInfo[1]]--
+    }
+    
     findMatchPlayers.splice(findMatchPlayers.indexOf(socket.id), 1)
   })
 
@@ -134,6 +136,7 @@ io.on('connection', (socket) => {
     matchResultsArray[room].push({player, WPM})
     if(matchResultsArray[room].length === numClients[room]) {
       io.in(room).emit('matchResults', matchResultsArray[room])
+      numClients[room] = 0
 
       //room reset
       matchResultsArray[room] = null
@@ -151,4 +154,4 @@ io.on('connection', (socket) => {
 
 http.listen(4000, () => {
   console.log('listening on *:4000');
-});
+}); 

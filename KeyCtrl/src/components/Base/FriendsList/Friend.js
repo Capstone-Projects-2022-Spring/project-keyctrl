@@ -9,6 +9,7 @@ import { BsThreeDots } from "react-icons/bs"
 import { Menu, MenuItem } from '@material-ui/core';
 import { blue, green, purple, red } from '@material-ui/core/colors';
 import * as api from '../../../utils/apiUtils.js'
+import { toast } from 'react-toastify'
 
 const StyledPopup = styled(Popup)`
     
@@ -126,7 +127,7 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-const Friend = ({ accountInfo, imageUrl, username, status, socialId }) => {
+const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -143,9 +144,37 @@ const Friend = ({ accountInfo, imageUrl, username, status, socialId }) => {
     }
   };
 
-  const deleteFriend = () => {
-    api.removeFriend(accountInfo.account_id, accountInfo.social_id, socialId)
+  const deleteFriend = async () => {
+
     closeModal()
+
+    console.log(friendsList[0]);
+
+    var tempList = friendsList;
+
+    const index = friendsList[0].indexOf(object);
+
+    if (index > -1) {
+      tempList[0].splice(index, 1); // 2nd parameter means remove one item only
+    }
+
+    console.log(tempList);
+
+    setFriendsList(tempList)
+    setState(o => !o);
+
+    toast.error(object.display_name + ' Removed!' , {
+      position: "top-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored'
+    });
+
+    await api.removeFriend(accountInfo.account_id, accountInfo.social_id, object.social_id)
   }
 
   return (
@@ -156,10 +185,10 @@ const Friend = ({ accountInfo, imageUrl, username, status, socialId }) => {
             overlap="circular"
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             variant="dot"
-            status={status}
+            status={true}
           >
             <Avatar
-              src={imageUrl}
+              src={object.photo}
               sx={{
                 width: '3em',
                 height: '3em',
@@ -171,11 +200,11 @@ const Friend = ({ accountInfo, imageUrl, username, status, socialId }) => {
           </StyledBadge>
         </div>
         <div className='friend-username'>
-          {username}
+          {object.display_name}
         </div>
         <div className='friend-options-button'>
           <BsThreeDots
-            style={{fontSize: '2em' }}
+            style={{ fontSize: '2em' }}
             aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
@@ -206,7 +235,7 @@ const Friend = ({ accountInfo, imageUrl, username, status, socialId }) => {
       >
         Are you sure you want to remove
         <br />
-        {username}?
+        {object.display_name}?
         <div className="delete-account-popup">
           <ConfirmationButtonYes onClick={deleteFriend}>YES, REMOVE</ConfirmationButtonYes>
           <ConfirmationButtonNo onClick={() => setModalOpen(false)}>NO, GO BACK</ConfirmationButtonNo>

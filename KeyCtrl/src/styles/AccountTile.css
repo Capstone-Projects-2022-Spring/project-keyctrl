@@ -60,8 +60,10 @@
 
 .acc-name{
     align-self: flex-start;
+    align-items: flex-start;
     font-size: 3em;
     font-weight: 600;
+    text-align: left;
 }
 
 .acc-email{
@@ -75,4 +77,22 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+.edit-button{
+    font-size: .4em;
+    font-family: 'Almarai Light';
+    font-weight: 'normal';
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--text-color);
+    border-radius: 25%;
+    padding: .3em;
+}
+
+.edit-button:hover{
+    color: var(--selection-color);
+    cursor: pointer;
+    transition: .25s;
+    border-color: var(--selection-color);
 }

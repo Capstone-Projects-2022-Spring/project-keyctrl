@@ -54,6 +54,7 @@ const Account = ({ accountInfo, accountStats }) => {
     const [inSummary, setInSummary] = useState(true);
     const [value, setValue] = useState(0);
     const [currentStats, setCurrentStats] = useState(0)
+    const [keyboardDisplay, setKeyboardDisplay] = useState(0)
 
     const handleChange = (event, newValue) => {
         setCurrentStats(newValue);
@@ -82,11 +83,6 @@ const Account = ({ accountInfo, accountStats }) => {
     var trainingStats = accountStats[0][0]
     var speedStats = accountStats[1][0]
     var rankedStats = accountStats[2][0]
-
-    // var jObj = JSON.parse(accountInfo_.letter_misses);
-    // console.log(Object.entries(jObj).sort((a, b) => b[1] - a[1]));
-    //var topWPM = accountInfo.top_wpm;
-    // var sortedMisses = Object.entries(jObj).sort((a, b) => b[1] - a[1]);
 
     return (
         <div>
@@ -117,6 +113,8 @@ const Account = ({ accountInfo, accountStats }) => {
                             </div>
                             <div className='profile-user'>
                                 {accountInfo.display_name}
+                                <br />
+                                {"#" + accountInfo.social_id.substr(accountInfo.social_id.length - 4)}
                             </div>
 
                             <div className='acc-stat'>
@@ -173,24 +171,17 @@ const Account = ({ accountInfo, accountStats }) => {
                     </div>
 
                     <div className='stat-container'>
-                    <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-evenly',
-                        }}>
-                            <SingleStatDisplay title="Most Missed" data={"A"} />
+                        <div className='stat-keyboard-display'>
+                            <div onClick={() => setKeyboardDisplay(0)} style={ keyboardDisplay == 0 ? {color: 'var(--selection-color)'} : null} className='stat-keyboard-display-button'>
+                                Number Missed
+                            </div>
+                            <div onClick={() => setKeyboardDisplay(1)} style={ keyboardDisplay == 1 ? {color: 'var(--selection-color)'} : null} className='stat-keyboard-display-button'>
+                                Percent Missed
+                            </div>
                         </div>
-                        <div className='stat-keyboard-base'>
-                            <StatKeyboard letter_misses={getCurrentGameMode()} />
-
-                        </div>
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-evenly',
-                        }}>
-                            <SingleStatDisplay title="Least Missed" data={"B"} />
-                        </div>
+                        
+                            <StatKeyboard keyboardDisplay={keyboardDisplay} letter_misses={getCurrentGameMode()} />
+                        
                     </div>
 
                     <ColoredLine
