@@ -234,8 +234,8 @@ function App() {
                 } />
                 <Route exact path="/training" element={<Training />} />
                 <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} />} />
-                <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} accountStats={accountStats} /> : <OfflineAccount />)} />
-                <Route exact path="/settings" element={<Settings setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
+                <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} accountStats={accountStats} /> : <OfflineAccount openSignIn={openSignIn}/>)} />
+                <Route exact path="/settings" element={<Settings openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
 
             </div>
