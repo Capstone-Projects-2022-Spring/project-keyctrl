@@ -247,6 +247,28 @@
     --dark-bg: #193549;
 }
 
+[data-theme="wood"]{
+    --primary-color: #bb9457;
+    --text-container: #bb9457;
+    --secondary-color: #6688c1;
+    --text-color: #ffe6a7;
+    --next-up-text-color: #ffe6a7;
+    --selection-color: #6f1d1b;
+    --bg-color: #99582a;
+    --dark-bg: #432818;
+}
+
+[data-theme="bronze"]{
+    --primary-color: #9c832f;
+    --text-container: #3a3b2d;
+    --secondary-color: #6688c1;
+    --text-color: #c49515;
+    --next-up-text-color: #db9004;
+    --selection-color: #b67534;
+    --bg-color: #795c0d;
+    --dark-bg: #6f5006;
+}
+
 [data-theme="silver"]{
     --primary-color: #464646;
     --text-container: #444444;
