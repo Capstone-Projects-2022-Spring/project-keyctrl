@@ -61,6 +61,7 @@ export const TypingTest = (props) => {
     const [randomWords, setCurrentRandomWords] = useState(" ");    //setting its use state
     const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
     var randWordsFunc = require('random-words');          //Must require random-words
+    const [wrongIndex, setWrongIndex] = useState([]);       //Initializing the variable wrongIndex.
 
 
     function newWords() {
@@ -155,6 +156,7 @@ export const TypingTest = (props) => {
         setCurrentRandomWords(nextUpRandomWords)
         setNextUpRandomWords(chopLineToLength(getNewWordsLine()))
         setLineIndex(0)
+        setWrongIndex([])
     }
 
     useEffect(() => {
@@ -202,8 +204,8 @@ export const TypingTest = (props) => {
                 break;
             //EDITED TO MAKE LETTER MISSES UPDATE
 
-            case "Backspace": //If user presses backspace, the curser moves backwards. It is minus 2, because an incorrect key moves it forward once.
-                setLineIndex((lineIndex) => lineIndex - 1)  //in order to fix this temporarily, I minus 2 so it nullifies the key press forward on an incorrect key.
+            case "Backspace": //If user presses backspace, the curser moves backwards. 
+                setLineIndex((lineIndex) => lineIndex - 1)  
                         props.setIndex((index) => index - 1);
 
                         if (lineIndex === currentLineLength - 1) {
@@ -227,13 +229,17 @@ export const TypingTest = (props) => {
                         setLineIndex((lineIndex) => lineIndex + 1)
                         props.setIndex((index) => index + 1);
 
+                        var tempArray = wrongIndex; //Creating a wrong index for incorrect words.
+                        tempArray[lineIndex] = 1;
+                        setWrongIndex(tempArray);
+
                         if (lineIndex === currentLineLength - 1) {
                             onLineChange()
                         }
                         incrementMissed(randomWords[lineIndex]);
                     }
                     else if (event.key != randomWords[lineIndex] && props.loggedIn) {
-                        
+
                         incrementMissed(randomWords[lineIndex]);
                         // console.log(randomWords[index]);
                         // console.log(accountInfo.letter_misses);
@@ -331,7 +337,7 @@ export const TypingTest = (props) => {
                     {choppedCurrentLine.split("").map(function (char, idx) {
                         return (
                             <span key={idx}
-                                className={(idx < lineIndex) ? 'correct' : 'default'}
+                                className={(idx < lineIndex) ? ((1 === wrongIndex[idx]) ? 'wrong' : 'correct') : 'default'}
                             >
                                 {(idx === lineIndex) ? <span className="cursor" ></span> : <span />}
                                 {char}

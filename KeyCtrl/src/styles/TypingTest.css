@@ -94,6 +94,11 @@
     letter-spacing: .03em;
 }
 
+.test-line-container .wrong{
+    color: var(--warning);
+    text-shadow: 0px 0px 9px var(--warning);
+}
+
 .test-line-container .correct{
     color: var(--selection-color);
     text-shadow: 0px 0px 9px var(--selection-color);
