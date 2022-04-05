@@ -180,9 +180,9 @@ const ThemeSelect = ({updateOptions}) => {
                     cobalt
                 </BaseThemeBox>
                 <BaseThemeBox
-                    background="#282828"
-                    border="#C0C0C0"
-                    text="#c0caf5"
+                    background="#99582a"
+                    border="#6f1d1b"
+                    text="#ffe6a7"
                     onClick={() => changeTheme('wood')}>
                     wood
                 </BaseThemeBox>
