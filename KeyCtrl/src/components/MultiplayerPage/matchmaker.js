@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
     socket.on('cancelFindRanked', function(socketID) {
       rankedQueue.forEach(list => {
         list.splice(list.indexOf(socketID), 1)
-        console.log(socketID + " stopped left the queue")
+        console.log(socketID + " left the queue")
       })
     })
 })
