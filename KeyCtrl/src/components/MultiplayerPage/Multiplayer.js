@@ -137,7 +137,7 @@ const Multiplayer = ({loggedIn, accountInfo}) => {
         
         {joinLobby || !loggedIn ? null :
           <div className="multiplayer-Icons">
-            <div onClick={enterLobbyModal} className='find-game'>
+            <div onClick={findRanked} className='find-game'>
               <div className="multiplayer-select-text">
                 Ranked
               </div>
