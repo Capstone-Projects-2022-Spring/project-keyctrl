@@ -33,7 +33,7 @@ const MyTextField = styled((props) => (
   },
 }));
 
-export const Modal = ({ setShowModal, setJoinLobby, setLobbyID, setName, name, isFindMatch, cancelFindMatch }) => {
+export const Modal = ({ setShowModal, setJoinLobby, setLobbyID, setName, name, isFindMatch, cancelFindMatch, isRanked, cancelFindRanked }) => {
 
   // close the modal when clicking outside the modal.
   const modalRef = useRef();
@@ -66,6 +66,16 @@ export const Modal = ({ setShowModal, setJoinLobby, setLobbyID, setName, name, i
             width={150}
           />
           <button id="cancelFindMatch" onClick={() => cancelFindMatch()}>Cancel</button>
+        </div>
+      </div>,
+      document.getElementById("portal")
+    );
+  } else if (isRanked) {
+    return ReactDom.createPortal(
+      <div className="container" ref={modalRef} onClick={closeModal}>
+        <div className="modal">
+          <h2>Finding a Match...</h2>
+          <button id="cancelFindRanked" onClick={() => cancelFindRanked()}>Cancel</button>
         </div>
       </div>,
       document.getElementById("portal")

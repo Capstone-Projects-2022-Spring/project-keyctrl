@@ -36,6 +36,7 @@ const Multiplayer = ({loggedIn, accountInfo}) => {
   const [lobbyID, setLobbyID] = useState(0)
   const [name, setName] = useState('guest' + Math.floor(Math.random() * 1000))
   const [isFindMatch, setFindMatch] = useState(false)
+  const [isRanked, setRanked] = useState(false)
 
   const socketRef = useRef()
 
@@ -44,14 +45,22 @@ const Multiplayer = ({loggedIn, accountInfo}) => {
       determineName()
       if (socketRef.current == null) {
         console.log("creating new connection")
-        socketRef.current = io.connect("https://generated-respected-python.glitch.me")
+        //socketRef.current = io.connect("https://generated-respected-python.glitch.me")
+        socketRef.current = io.connect("http://localhost:4000")
       }
       //Finding Match code...
       socketRef.current.on('findMatchSuccess', (lobby) => {
         console.log(socketRef.current.id + " found a match")
-        //socketRef.current.disconnect()
         setLobbyID(lobby)
         setShowModal(false)
+        setJoinLobby(true)
+      })
+
+      socketRef.current.on('findRankedMatchSuccess', (rankedLobby) => {
+        console.log(socketRef.current.id + " found a ranked match")
+        setLobbyID(rankedLobby)
+        setShowModal(false)
+        setRanked(true)
         setJoinLobby(true)
       })
     })
@@ -80,10 +89,22 @@ const Multiplayer = ({loggedIn, accountInfo}) => {
     setShowModal(true)
   }
 
+  function findRanked() {
+    setRanked(true)
+    setShowModal(true)
+    socketRef.current.emit('findRanked', {username: name, mmr: 5})
+  }
+
+  function cancelFindRanked() {
+    socketRef.current.emit('cancelFindRanked')
+    setRanked(false)
+    setShowModal(false)
+  }
+
   return (
     <div>
       <div className='multiplayer-base'>
-        {showModal ? <Modal setShowModal={setShowModal} cancelFindMatch={cancelFindMatch} isFindMatch={isFindMatch} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} name={name} setName={setName} /> : null}
+        {showModal ? <Modal setShowModal={setShowModal} cancelFindMatch={cancelFindMatch} isFindMatch={isFindMatch} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} name={name} setName={setName} isRanked={isRanked} cancelFindRanked={cancelFindRanked} /> : null}
         {joinLobby ? null :
           <div className="multiplayer-Icons">
             <div onClick={enterLobbyModal} className='find-game'>
@@ -116,7 +137,7 @@ const Multiplayer = ({loggedIn, accountInfo}) => {
         
         {joinLobby || !loggedIn ? null :
           <div className="multiplayer-Icons">
-            <div onClick={enterLobbyModal} className='find-game'>
+            <div onClick={findRanked} className='find-game'>
               <div className="multiplayer-select-text">
                 Ranked
               </div>
@@ -142,7 +163,9 @@ const Multiplayer = ({loggedIn, accountInfo}) => {
             lobbyID={lobbyID} 
             username={name} 
             isFindMatch={isFindMatch} 
+            isRanked={isRanked}
             setFindMatch={setFindMatch} 
+            setRanked={setRanked}
             setJoinLobby={setJoinLobby} 
             setShowModal={setShowModal} 
             setLobbyID={setLobbyID}

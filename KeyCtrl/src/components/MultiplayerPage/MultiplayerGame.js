@@ -48,7 +48,8 @@ const MultiplayerGame = (props) => {
   useEffect(
     () => {
 
-      socketRef.current = io.connect("https://generated-respected-python.glitch.me") //LOCALHOST for local testing
+      //socketRef.current = io.connect("https://generated-respected-python.glitch.me")
+      socketRef.current = io.connect("http://localhost:4000")
 
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', { lobbyID }, username)
@@ -64,6 +65,15 @@ const MultiplayerGame = (props) => {
         console.log(socketRef.current.id + " found a match")
         socketRef.current.disconnect()
         props.setLobbyID(lobby)
+        props.setShowModal(false)
+        props.setJoinLobby(false)
+        props.setJoinLobby(true)
+      })
+
+      socketRef.current.on('findRankedMatchSuccess', (rankedLobby) => {
+        console.log(socketRef.current.id + " found a ranked match")
+        socketRef.current.disconnect()
+        props.setLobbyID(rankedLobby)
         props.setShowModal(false)
         props.setJoinLobby(false)
         props.setJoinLobby(true)
@@ -280,7 +290,11 @@ const MultiplayerGame = (props) => {
   // ---------------------------------------------------
 
   function readyUp() {
-    if(props.isFindMatch) {
+    if(props.isRanked) {
+      console.log("Requeue for Ranked")
+      props.setShowModal(true)
+      socketRef.current.emit('findRanked', {username, mmr: 5})
+    } else if(props.isFindMatch) {
       //get back in Find Match queue
       props.setShowModal(true)
       socketRef.current.emit('findMatch')
@@ -293,11 +307,17 @@ const MultiplayerGame = (props) => {
 
   function leaveRoom() {
       //back to mp menu
+      props.setRanked(false)
       props.setJoinLobby(false)
       props.setFindMatch(false)
   }
 
-
+  var readyRequeueBtn
+  if(props.isRanked || props.isFindMatch) {
+    readyRequeueBtn = <button onClick={readyUp}>Requeue</button>
+  } else {
+    readyRequeueBtn = <button onClick={readyUp}>Ready Up</button>
+  }
 
   return (
     <div className="container">
@@ -349,7 +369,7 @@ const MultiplayerGame = (props) => {
           </Leaderboard>
           <PostMatchOptions>
           <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
-            <button onClick={readyUp}>Ready Up</button>
+            {readyRequeueBtn}
             <button onClick={leaveRoom}>Leave</button>
           </div>
           </PostMatchOptions>
