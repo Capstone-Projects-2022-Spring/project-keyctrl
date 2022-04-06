@@ -72,7 +72,7 @@ function changeStat(current) {
 const FriendsList = ({ setFriendsList, friendsList, accountInfo }) => {
 
     const [addFriend, setAddFriend] = useState([]);
-    const [count, setCount] = useState(1);
+    const [count, setCount] = useState(0);
     const [friendRequestsOpen, setFriendRequestsOpen] = useState(true)
     const [friendListOpen, setFriendListOpen] = useState(true)
 
@@ -182,6 +182,7 @@ const FriendsList = ({ setFriendsList, friendsList, accountInfo }) => {
                         fullWidth
                         sx={{ height: '3em' }}
                         value={addFriend}
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onChange={(event) => { setAddFriend(event.target.value) }}
                     />
                     <IconButton>
