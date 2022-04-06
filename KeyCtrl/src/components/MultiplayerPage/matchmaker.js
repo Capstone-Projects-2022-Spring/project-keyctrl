@@ -49,14 +49,16 @@ io.on('connection', (socket) => {
           for(var i=0; i<4; i++) {
             foundPlayers.push(rankedQueue[0].shift())
           }
-          console.log("emitting to: ")
-          for(var i=0; i<foundPlayers.length; i++) {
-            console.log(" + " + foundPlayers[i].username)
-          }
           socket.emit('rankedGameMatched', (foundPlayers))
           foundPlayers = []
         }
       })
+    socket.on('cancelFindRanked', function(socketID) {
+      rankedQueue.forEach(list => {
+        list.splice(list.indexOf(socketID), 1)
+        console.log(socketID + " stopped left the queue")
+      })
+    })
 })
 
 // if(rankedQueue[3].length >= 4) {

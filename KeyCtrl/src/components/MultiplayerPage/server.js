@@ -82,6 +82,12 @@ io.on('connection', (socket) => {
     console.log(socket.id + " stopped looking for a match")
   })
 
+  socket.on('cancelFindRanked', function() {
+    console.log("Canceling ranked search")
+    var socketID = socket.id
+    mmServerSocket.emit('cancelFindRanked', (socketID))
+  })
+
   //Join Lobby
   socket.on('switchLobby', function(newRoom, username) {
     socket.join(newRoom.lobbyID);

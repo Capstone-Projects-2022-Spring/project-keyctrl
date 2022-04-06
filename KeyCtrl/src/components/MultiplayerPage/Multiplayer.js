@@ -49,7 +49,6 @@ const Multiplayer = ({accountInfo}) => {
       //Finding Match code...
       socketRef.current.on('findMatchSuccess', (lobby) => {
         console.log(socketRef.current.id + " found a match")
-        //socketRef.current.disconnect()
         setLobbyID(lobby)
         setShowModal(false)
         setJoinLobby(true)
@@ -57,10 +56,9 @@ const Multiplayer = ({accountInfo}) => {
 
       socketRef.current.on('findRankedMatchSuccess', (rankedLobby) => {
         console.log(socketRef.current.id + " found a ranked match")
-        socketRef.current.disconnect()
         setLobbyID(rankedLobby)
         setShowModal(false)
-        setJoinLobby(false)
+        setRanked(true)
         setJoinLobby(true)
       })
     })
@@ -90,15 +88,21 @@ const Multiplayer = ({accountInfo}) => {
   }
 
   function findRanked() {
-    setFindMatch(true)
+    setRanked(true)
     setShowModal(true)
     socketRef.current.emit('findRanked', {username: name, mmr: 5})
+  }
+
+  function cancelFindRanked() {
+    socketRef.current.emit('cancelFindRanked')
+    setRanked(false)
+    setShowModal(false)
   }
 
   return (
     <div>
       <div className='multiplayer-base'>
-        {showModal ? <Modal setShowModal={setShowModal} cancelFindMatch={cancelFindMatch} isFindMatch={isFindMatch} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} name={name} setName={setName} /> : null}
+        {showModal ? <Modal setShowModal={setShowModal} cancelFindMatch={cancelFindMatch} isFindMatch={isFindMatch} setJoinLobby={setJoinLobby} setLobbyID={setLobbyID} name={name} setName={setName} isRanked={isRanked} cancelFindRanked={cancelFindRanked} /> : null}
         {joinLobby ? null :
           <div className="multiplayer-Icons">
             <div onClick={findMatch} className='find-game' >
