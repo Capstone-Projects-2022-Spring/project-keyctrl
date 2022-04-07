@@ -18,7 +18,7 @@ import * as api from '../../utils/apiUtils.js'
  * <Settings accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />
  */
 
-const Settings = ({ openSignIn, accountInfo, logout, loggedIn, setShowThemeOptions }) => {
+const Settings = ({ setAccountInfo, openSignIn, accountInfo, logout, loggedIn, setShowThemeOptions }) => {
 
     const updateOptions = (theme) => {
         if (loggedIn) {
@@ -38,7 +38,7 @@ const Settings = ({ openSignIn, accountInfo, logout, loggedIn, setShowThemeOptio
                     width='100%'
                 />
             </div>
-            {loggedIn ? <AccountTile accountInfo={accountInfo} logout={logout} /> : <SettingsLoginTile openSignIn={openSignIn} />}
+            {loggedIn ? <AccountTile setAccountInfo={setAccountInfo} accountInfo={accountInfo} logout={logout} /> : <SettingsLoginTile openSignIn={openSignIn} />}
             <div className="s-line-spacing">
                 <ColoredLine
                     color="var(--primary-color)"

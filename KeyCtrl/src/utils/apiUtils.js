@@ -212,3 +212,47 @@ export function updateOptions(account_id, theme) {
            
 }
 
+export function insertHistory(account_id, stat, value, gamemode ) {
+   
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: ' https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/inserthistory',
+        body: JSON.stringify( {
+        "userId": account_id,
+        "stat": stat,
+        "value": value,
+        "gamemode": gamemode
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log("insertHistory", res);
+            return res
+        })
+           
+}
+
+export function changeUsername(account_id, social_id, display_name ) {
+   
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updatedispname',
+        body: JSON.stringify( {
+        "userId": account_id,
+        "socialId": social_id,
+        "displayName": display_name
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log("changeUsername", res);
+            return res
+        })    
+}
+
+
+
