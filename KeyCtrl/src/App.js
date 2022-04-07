@@ -19,6 +19,8 @@ import Scrollbars from 'react-custom-scrollbars-2'
 import { RemoveScrollBar } from 'react-remove-scroll-bar'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import styled from 'styled-components';
+import Popup from 'reactjs-popup'
 
 
 // Set default theme on first initialization
@@ -171,19 +173,55 @@ function App() {
     };
   }, [accountInfo, index, page, numEntries, WPMTime, updateAccInfo, updateOnce])
 
+
+  const StyledPopup = styled(Popup)`
+    
+  // use your custom style for ".popup-overlay"
+  &-overlay {
+    backdrop-filter: blur(10px);
+  }
+  // use your custom style for ".popup-content"
+  &-content {
+    width: 95%;
+    height: 90%;
+    padding: 1em;
+    background: var(--bg-color);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-style: solid;
+    border-color: var(--selection-color);
+    color: var(--text-color);
+  } 
+`;
+
+const [modalFOpen, setModalFOpen] = useState(false);
+const [friendAcc, setFriendAcc] = useState({});
+const [friendAccStat, setFriendAccStat] = useState({});
+const closeFModal = () => setModalFOpen(false);
+
+async function openFAccount (object) {
+  setFriendAcc(object);
+  var account_stats = await api.getStats(object.account_id);
+  setFriendAccStat(account_stats);
+  setModalFOpen(true);
+}
+
+
   return (
     <div className="App">
       <ToastContainer
-              position="top-left"
-              autoClose={3000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss={false}
-              draggable
-              pauseOnHover={false}
-            />
+        position="top-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+      />
       <Scrollbars autoHeight autoHeightMin={window.innerHeight}>
         <div className="window">
           {/* <div className="task-bar">
@@ -206,7 +244,7 @@ function App() {
               draggable
               pauseOnHover
             /> */}
-            
+
 
             <TitleBar
               page={page}
@@ -257,7 +295,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} />
+              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount}/>
             </SlidingPane>
 
           </div>
@@ -265,6 +303,23 @@ function App() {
           <SignInModal setLoading={setLoading} loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
         </div>
       </Scrollbars>
+
+      <StyledPopup
+        open={modalFOpen}
+        position="center"
+        modal
+        closeOnDocumentClick
+        onClose={closeFModal}
+      >
+        <div className="modal">
+        <button onClick={() => closeFModal()}>X</button>
+        <h1>{friendAcc.display_name}'s Profile</h1>
+        <Scrollbars autoHeight>
+          <Account accountInfo={friendAcc} accountStats={friendAccStat} />
+        </Scrollbars>
+        </div>
+      </StyledPopup>
+
     </div>
   );
 }
