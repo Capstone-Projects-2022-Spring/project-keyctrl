@@ -193,6 +193,18 @@ const Account = ({ accountInfo, accountStats, setAccountStats }) => {
                             </div>
                         </div>
 
+                        <div className='stat-keyboard-display'>
+                            <div onClick={() => setKeyboardDisplay(0)} style={keyboardDisplay == 0 ? { color: 'var(--selection-color)' } : null} className='stat-keyboard-display-button'>
+                                Number Missed
+                            </div>
+                            <div onClick={() => setKeyboardDisplay(1)} style={keyboardDisplay == 1 ? { color: 'var(--selection-color)' } : null} className='stat-keyboard-display-button'>
+                                Percent Missed
+                            </div>
+                        </div>
+                        <div className='stat-keyboard-base'>
+                            <StatKeyboard letter_misses={getCurrentGameMode()} />
+
+
                         <StatKeyboard keyboardDisplay={keyboardDisplay} letter_misses={getCurrentGameMode()} />
 
                     </div>
