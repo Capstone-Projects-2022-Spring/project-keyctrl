@@ -69,7 +69,7 @@ function changeStat(current) {
 }
 
 
-const FriendsList = ({ setFriendsList, friendsList, accountInfo }) => {
+const FriendsList = ({ setFriendsList, friendsList, accountInfo, openFAccount }) => {
 
     const [addFriend, setAddFriend] = useState([]);
     const [count, setCount] = useState(0);
@@ -227,6 +227,7 @@ const FriendsList = ({ setFriendsList, friendsList, accountInfo }) => {
                                 setFriendsList={setFriendsList}
                                 accountInfo={accountInfo}
                                 object={obj}
+                                openFAccount= {openFAccount}
                             />
                         )
                     })}

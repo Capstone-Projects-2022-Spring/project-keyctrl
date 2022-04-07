@@ -10,6 +10,10 @@ import { Menu, MenuItem } from '@material-ui/core';
 import { blue, green, purple, red } from '@material-ui/core/colors';
 import * as api from '../../../utils/apiUtils.js'
 import { toast } from 'react-toastify'
+import Account from '../../AccountPage/Account'
+import Scrollbars from 'react-custom-scrollbars-2'
+import passOpenFAccount from '../../../App.js'
+
 
 const StyledPopup = styled(Popup)`
     
@@ -127,7 +131,12 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object }) => {
+const friendProf = ({ }) => {//requests accountInfo from a friend/user then put into Account() 
+  //request info using user email being passed in
+  //throw info into Account()
+}
+
+const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, openFAccount }) => {//object is current person
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -137,9 +146,15 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object }) 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = (item) => {
+
+  const handleClose = async (item) => {
     setAnchorEl(null);
+    if (item === 0) {
+      openFAccount(object)
+    }
     if (item === 3) {
+      console.log(accountInfo)
+      console.log(object)
       setModalOpen(true)
     }
   };
@@ -163,7 +178,7 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object }) 
     setFriendsList(tempList)
     setState(o => !o);
 
-    toast.error(object.display_name + ' Removed!' , {
+    toast.error(object.display_name + ' Removed!', {
       position: "top-left",
       autoClose: 2000,
       hideProgressBar: false,
@@ -240,9 +255,10 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object }) 
           <ConfirmationButtonYes onClick={deleteFriend}>YES, REMOVE</ConfirmationButtonYes>
           <ConfirmationButtonNo onClick={() => setModalOpen(false)}>NO, GO BACK</ConfirmationButtonNo>
         </div>
-
       </StyledPopup>
+
     </div>
+
   )
 }
 

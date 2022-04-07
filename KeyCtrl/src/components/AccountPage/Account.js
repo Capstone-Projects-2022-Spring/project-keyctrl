@@ -178,6 +178,12 @@ const Account = ({ accountInfo, accountStats, setAccountStats }) => {
                     </div>
 
                     <div className='stat-container'>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-evenly',
+                        }}>
+                            <SingleStatDisplay title="Most Missed" data={"A"} />
                         <div className='stat-keyboard-display'>
                             <div onClick={() => setKeyboardDisplay(0)} style={keyboardDisplay == 0 ? { color: 'var(--selection-color)' } : null} className='stat-keyboard-display-button'>
                                 Number Missed
@@ -197,7 +203,6 @@ const Account = ({ accountInfo, accountStats, setAccountStats }) => {
                     />
 
                     <StatisticGraph dataAvg={accountStats[3]} dataTop={accountStats[4]} dataRank={accountStats[5]} gameMode={currentStats} />
-
                 </div>
                 : <History />}
         </div>
