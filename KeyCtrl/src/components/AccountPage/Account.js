@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 
-import { React, useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import '../../styles/Account.css'
 import SingleStatDisplay from './SingleStatDisplay.js'
 import StatisticGraph from './StatisticGraph'
@@ -10,6 +10,7 @@ import Unranked from '../../assets/unranked.png'
 import History from './History'
 import { Avatar, Tab, Tabs, Box, Typography } from '@material-ui/core'
 import ColoredLine from '../SettingsPage/ColoredLine'
+import * as api from '../../utils/apiUtils.js'
 
 /**
  * @module Account
@@ -49,12 +50,18 @@ function a11yProps(index) {
     };
 }
 
-const Account = ({ accountInfo, accountStats }) => {
+const Account = ({ accountInfo, accountStats, setAccountStats }) => {
 
     const [inSummary, setInSummary] = useState(true);
     const [value, setValue] = useState(0);
     const [currentStats, setCurrentStats] = useState(0)
     const [keyboardDisplay, setKeyboardDisplay] = useState(0)
+
+    useEffect(async() => {
+        var newStats = await api.getStats(accountInfo.account_id)
+        setAccountStats(newStats)
+    }, [])
+
 
     const handleChange = (event, newValue) => {
         setCurrentStats(newValue);
@@ -172,16 +179,16 @@ const Account = ({ accountInfo, accountStats }) => {
 
                     <div className='stat-container'>
                         <div className='stat-keyboard-display'>
-                            <div onClick={() => setKeyboardDisplay(0)} style={ keyboardDisplay == 0 ? {color: 'var(--selection-color)'} : null} className='stat-keyboard-display-button'>
+                            <div onClick={() => setKeyboardDisplay(0)} style={keyboardDisplay == 0 ? { color: 'var(--selection-color)' } : null} className='stat-keyboard-display-button'>
                                 Number Missed
                             </div>
-                            <div onClick={() => setKeyboardDisplay(1)} style={ keyboardDisplay == 1 ? {color: 'var(--selection-color)'} : null} className='stat-keyboard-display-button'>
+                            <div onClick={() => setKeyboardDisplay(1)} style={keyboardDisplay == 1 ? { color: 'var(--selection-color)' } : null} className='stat-keyboard-display-button'>
                                 Percent Missed
                             </div>
                         </div>
-                        
-                            <StatKeyboard keyboardDisplay={keyboardDisplay} letter_misses={getCurrentGameMode()} />
-                        
+
+                        <StatKeyboard keyboardDisplay={keyboardDisplay} letter_misses={getCurrentGameMode()} />
+
                     </div>
 
                     <ColoredLine

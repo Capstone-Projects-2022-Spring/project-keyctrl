@@ -3,8 +3,9 @@ import useForm from '../../../../utils/useForm';
 import validate from '../../../../utils/validateInfo'
 import '../../../../styles/SignInModal.css'
 import { useSpring, animated } from 'react-spring';
-import { MdClose } from 'react-icons/md';
+import { MdClose, MdOutlineFacebook } from 'react-icons/md';
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login'
 // import * as db from '../utils/dbUtils.js';
 import sha256 from 'crypto-js/sha256';
 
@@ -159,6 +160,15 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
         //after login in on google login, we call login
     };
 
+    const responseFacebook = (response) => {
+        setShowSignIn(false)
+        console.log(response);
+        login(response.email, response.picture.url, response.name)
+    }
+
+    const componentClicked = () => {
+        console.log("Clicked")
+    }
 
     return (
         <>
@@ -180,6 +190,14 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
                                     onSuccess={responseGoogle}
                                     onFailure={responseGoogle}
                                     cookiePolicy="single_host_origin" />
+                                <FacebookLogin
+                                    appId="1021992962032784"
+                                    fields="name,email,picture"
+                                    onClick={() => componentClicked()}
+                                    callback={responseFacebook}
+                                    cssClass="my-facebook-button-class"
+                                     />
+                                    
                             </div>
                         </div>
                     </animated.div>

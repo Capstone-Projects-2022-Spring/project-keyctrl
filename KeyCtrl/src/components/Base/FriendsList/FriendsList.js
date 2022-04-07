@@ -155,11 +155,11 @@ const FriendsList = ({ setFriendsList, friendsList, accountInfo }) => {
                     <br />
                     {"#" + accountInfo.social_id.substr(accountInfo.social_id.length - 4)}
                 </div>
-                <div style={{ paddingLeft: '.75em', paddingTop: '10%' }}>
+                {/* <div style={{ paddingLeft: '.75em', paddingTop: '10%' }}>
                     <Badge color="primary" badgeContent={count} >
                         <IoNotificationsSharp className="friends-list-notif-icon" />
                     </Badge>
-                </div>
+                </div> */}
 
             </div>
             <div className='friends-list-add'>

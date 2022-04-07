@@ -95,7 +95,7 @@ function App() {
     await api.updateStats(currentGamemode, tempAccountStats)
   }
 
-  const updateAccInfo = () => {
+  const updateAccInfo = async() => {
 
     if (loggedIn) {
       var tempAccountStats = accountStats
@@ -111,6 +111,7 @@ function App() {
       if (wpm > typingStats.wpm_top) {
         //new top wpm
         typingStats.wpm_top = wpm
+        api.insertHistory(accountInfo.account_id, "top", wpm, currentGamemode)
       } 
 
       // setting new average wpm
@@ -118,6 +119,8 @@ function App() {
       var words = typingStats.wpm_total_words
       var new_avg_wpm = words / minutes
       typingStats.wpm_average = new_avg_wpm
+
+      await api.insertHistory(accountInfo.account_id, "avg", new_avg_wpm.toFixed(2), currentGamemode)
 
       tempAccountStats[currentGamemode][0] = typingStats
       setAccountStats(tempAccountStats);
@@ -234,8 +237,8 @@ function App() {
                 } />
                 <Route exact path="/training" element={<Training />} />
                 <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} />} />
-                <Route exact path="/account" element={(loggedIn ? <Account accountInfo={accountInfo} accountStats={accountStats} /> : <OfflineAccount openSignIn={openSignIn}/>)} />
-                <Route exact path="/settings" element={<Settings openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
+                <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} /> : <OfflineAccount openSignIn={openSignIn}/>)} />
+                <Route exact path="/settings" element={<Settings setAccountInfo={setAccountInfo} openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
 
             </div>
