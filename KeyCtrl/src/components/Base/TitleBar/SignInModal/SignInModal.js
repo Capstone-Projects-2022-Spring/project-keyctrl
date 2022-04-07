@@ -191,7 +191,6 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
                                     cookiePolicy="single_host_origin" />
                                 <FacebookLogin
                                     appId="1021992962032784"
-                                    autoLoad={true}
                                     fields="name,email,picture"
                                     onClick={() => componentClicked()}
                                     callback={responseFacebook}
