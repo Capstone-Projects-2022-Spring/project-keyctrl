@@ -50,7 +50,7 @@ function a11yProps(index) {
     };
 }
 
-const Account = ({ accountInfo, accountStats, setAccountStats }) => {
+const Account = ({ accountInfo, accountStats, setAccountStats, inFriend }) => {
 
     const [inSummary, setInSummary] = useState(true);
     const [value, setValue] = useState(0);
@@ -58,8 +58,10 @@ const Account = ({ accountInfo, accountStats, setAccountStats }) => {
     const [keyboardDisplay, setKeyboardDisplay] = useState(0)
 
     useEffect(async () => {
-        var newStats = await api.getStats(accountInfo.account_id)
-        setAccountStats(newStats)
+        if (!inFriend) {
+            var newStats = await api.getStats(accountInfo.account_id)
+            setAccountStats(newStats)
+        }
     }, [])
 
 
@@ -178,13 +180,6 @@ const Account = ({ accountInfo, accountStats, setAccountStats }) => {
                     </div>
 
                     <div className='stat-container'>
-                        <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-evenly',
-                        }}>
-                            <SingleStatDisplay title="Most Missed" data={"A"} />
-                        </div>
                         <div className='stat-keyboard-display'>
                             <div onClick={() => setKeyboardDisplay(0)} style={keyboardDisplay == 0 ? { color: 'var(--selection-color)' } : null} className='stat-keyboard-display-button'>
                                 Number Missed

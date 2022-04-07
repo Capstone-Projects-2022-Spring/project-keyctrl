@@ -275,7 +275,7 @@ function App() {
                 } />
                 <Route exact path="/training" element={<Training />} />
                 <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} />} />
-                <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} /> : <OfflineAccount openSignIn={openSignIn}/>)} />
+                <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} inFriend={false}/> : <OfflineAccount openSignIn={openSignIn}/>)} />
                 <Route exact path="/settings" element={<Settings setAccountInfo={setAccountInfo} openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
 
@@ -308,7 +308,7 @@ function App() {
         <div className="view-account-modal">
           <button className="exit-view-account-button" onClick={() => closeFModal()}>X</button>
           <Scrollbars style={{ height: '90vh' }}>
-            <Account accountInfo={friendAcc} accountStats={friendAccStat} />
+            <Account accountInfo={friendAcc} accountStats={friendAccStat} inFriend={true}/>
           </Scrollbars>
         </div>
       </StyledPopup>
