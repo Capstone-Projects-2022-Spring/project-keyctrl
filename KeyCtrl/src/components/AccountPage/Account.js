@@ -57,7 +57,7 @@ const Account = ({ accountInfo, accountStats, setAccountStats }) => {
     const [currentStats, setCurrentStats] = useState(0)
     const [keyboardDisplay, setKeyboardDisplay] = useState(0)
 
-    useEffect(async() => {
+    useEffect(async () => {
         var newStats = await api.getStats(accountInfo.account_id)
         setAccountStats(newStats)
     }, [])
@@ -184,6 +184,7 @@ const Account = ({ accountInfo, accountStats, setAccountStats }) => {
                             justifyContent: 'space-evenly',
                         }}>
                             <SingleStatDisplay title="Most Missed" data={"A"} />
+                        </div>
                         <div className='stat-keyboard-display'>
                             <div onClick={() => setKeyboardDisplay(0)} style={keyboardDisplay == 0 ? { color: 'var(--selection-color)' } : null} className='stat-keyboard-display-button'>
                                 Number Missed
@@ -192,18 +193,6 @@ const Account = ({ accountInfo, accountStats, setAccountStats }) => {
                                 Percent Missed
                             </div>
                         </div>
-
-                        <div className='stat-keyboard-display'>
-                            <div onClick={() => setKeyboardDisplay(0)} style={keyboardDisplay == 0 ? { color: 'var(--selection-color)' } : null} className='stat-keyboard-display-button'>
-                                Number Missed
-                            </div>
-                            <div onClick={() => setKeyboardDisplay(1)} style={keyboardDisplay == 1 ? { color: 'var(--selection-color)' } : null} className='stat-keyboard-display-button'>
-                                Percent Missed
-                            </div>
-                        </div>
-                        <div className='stat-keyboard-base'>
-                            <StatKeyboard letter_misses={getCurrentGameMode()} />
-
 
                         <StatKeyboard keyboardDisplay={keyboardDisplay} letter_misses={getCurrentGameMode()} />
 
