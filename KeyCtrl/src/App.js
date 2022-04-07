@@ -196,17 +196,17 @@ function App() {
   } 
 `;
 
-const [modalFOpen, setModalFOpen] = useState(false);
-const [friendAcc, setFriendAcc] = useState({});
-const [friendAccStat, setFriendAccStat] = useState({});
-const closeFModal = () => setModalFOpen(false);
+  const [modalFOpen, setModalFOpen] = useState(false);
+  const [friendAcc, setFriendAcc] = useState({});
+  const [friendAccStat, setFriendAccStat] = useState({});
+  const closeFModal = () => setModalFOpen(false);
 
-async function openFAccount (object) {
-  setFriendAcc(object);
-  var account_stats = await api.getStats(object.account_id);
-  setFriendAccStat(account_stats);
-  setModalFOpen(true);
-}
+  async function openFAccount(object) {
+    setFriendAcc(object);
+    var account_stats = await api.getStats(object.account_id);
+    setFriendAccStat(account_stats);
+    setModalFOpen(true);
+  }
 
 
   return (
@@ -295,7 +295,7 @@ async function openFAccount (object) {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount}/>
+              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} />
             </SlidingPane>
 
           </div>
@@ -311,12 +311,11 @@ async function openFAccount (object) {
         closeOnDocumentClick
         onClose={closeFModal}
       >
-        <div className="modal">
-        <button onClick={() => closeFModal()}>X</button>
-        <h1>{friendAcc.display_name}'s Profile</h1>
-        <Scrollbars autoHeight>
-          <Account accountInfo={friendAcc} accountStats={friendAccStat} />
-        </Scrollbars>
+        <div className="view-account-modal">
+          <button className="exit-view-account-button" onClick={() => closeFModal()}>X</button>
+          <Scrollbars style={{ height: '90vh' }}>
+            <Account accountInfo={friendAcc} accountStats={friendAccStat} />
+          </Scrollbars>
         </div>
       </StyledPopup>
 

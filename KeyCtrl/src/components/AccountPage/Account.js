@@ -173,7 +173,7 @@ const Account = ({ accountInfo, accountStats }) => {
                     </div>
 
                     <div className='stat-container'>
-                    <div style={{
+                        <div style={{
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'space-evenly',
@@ -199,7 +199,6 @@ const Account = ({ accountInfo, accountStats }) => {
                     />
 
                     <StatisticGraph dataAvg={accountStats[3]} dataTop={accountStats[4]} dataRank={accountStats[5]} gameMode={currentStats} />
-
                 </div>
                 : <History />}
         </div>

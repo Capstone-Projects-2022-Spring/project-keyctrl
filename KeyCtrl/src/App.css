@@ -115,6 +115,30 @@
     padding: 0 !important;
 }
 
+.view-account-modal{
+
+}
+
+.exit-view-account-button{
+    position: absolute;
+    right: 3em;
+    top: 0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--selection-color);
+    color: var(--selection-color);
+    z-index: 20;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.exit-view-account-button:hover{
+    cursor: pointer;
+    background: var(--selection-color);
+    color: var(--dark-bg);
+    transition: .25s;
+}
+
 [data-theme="default"]{
     --primary-color: #3d3883;
     --secondary-color: #5b5a99;
