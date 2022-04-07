@@ -72,7 +72,7 @@ function changeStat(current) {
 const FriendsList = ({ setFriendsList, friendsList, accountInfo, openFAccount }) => {
 
     const [addFriend, setAddFriend] = useState([]);
-    const [count, setCount] = useState(1);
+    const [count, setCount] = useState(0);
     const [friendRequestsOpen, setFriendRequestsOpen] = useState(true)
     const [friendListOpen, setFriendListOpen] = useState(true)
 
@@ -155,11 +155,11 @@ const FriendsList = ({ setFriendsList, friendsList, accountInfo, openFAccount })
                     <br />
                     {"#" + accountInfo.social_id.substr(accountInfo.social_id.length - 4)}
                 </div>
-                <div style={{ paddingLeft: '.75em', paddingTop: '10%' }}>
+                {/* <div style={{ paddingLeft: '.75em', paddingTop: '10%' }}>
                     <Badge color="primary" badgeContent={count} >
                         <IoNotificationsSharp className="friends-list-notif-icon" />
                     </Badge>
-                </div>
+                </div> */}
 
             </div>
             <div className='friends-list-add'>
@@ -182,6 +182,7 @@ const FriendsList = ({ setFriendsList, friendsList, accountInfo, openFAccount })
                         fullWidth
                         sx={{ height: '3em' }}
                         value={addFriend}
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onChange={(event) => { setAddFriend(event.target.value) }}
                     />
                     <IconButton>

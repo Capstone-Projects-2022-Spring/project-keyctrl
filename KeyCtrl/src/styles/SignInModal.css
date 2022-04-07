@@ -142,3 +142,17 @@
   text-align: left;
   color: #f00e0e;
 }
+
+.my-facebook-button-class{
+    border: none;
+    background: #4c69ba;
+    border-radius: 0;
+    color: white;
+    width: 13em;
+    height: 3.20em;
+}
+
+.my-facebook-button-class:hover{
+    cursor: pointer;
+    background: #445ea5;
+}
