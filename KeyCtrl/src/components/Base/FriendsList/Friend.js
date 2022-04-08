@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import styled from 'styled-components';
 import Popup from 'reactjs-popup'
 import { Avatar, Badge, TextField } from '@material-ui/core';
@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import Account from '../../AccountPage/Account'
 import Scrollbars from 'react-custom-scrollbars-2'
 import passOpenFAccount from '../../../App.js'
+import io from "socket.io-client"
 
 
 const StyledPopup = styled(Popup)`
@@ -137,7 +138,6 @@ const friendProf = ({ }) => {//requests accountInfo from a friend/user then put 
 }
 
 const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, openFAccount }) => {//object is current person
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => setModalOpen(false);
@@ -147,17 +147,31 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, op
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = async (item) => {
+  const handleMenuClick = async (item) => {
     setAnchorEl(null);
-    if (item === 0) {
-      openFAccount(object)
-    }
-    if (item === 3) {
-      console.log(accountInfo)
-      console.log(object)
-      setModalOpen(true)
+    switch(item) {
+      case(0):
+        openFAccount(object)
+      case(1):
+        sendGameInvite()
+      case(2):
+        break;
+      case(3):
+        console.log(accountInfo)
+        console.log(object)
+        setModalOpen(true)
     }
   };
+
+  const socketRef = useRef()
+  function sendGameInvite() {
+    //DETERMINE LOBBY ID VIA UI, PLACEHOLDER FOR NOW
+    var lobbyID = "testingGameInvite"
+    if(socketRef.current == null) {
+      socketRef.current = io.connect("http://localhost:4000")
+    }
+    socketRef.current.emit('sendGameInvite', accountInfo.account_id, object.account_id, lobbyID)
+  }
 
   const deleteFriend = async () => {
 
@@ -235,10 +249,10 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, op
               'aria-labelledby': 'basic-button',
             }}
           >
-            <MenuItem onClick={() => handleClose(0)}>View Profile</MenuItem>
-            <MenuItem onClick={() => handleClose(1)}>Invite</MenuItem>
-            <MenuItem onClick={() => handleClose(2)}>Message</MenuItem>
-            <MenuItem onClick={() => handleClose(3)}>Remove Friend</MenuItem>
+            <MenuItem onClick={() => handleMenuClick(0)}>View Profile</MenuItem>
+            <MenuItem onClick={() => handleMenuClick(1)}>Invite</MenuItem>
+            <MenuItem onClick={() => handleMenuClick(2)}>Message</MenuItem>
+            <MenuItem onClick={() => handleMenuClick(3)}>Remove Friend</MenuItem>
           </StyledMenu>
         </div>
       </div>

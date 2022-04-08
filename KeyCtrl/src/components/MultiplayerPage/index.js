@@ -40,6 +40,11 @@ function getNewWordsLine() {
 io.on('connection', (socket) => {
   console.log(socket.id + ' connected');
 
+  socket.on('sendGameInvite', function(senderID, receiverID, lobbyID) {
+    console.log('in sendInvite. sender: ' + senderID + ' receiver: ' + receiverID + ' lobby: ' + lobbyID)
+    io.in(receiverID).emit('joinFriendGame', lobbyID)    
+  })
+
   /*Find Match
   * ----------
   * Uses socket.id (unique socket ID assigned automatically by socket.io) to track users waiting 

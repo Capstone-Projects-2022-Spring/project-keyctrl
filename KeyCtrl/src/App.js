@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TypingTest from './components/TypingTestPage/TypingTest.js';
 import SignInModal from './components/Base/TitleBar/SignInModal/SignInModal.js';
 import TitleBar from './components/Base/TitleBar/TitleBar.js';
@@ -21,6 +21,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import styled from 'styled-components';
 import Popup from 'reactjs-popup'
+import io from "socket.io-client"
 
 
 // Set default theme on first initialization
@@ -54,6 +55,7 @@ function App() {
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
+  const socketRef = useRef()
 
   const onLogin = async (account_, accountStats_, friendsList_) => {
 
@@ -147,9 +149,25 @@ function App() {
 
   }
 
+  useEffect(() => {
+    if(loggedIn) {
+      if (socketRef.current == null) {
+        console.log("creating new connection")
+        socketRef.current = io.connect("http://localhost:4000")
+        socketRef.current.room = accountInfo.account_id
+      }
+    }
+  }, [loggedIn, setLoggedIn])
+
+  useEffect(() => {
+    socketRef.current.on('joinFriendGame', function(lobbyID) {
+      console.log('joining ' + lobbyID)
+    })
+  })
 
 
   useEffect(() => {
+  
     document.addEventListener('keydown', emptyForNow);
 
     // if (timer === 0 && !timerActive && loggedIn) {
