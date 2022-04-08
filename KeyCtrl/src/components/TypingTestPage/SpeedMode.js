@@ -236,14 +236,14 @@ export const TypingTest = (props) => {
                         if (lineIndex === currentLineLength - 1) {
                             onLineChange()
                         }
-                        incrementMissed(randomWords[lineIndex]);
-                    }
-                    else if (event.key != randomWords[lineIndex] && props.loggedIn) {
+                        if (props.loggedIn) {
 
-                        incrementMissed(randomWords[lineIndex]);
-                        // console.log(randomWords[index]);
-                        // console.log(accountInfo.letter_misses);
+                            incrementMissed(randomWords[lineIndex]);
+                            // console.log(randomWords[index]);
+                            // console.log(accountInfo.letter_misses);
+                        }
                     }
+                    
                 }
                 break;
         }

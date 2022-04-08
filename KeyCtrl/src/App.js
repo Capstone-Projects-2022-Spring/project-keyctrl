@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TypingTest from './components/TypingTestPage/TypingTest.js';
+import SpeedMode from './components/TypingTestPage/SpeedMode';
 import SignInModal from './components/Base/TitleBar/SignInModal/SignInModal.js';
 import TitleBar from './components/Base/TitleBar/TitleBar.js';
 import TaskBar from './components/Base/TaskBar/TaskBar.js';
@@ -213,7 +214,7 @@ function App() {
 
               <Routes>
                 <Route exact path="/" element={
-                  <TypingTest
+                  <SpeedMode
                     setUpdateOnce={setUpdateOnce}
                     setIndex={setIndex}
                     index={index}
