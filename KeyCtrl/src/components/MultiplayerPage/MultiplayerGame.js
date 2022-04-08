@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect, useInterval } from 'react'
 import io from "socket.io-client"
 import '../../styles/TypingTest.css'
+import '../../styles/MultiplayerGame.css'
 import { PropTypes } from 'prop-types'
 import OpponentTestVisual from './OpponentTestVisual';
 import styled from 'styled-components'
 import Popup from 'reactjs-popup'
+import PostMatchPlayer from './PostMatchPlayer'
 
 const MultiplayerGame = (props) => {
   const [lobbyPlayers, setLobbyPlayers] = useState(new Map())
@@ -28,8 +30,10 @@ const MultiplayerGame = (props) => {
   const [lineArray, setLineArray] = useState([])
 
   const [leaderBoardOpen, setLeaderBoardOpen] = useState(false);
-  const [leaderboard, setLeaderboard] = useState([{ player: '', WPM: '' }, { player: '', WPM: '' }, { player: '', WPM: '' }, { player: '', WPM: '' }]);
+  const [leaderboard, setLeaderboard] = useState([]);
   const closeLeaderBoard = () => setLeaderBoardOpen(false);
+
+  const [gameStatus, setGameStatus] = useState(false)
 
 
   // ---- Server Communication -------------------------------------
@@ -40,6 +44,11 @@ const MultiplayerGame = (props) => {
 
   var lobbyID = props.lobbyID
   var username = props.username
+  var accountId = props.accountInfo.account_id
+  var socialId = props.accountInfo.social_id
+  var loggedIn = props.loggedIn
+  var photo = props.accountInfo.photo
+
   var la;
 
   useEffect(() => {
@@ -48,7 +57,7 @@ const MultiplayerGame = (props) => {
   useEffect(
     () => {
 
-      socketRef.current = io.connect("https://generated-respected-python.glitch.me") //LOCALHOST for local testing
+      socketRef.current = io.connect("http://localhost:4000") //LOCALHOST for local testing
 
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', { lobbyID }, username)
@@ -73,6 +82,7 @@ const MultiplayerGame = (props) => {
         console.log("Game Start")
         setInCountdown(true)
         setTimerActive(true);
+        setGameStatus(false)
       })
 
       socketRef.current.on("gameLines", (gameLines) => {
@@ -86,7 +96,7 @@ const MultiplayerGame = (props) => {
         setLeaderboard(matchResultsArray);
         sortLeaderBoard(matchResultsArray);
         setLeaderBoardOpen(o => !o);
-
+        setGameStatus(true)
       })
 
       socketRef.current.on("playerIndexUpdate", (playerName, playerIndex, playerLineArrayIndex) => {
@@ -219,7 +229,7 @@ const MultiplayerGame = (props) => {
     return wpm;
   };
 
-  function sortLeaderBoard(matchResultsArray){
+  function sortLeaderBoard(matchResultsArray) {
     function compare(a, b) {
       return b.WPM - a.WPM
     }
@@ -256,10 +266,9 @@ const MultiplayerGame = (props) => {
 
   useInterval(() => {
     if (!inCountdown && timer === 0) {
-
-      var WPM = grossWPM()
-      console.log("wpm: ", WPM);
-      socketRef.current.emit("gameEnd", username, grossWPM(), socketRef.current.room)
+      // loggedIn, //social_id, //account_id
+      // socketRef.current.emit("gameEnd", username, grossWPM(), socketRef.current.room)
+      socketRef.current.emit("gameEnd", photo, username, grossWPM(), accountId, socialId, loggedIn, socketRef.current.room)
 
       reset();
 
@@ -280,7 +289,7 @@ const MultiplayerGame = (props) => {
   // ---------------------------------------------------
 
   function readyUp() {
-    if(props.isFindMatch) {
+    if (props.isFindMatch) {
       //get back in Find Match queue
       props.setShowModal(true)
       socketRef.current.emit('findMatch')
@@ -292,9 +301,9 @@ const MultiplayerGame = (props) => {
   }
 
   function leaveRoom() {
-      //back to mp menu
-      props.setJoinLobby(false)
-      props.setFindMatch(false)
+    //back to mp menu
+    props.setJoinLobby(false)
+    props.setFindMatch(false)
   }
 
 
@@ -328,30 +337,24 @@ const MultiplayerGame = (props) => {
           onClose={closeLeaderBoard}
           position="center"
           modal
-          closeOnDocumentClick
         >
           <Leaderboard>
-            <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
-              {leaderboard[0].player + " won!"}
-              <br />
-              {leaderboard[0].WPM + " WPM"}
-            </div>
-            <div>
-              {"2nd: " + leaderboard[1].player + " " + leaderboard[1].WPM + " WPM"}
-              <br />
-              {"3rd: " + leaderboard[2].player + " " + leaderboard[2].WPM + " WPM"}
-            </div>
-            {/* {leaderboard.map(function (player, idx) {
+
+            {leaderboard.map(function (player, idx) {
+              console.log(player)
               return (
-                <div>{idx+1}. {player.player}  {player.WPM} WPM</div>
+                <>
+                  <PostMatchPlayer myAccId={accountId} handleAddFriend={props.handleAddFriend} setAddFriend={props.setAddFriend} photo={player.photo} socialId={player.socialId} accountId={player.accountId} openFAccount={props.openFAccount} currentName={props.accountInfo.display_name} loggedIn={loggedIn} playerLoggedIn={player.loggedIn} index={idx + 1} playerName={player.player} wpm={player.WPM} />
+                </>
               )
-            })} */}
+            })}
+
           </Leaderboard>
           <PostMatchOptions>
-          <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
-            <button onClick={readyUp}>Ready Up</button>
-            <button onClick={leaveRoom}>Leave</button>
-          </div>
+            <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
+              <button className='post-match-options-button' onClick={readyUp}>Ready Up</button>
+              <button className='post-match-options-button' onClick={leaveRoom}>Leave</button>
+            </div>
           </PostMatchOptions>
         </EndingPopup>
 
@@ -373,6 +376,10 @@ const MultiplayerGame = (props) => {
           {nextUpRandomWords}
         </div>
       </div>
+      {!leaderBoardOpen && gameStatus ? <button className='post-match-options-button' onClick={() => setLeaderBoardOpen(true)}>Post Match Stats</button>
+        : null
+
+      }
     </div>
   )
 }
