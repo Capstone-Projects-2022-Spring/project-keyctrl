@@ -44,7 +44,7 @@ const Multiplayer = ({handleAddFriend, setAddFriend, loggedIn, accountInfo, open
       determineName()
       if (socketRef.current == null) {
         console.log("creating new connection")
-        socketRef.current = io.connect("http://localhost:4000")
+        socketRef.current = io.connect("https://generated-respected-python.glitch.me")
       }
       //Finding Match code...
       socketRef.current.on('findMatchSuccess', (lobby) => {
