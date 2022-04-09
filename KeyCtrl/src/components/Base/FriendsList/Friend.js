@@ -137,7 +137,7 @@ const friendProf = ({ }) => {//requests accountInfo from a friend/user then put 
   //throw info into Account()
 }
 
-const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite }) => {//object is current person
+const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite, setInviteLobby }) => {//object is current person
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => setModalOpen(false);
@@ -155,11 +155,13 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, op
       case(1):
         sendGameInvite()
       case(2):
-        break;
+        //sendMessage()
       case(3):
         console.log(accountInfo)
         console.log(object)
         setModalOpen(true)
+      default:
+        break;
     }
   };
 
@@ -171,8 +173,17 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, op
     if(socketRef.current == null) {
       socketRef.current = io.connect("http://localhost:4000")
     }
+    setInviteLobby(lobbyID)
     socketRef.current.emit('sendGameInvite', accountInfo.account_id, object.account_id, lobbyID)
     setSendInvite(false)
+  }
+
+  function sendMessage() {
+    if(socketRef.current == null) {
+      socketRef.current = io.connect("http://localhost:4000")
+    }
+    var message = "testMessage"
+    socketRef.current.emit('sendMessage', accountInfo.display_name, object.account_id, message)
   }
 
   const deleteFriend = async () => {

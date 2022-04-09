@@ -10,7 +10,7 @@ import Training from './components/TrainingPage/Training.js';
 import Settings from './components/SettingsPage/Settings.js';
 import LoadingSpinner from './components/Base/LoadingSpinner/LoadingSpinner.js';
 import * as api from './utils/apiUtils.js'
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
 import MultiplayerGame from './components/MultiplayerPage/MultiplayerGame.js';
 import SlidingPane from "react-sliding-pane"
@@ -23,6 +23,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import styled from 'styled-components';
 import Popup from 'reactjs-popup'
 import io from "socket.io-client"
+import { Link } from '@material-ui/core';
 
 
 // Set default theme on first initialization
@@ -44,6 +45,8 @@ function App() {
   const [accountStats, setAccountStats] = useState({})
   const [currentGamemode, setCurrentGamemode] = useState(0)
   const [appStaticCountdown, setAppStaticCountdown] = useState(15);
+
+  const [inviteLobby, setInviteLobby] = useState(0)
   const [sendInvite, setSendInvite] = useState(false)
 
   const [updateOnce, setUpdateOnce] = useState(false)
@@ -151,6 +154,7 @@ function App() {
 
   }
 
+  const navigate = useNavigate()
   useEffect(() => {
     if(loggedIn) {
       if (socketRef.current == null) {
@@ -160,18 +164,16 @@ function App() {
       }
 
       socketRef.current.on('joinFriendGame', (lobbyID) => {
+        setInviteLobby(lobbyID)
         console.log('joining ' + lobbyID)
-        return( 
-          <div>
-            <MultiplayerGame 
-              lobbyID={lobbyID} 
-              username={accountInfo.display_name} 
-            /> 
-          </div>
-        )
+        navigate('/multiplayer')
+      })
+
+      socketRef.current.on('messageSent', function(message, sender) {
+        alert(sender + ": " + message)
       })
     }
-  })
+  }, [loggedIn, setInviteLobby, setSendInvite])
 
 
   useEffect(() => {
@@ -300,7 +302,7 @@ function App() {
                   />
                 } />
                 <Route exact path="/training" element={<Training />} />
-                <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} />} />
+                <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} />} />
                 <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} inFriend={false}/> : <OfflineAccount openSignIn={openSignIn}/>)} />
                 <Route exact path="/settings" element={<Settings setAccountInfo={setAccountInfo} openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
@@ -316,7 +318,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite}/>
+              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby}/>
             </SlidingPane>
 
           </div>

@@ -51,6 +51,10 @@ io.on('connection', (socket) => {
     io.in(senderID).emit('joinFriendGame', lobbyID)  
   })
 
+  socket.on('sendMessage', function(senderDisplay, receiverID, message) {
+    io.to(receiverID).emit('messageSent', message, senderDisplay)
+  })
+
   /*Find Match
   * ----------
   * Uses socket.id (unique socket ID assigned automatically by socket.io) to track users waiting 

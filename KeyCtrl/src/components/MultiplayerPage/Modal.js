@@ -45,7 +45,7 @@ export const Modal = ({ setShowModal, setJoinLobby, setLobbyID, setName, name, i
   };
 
   function lobbySubmit() {
-    setLobbyID(document.getElementById('lobbyIdInput').value + "PRIV_GAME")
+    setLobbyID(document.getElementById('lobbyIdInput').value)
     setName(document.getElementById('lobbyNameInput').value)
     setJoinLobby(true)
     setShowModal(false)

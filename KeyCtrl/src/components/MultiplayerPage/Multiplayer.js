@@ -29,7 +29,7 @@ const Button = styled.button`
   }
 `
 
-const Multiplayer = ({loggedIn, accountInfo}) => {
+const Multiplayer = ({loggedIn, accountInfo, inviteLobby}) => {
 
   //Set lobby join state and update during button press
   const [joinLobby, setJoinLobby] = useState(false)
@@ -54,8 +54,16 @@ const Multiplayer = ({loggedIn, accountInfo}) => {
         setShowModal(false)
         setJoinLobby(true)
       })
+      console.log(inviteLobby)
     })
 
+    useEffect(() => {
+      if(inviteLobby != 0) {
+        setLobbyID(inviteLobby)
+        setJoinLobby(true)
+      }
+    })
+    
   //Enter lobby modal
   const [showModal, setShowModal] = useState(false)
   function determineName() {
