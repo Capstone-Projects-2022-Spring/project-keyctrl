@@ -62,7 +62,8 @@ export const TypingTest = (props) => {
     const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
     var randWordsFunc = require('random-words');          //Must require random-words
     const [wrongIndex, setWrongIndex] = useState([]);       //Initializing the variable wrongIndex.
-
+    const [letterArray, setLetterArray] = useState([]); 
+    const item="";
 
     function newWords() {
         var startingLine = getNewWordsLine()
@@ -213,6 +214,7 @@ export const TypingTest = (props) => {
                         }
             default:
                 if (timerActive && !inCountdown) {
+                    setLetterArray(choppedCurrentLine[lineIndex]) //work in progress...............
                     if (event.key === randomWords[lineIndex]) { //This is where the curser is locked.
                         // add occurances here for next letter
                         if (props.loggedIn)
@@ -281,6 +283,10 @@ export const TypingTest = (props) => {
             props.setAccountStats(newAccountStats);
         }
     }
+    
+    function addStr(str, index, stringToAdd){
+        return str.substring(0, index) + stringToAdd + str.substring(index, str.length);
+      }
 
     function incrementOccurrances(letter) {
 
@@ -342,7 +348,10 @@ export const TypingTest = (props) => {
                                 {(idx === lineIndex) ? <span className="cursor" ></span> : <span />}
                                 {char}
                             </span>
+                            
+                            
                         )
+                        
                     })}
                 </div>
 
@@ -353,11 +362,17 @@ export const TypingTest = (props) => {
                 {nextUpRandomWords}
             </div>
             {/* </div> */}
+            
+            <div className="WordBox">
+                {letterArray}
+            </div>
+           
         </div>
         // <TypingSettings />
     )
 
 }
+
 
 // Starting to introduce proptypes
 TypingTest.propTypes = {

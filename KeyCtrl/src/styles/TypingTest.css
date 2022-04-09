@@ -202,3 +202,24 @@
     font-size: 2em;
     font-weight: bold;
 }
+
+.WordBox{
+    
+    display: flex;
+    position: relative;
+    right:350px;
+    margin-top: .1em;
+    margin-bottom: .1em;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    padding-left: 1ch;
+    padding-right: 1ch;
+    width: 10ch;
+    background: var(--text-container);
+    font-family: Almarai;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 2em;
+    text-align: left;
+    letter-spacing: .03em;
+  }
