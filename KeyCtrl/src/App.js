@@ -12,6 +12,7 @@ import LoadingSpinner from './components/Base/LoadingSpinner/LoadingSpinner.js';
 import * as api from './utils/apiUtils.js'
 import { Route, Routes } from 'react-router-dom';
 import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
+import MultiplayerGame from './components/MultiplayerPage/MultiplayerGame.js';
 import SlidingPane from "react-sliding-pane"
 import "react-sliding-pane/dist/react-sliding-pane.css"
 import FriendsList from './components/Base/FriendsList/FriendsList.js';
@@ -43,6 +44,7 @@ function App() {
   const [accountStats, setAccountStats] = useState({})
   const [currentGamemode, setCurrentGamemode] = useState(0)
   const [appStaticCountdown, setAppStaticCountdown] = useState(15);
+  const [sendInvite, setSendInvite] = useState(false)
 
   const [updateOnce, setUpdateOnce] = useState(false)
 
@@ -154,15 +156,21 @@ function App() {
       if (socketRef.current == null) {
         console.log("creating new connection")
         socketRef.current = io.connect("http://localhost:4000")
-        socketRef.current.room = accountInfo.account_id
+        socketRef.current.emit('joinDefaultRoom', accountInfo.account_id)
       }
-    }
-  }, [loggedIn, setLoggedIn])
 
-  useEffect(() => {
-    socketRef.current.on('joinFriendGame', function(lobbyID) {
-      console.log('joining ' + lobbyID)
-    })
+      socketRef.current.on('joinFriendGame', (lobbyID) => {
+        console.log('joining ' + lobbyID)
+        return( 
+          <div>
+            <MultiplayerGame 
+              lobbyID={lobbyID} 
+              username={accountInfo.display_name} 
+            /> 
+          </div>
+        )
+      })
+    }
   })
 
 
@@ -308,7 +316,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} />
+              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite}/>
             </SlidingPane>
 
           </div>

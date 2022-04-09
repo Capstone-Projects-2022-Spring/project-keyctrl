@@ -137,7 +137,7 @@ const friendProf = ({ }) => {//requests accountInfo from a friend/user then put 
   //throw info into Account()
 }
 
-const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, openFAccount }) => {//object is current person
+const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite }) => {//object is current person
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => setModalOpen(false);
@@ -166,11 +166,13 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, op
   const socketRef = useRef()
   function sendGameInvite() {
     //DETERMINE LOBBY ID VIA UI, PLACEHOLDER FOR NOW
+    setSendInvite(true)
     var lobbyID = "testingGameInvite"
     if(socketRef.current == null) {
       socketRef.current = io.connect("http://localhost:4000")
     }
     socketRef.current.emit('sendGameInvite', accountInfo.account_id, object.account_id, lobbyID)
+    setSendInvite(false)
   }
 
   const deleteFriend = async () => {
@@ -244,7 +246,7 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, op
             anchorEl={anchorEl}
             getContentAnchorEl={null}
             open={open}
-            onClose={handleClose}
+            onClose={handleMenuClick}
             MenuListProps={{
               'aria-labelledby': 'basic-button',
             }}
