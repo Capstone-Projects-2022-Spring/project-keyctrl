@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import TypingTest from './components/TypingTestPage/TypingTest.js';
 import SignInModal from './components/Base/TitleBar/SignInModal/SignInModal.js';
 import TitleBar from './components/Base/TitleBar/TitleBar.js';
@@ -10,8 +10,9 @@ import Training from './components/TrainingPage/Training.js';
 import Settings from './components/SettingsPage/Settings.js';
 import LoadingSpinner from './components/Base/LoadingSpinner/LoadingSpinner.js';
 import * as api from './utils/apiUtils.js'
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
+import MultiplayerGame from './components/MultiplayerPage/MultiplayerGame.js';
 import SlidingPane from "react-sliding-pane"
 import "react-sliding-pane/dist/react-sliding-pane.css"
 import FriendsList from './components/Base/FriendsList/FriendsList.js';
@@ -21,6 +22,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import styled from 'styled-components';
 import Popup from 'reactjs-popup'
+import io from "socket.io-client"
+import { Link } from '@material-ui/core';
 
 
 // Set default theme on first initialization
@@ -44,6 +47,9 @@ function App() {
   const [appStaticCountdown, setAppStaticCountdown] = useState(15);
   const [addFriend, setAddFriend] = useState([]);
 
+  const [inviteLobby, setInviteLobby] = useState(0)
+  const [sendInvite, setSendInvite] = useState(false)
+
   const [updateOnce, setUpdateOnce] = useState(false)
 
   const [state, setState] = useState({
@@ -55,6 +61,7 @@ function App() {
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
+  const socketRef = useRef()
 
   const onLogin = async (account_, accountStats_, friendsList_) => {
 
@@ -148,9 +155,30 @@ function App() {
 
   }
 
+  const navigate = useNavigate()
+  useEffect(() => {
+    if(loggedIn) {
+      if (socketRef.current == null) {
+        console.log("creating new connection")
+        socketRef.current = io.connect("http://localhost:4000")
+        socketRef.current.emit('joinDefaultRoom', accountInfo.account_id)
+      }
+
+      socketRef.current.on('joinFriendGame', (lobbyID) => {
+        setInviteLobby(lobbyID)
+        console.log('joining ' + lobbyID)
+        navigate('/multiplayer')
+      })
+
+      socketRef.current.on('messageSent', function(message, sender) {
+        alert(sender + ": " + message)
+      })
+    }
+  }, [loggedIn, setInviteLobby, setSendInvite])
 
 
   useEffect(() => {
+  
     document.addEventListener('keydown', emptyForNow);
 
     // if (timer === 0 && !timerActive && loggedIn) {
@@ -321,7 +349,7 @@ function App() {
                   />
                 } />
                 <Route exact path="/training" element={<Training />} />
-                <Route exact path="/multiplayer" element={<Multiplayer openFAccount={openFAccount} loggedIn={loggedIn} accountInfo={accountInfo} />} />
+                <Route exact path="/multiplayer" element={<Multiplayer openFAccount={openFAccount} loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} />} />
                 <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} inFriend={false}/> : <OfflineAccount openSignIn={openSignIn}/>)} />
                 <Route exact path="/settings" element={<Settings setAccountInfo={setAccountInfo} openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
@@ -337,7 +365,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList handleAddFriend={handleAddFriend} addFriend={addFriend} setAddFriend={setAddFriend} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} />
+              <FriendsList handleAddFriend={handleAddFriend} addFriend={addFriend} setAddFriend={setAddFriend} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby}/>
             </SlidingPane>
 
           </div>

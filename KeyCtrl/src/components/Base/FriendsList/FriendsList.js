@@ -69,7 +69,8 @@ function changeStat(current) {
 }
 
 
-const FriendsList = ({ handleAddFriend, addFriend, setAddFriend, setFriendsList, friendsList, accountInfo, openFAccount }) => {
+
+const FriendsList = ({ handleAddFriend, addFriend, setAddFriend, setFriendsList, friendsList, accountInfo, openFAccount, setSendInvite, setInviteLobby }) => {
 
     const [count, setCount] = useState(0);
     const [friendRequestsOpen, setFriendRequestsOpen] = useState(true)
@@ -192,6 +193,8 @@ const FriendsList = ({ handleAddFriend, addFriend, setAddFriend, setFriendsList,
                                 accountInfo={accountInfo}
                                 object={obj}
                                 openFAccount= {openFAccount}
+                                setSendInvite={setSendInvite}
+                                setInviteLobby={setInviteLobby}
                             />
                         )
                     })}

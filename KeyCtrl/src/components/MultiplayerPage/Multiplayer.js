@@ -29,7 +29,7 @@ const Button = styled.button`
   }
 `
 
-const Multiplayer = ({handleAddFriend, setAddFriend, loggedIn, accountInfo, openFAccount}) => {
+const Multiplayer = ({handleAddFriend, setAddFriend, loggedIn, accountInfo, openFAccount, inviteLobby}) => {
 
   //Set lobby join state and update during button press
   const [joinLobby, setJoinLobby] = useState(false)
@@ -44,7 +44,7 @@ const Multiplayer = ({handleAddFriend, setAddFriend, loggedIn, accountInfo, open
       determineName()
       if (socketRef.current == null) {
         console.log("creating new connection")
-        socketRef.current = io.connect("https://generated-respected-python.glitch.me")
+        socketRef.current = io.connect("http://localhost:4000")
       }
       //Finding Match code...
       socketRef.current.on('findMatchSuccess', (lobby) => {
@@ -54,8 +54,16 @@ const Multiplayer = ({handleAddFriend, setAddFriend, loggedIn, accountInfo, open
         setShowModal(false)
         setJoinLobby(true)
       })
+      console.log(inviteLobby)
     })
 
+    useEffect(() => {
+      if(inviteLobby != 0) {
+        setLobbyID(inviteLobby)
+        setJoinLobby(true)
+      }
+    })
+    
   //Enter lobby modal
   const [showModal, setShowModal] = useState(false)
   function determineName() {
