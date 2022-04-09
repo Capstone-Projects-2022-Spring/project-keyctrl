@@ -42,13 +42,10 @@ const MultiplayerGame = (props) => {
   var username = props.username
   var la;
 
-  useEffect(() => {
-  }, [])
-
   useEffect(
     () => {
 
-      socketRef.current = io.connect("https://generated-respected-python.glitch.me") //LOCALHOST for local testing
+      socketRef.current = io.connect("http://localhost:4000") //LOCALHOST for local testing
 
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', { lobbyID }, username)

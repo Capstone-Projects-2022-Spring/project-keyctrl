@@ -40,6 +40,21 @@ function getNewWordsLine() {
 io.on('connection', (socket) => {
   console.log(socket.id + ' connected');
 
+  socket.on('joinDefaultRoom', function(accountID) {
+    socket.join(accountID)
+    console.log(socket.id + " has joined room " + accountID)
+  })
+
+  socket.on('sendGameInvite', function(senderID, receiverID, lobbyID) {
+    console.log('in sendInvite. sender: ' + senderID + ' receiver: ' + receiverID + ' lobby: ' + lobbyID)
+    io.in(receiverID).emit('joinFriendGame', lobbyID)    
+    io.in(senderID).emit('joinFriendGame', lobbyID)  
+  })
+
+  socket.on('sendMessage', function(senderDisplay, receiverID, message) {
+    io.to(receiverID).emit('messageSent', message, senderDisplay)
+  })
+
   /*Find Match
   * ----------
   * Uses socket.id (unique socket ID assigned automatically by socket.io) to track users waiting 
