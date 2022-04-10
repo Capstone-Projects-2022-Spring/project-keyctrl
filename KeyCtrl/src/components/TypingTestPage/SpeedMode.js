@@ -62,8 +62,12 @@ export const TypingTest = (props) => {
     const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
     var randWordsFunc = require('random-words');          //Must require random-words
     const [wrongIndex, setWrongIndex] = useState([]);       //Initializing the variable wrongIndex.
-    const [letterArray, setLetterArray] = useState([]); 
-    const item="";
+    
+    
+    const [letterArray, setLetterArray] = useState([]); //work in progress...
+    const myObjArray = [];
+    
+    
 
     function newWords() {
         var startingLine = getNewWordsLine()
@@ -214,7 +218,9 @@ export const TypingTest = (props) => {
                         }
             default:
                 if (timerActive && !inCountdown) {
-                    setLetterArray(choppedCurrentLine[lineIndex]) //work in progress...............
+                   
+                    myObjArray.push(event.key);
+                    setLetterArray(myObjArray) //work in progress...............
                     if (event.key === randomWords[lineIndex]) { //This is where the curser is locked.
                         // add occurances here for next letter
                         if (props.loggedIn)
@@ -245,8 +251,8 @@ export const TypingTest = (props) => {
                             // console.log(accountInfo.letter_misses);
                         }
                     }
-                    
                 }
+                
                 break;
         }
     };
@@ -284,10 +290,6 @@ export const TypingTest = (props) => {
         }
     }
     
-    function addStr(str, index, stringToAdd){
-        return str.substring(0, index) + stringToAdd + str.substring(index, str.length);
-      }
-
     function incrementOccurrances(letter) {
 
         if (letter != " ") {
@@ -298,7 +300,6 @@ export const TypingTest = (props) => {
             props.setAccountStats(newAccountStats);
         }
     }
-
 
     return (
         <div className="container">
@@ -364,7 +365,7 @@ export const TypingTest = (props) => {
             {/* </div> */}
             
             <div className="WordBox">
-                {letterArray}
+          {letterArray}
             </div>
            
         </div>
