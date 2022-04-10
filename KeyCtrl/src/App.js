@@ -21,6 +21,7 @@ import GameInviteToast from './components/Base/Accessories/GameInviteToast.js';
 import styled from 'styled-components';
 import Popup from 'reactjs-popup'
 import io from "socket.io-client"
+import MessageContainer from './components/Base/Accessories/MessageContainer.js';
 
 
 // Set default theme on first initialization
@@ -309,6 +310,8 @@ function App() {
             >
               <FriendsList setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} />
             </SlidingPane>
+
+            <MessageContainer />
 
           </div>
           <SignInModal setLoading={setLoading} loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />

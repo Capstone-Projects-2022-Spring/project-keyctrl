@@ -1,0 +1,135 @@
+.mc-container{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.mc-header{
+    background: var(--bg-color);
+    width: 20em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    padding-bottom: .5em;
+    padding-top: .5em;
+}
+
+.mc-header:hover{
+    cursor: pointer;
+}
+
+.mc-header-text{
+    color: var(--text-color);
+    font-size: 2em;
+    font-family: "Almarai";
+}
+
+.mc-icon-wrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+.mc-header-icon{
+    color: var(--text-color);
+    font-size: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mc-header-icon-close{
+    color: var(--text-color);
+    font-size: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mc-header-icon-close:hover{
+    cursor: pointer;
+    color: var(--warning);
+    transition: .25s;
+}
+
+.mc-content{
+    background: var(--dark-bg);
+    height: 25em;
+    border-style: solid;
+    border-width: .4em;
+    border-color: var(--bg-color);
+    display: flex;
+    flex-direction: row;
+}
+
+.mc-content-friends{
+    padding: .5em;
+    border-style: solid;
+    border-width: 0 0 0 .4em;
+    border-color: var(--bg-color);
+}
+
+.mc-content-message-container{
+    display: flex;
+    flex-direction: column;
+    width: 17em;
+}
+
+.mc-content-messages{
+    border-style: solid;
+    border-width: 0 0 .4em 0;
+    border-color: var(--bg-color);
+    height: 20em;
+}
+
+.mc-content-message-input{
+    padding: .5em;
+    height: 3em;
+    outline: 0px;
+    color: var(--text-color);
+    text-align: start;
+}
+
+.mc-friend{
+    padding-bottom: .5em;
+}
+
+.message-container{
+    padding: .5em;
+    padding-top: .25em;
+    padding-bottom: .25em;
+}
+
+.message-friend-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.message-friend-content{
+    padding-left: .5em;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.message-friend-name{
+    color: var(--selection-color);
+    font-family: "Almarai Light";
+    font-size: .75em;
+}
+
+.message-friend{
+    background: var(--bg-color);
+    padding: .5em;
+    color: var(--text-color);
+    width: 12em;
+    text-align: start;
+    font-family: "Almarai";
+}
+
+.message-response{
+    color: var(--text-color);
+    text-align: end;
+    font-family: "Almarai";
+}
