@@ -366,9 +366,18 @@ export const TypingTest = (props) => {
             </div>
             {/* </div> */}
             
-            <div className="WordBox">
-          {letterArray}
-            </div>
+        <div className="WordBox">
+          <form>
+             <label>
+             <input
+                 type="text" 
+                 className="input-text"
+                 value={letterArray}
+                 onChange={(e) => setLetterArray(e.target.value)}
+              />
+            </label>
+           </form>
+         </div>
            
         </div>
         // <TypingSettings />
