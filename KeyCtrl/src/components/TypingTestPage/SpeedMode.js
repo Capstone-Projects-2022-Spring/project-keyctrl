@@ -210,12 +210,14 @@ export const TypingTest = (props) => {
             //EDITED TO MAKE LETTER MISSES UPDATE
 
             case "Backspace": //If user presses backspace, the curser moves backwards. 
-                setLineIndex((lineIndex) => lineIndex - 1)  
+                if(lineIndex > 0){
+                        setLineIndex((lineIndex) => lineIndex - 1)  
                         props.setIndex((index) => index - 1);
 
                         if (lineIndex === currentLineLength - 1) {
                             onLineChange()
                         }
+                    }
             default:
                 if (timerActive && !inCountdown) {
                    
@@ -235,7 +237,7 @@ export const TypingTest = (props) => {
 
                     } else if (event.key != randomWords[lineIndex] && event.key != "Backspace") {   //Even if the word is wrong, it will still move curser forward.
                         setLineIndex((lineIndex) => lineIndex + 1)
-                        props.setIndex((index) => index + 1);
+                        //props.setIndex((index) => index + 1);
 
                         var tempArray = wrongIndex; //Creating a wrong index for incorrect words.
                         tempArray[lineIndex] = 1;
