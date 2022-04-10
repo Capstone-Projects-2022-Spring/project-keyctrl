@@ -14,6 +14,7 @@ import Account from '../../AccountPage/Account'
 import Scrollbars from 'react-custom-scrollbars-2'
 import passOpenFAccount from '../../../App.js'
 import io from "socket.io-client"
+import { useNavigate } from 'react-router-dom';
 
 
 const StyledPopup = styled(Popup)`
@@ -137,7 +138,7 @@ const friendProf = ({ }) => {//requests accountInfo from a friend/user then put 
   //throw info into Account()
 }
 
-const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite, setInviteLobby }) => {//object is current person
+const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite, setInviteLobby }) => {//object is current person
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => setModalOpen(false);
@@ -170,6 +171,7 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, op
   };
 
   const socketRef = useRef()
+  const navigate = useNavigate()
   function sendGameInvite() {
     //DETERMINE LOBBY ID VIA UI, PLACEHOLDER FOR NOW
     setSendInvite(true)
@@ -179,7 +181,9 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, op
     }
     setInviteLobby(lobbyID)
     socketRef.current.emit('sendGameInvite', accountInfo.account_id, object.account_id, lobbyID)
+    navigate('/multiplayer')
     setSendInvite(false)
+    setOpenFriendList({ isPaneOpen: false })
   }
 
   function sendMessage() {

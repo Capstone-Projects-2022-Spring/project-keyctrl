@@ -15,7 +15,7 @@ import SlidingPane from "react-sliding-pane"
 import "react-sliding-pane/dist/react-sliding-pane.css"
 import FriendsList from './components/Base/FriendsList/FriendsList.js';
 import Scrollbars from 'react-custom-scrollbars-2'
-import { ToastContainer, ToastOptions, Slide, toast } from 'react-toastify'
+import { ToastContainer, toast, Bounce } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import GameInviteToast from './components/Base/Accessories/GameInviteToast.js';
 import styled from 'styled-components';
@@ -200,7 +200,7 @@ function App() {
     pauseOnHover: false,
     draggable: false,
     hideProgressBar: false,
-    transition: Slide,
+    transition: Bounce,
     rtl: false,
     closeButton: false
   }
@@ -307,7 +307,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} />
+              <FriendsList setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} />
             </SlidingPane>
 
           </div>
