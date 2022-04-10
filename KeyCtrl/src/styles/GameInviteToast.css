@@ -1,0 +1,28 @@
+.git-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--selection-color);
+}
+
+.git-text{
+    margin-left: 1em;
+    font-family: 'Almarai';
+    font-size: 1.5em;
+    text-align: start;
+}
+
+.git-details{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    justify-self: flex-start;
+}
+
+.git-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 1em;
+}

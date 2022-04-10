@@ -152,14 +152,18 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, op
     switch(item) {
       case(0):
         openFAccount(object)
+        break;
       case(1):
         sendGameInvite()
+        break;
       case(2):
         //sendMessage()
+        break;
       case(3):
         console.log(accountInfo)
         console.log(object)
         setModalOpen(true)
+        break;
       default:
         break;
     }
