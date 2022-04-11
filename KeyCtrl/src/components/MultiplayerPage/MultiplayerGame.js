@@ -23,6 +23,7 @@ const MultiplayerGame = (props) => {
   const [currentLineLength, setCurrentLineLength] = useState(0);
   const [numEntries, setNumEntries] = useState(0);
   const [WPMTime, setWPMTime] = useState(1);
+  const [isSpec, setIsSpec] = useState(false)
 
   const [randomWords, setCurrentRandomWords] = useState(" ");    //setting its use state
   const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
@@ -56,12 +57,14 @@ const MultiplayerGame = (props) => {
 
       socketRef.current.on('matchAlreadyStarted', function () {
         toast("That match has already started");
-        navigate('/')
-        navigate('/multiplayer')
+        //navigate('/')
+        //navigate('/multiplayer')
       });
 
-      socketRef.current.on('updateLobby', function (newLobby) {
+      socketRef.current.on('updateLobby', function (newLobby, spectatorBool) {
         socketRef.current.room = newLobby.lobbyID;
+        setIsSpec(spectatorBool)
+        console.log("Spectate: " + isSpec)
       });
       socketRef.current.on("message", ({ name, message }, room) => {
         setChat([...chat, { name, message }])
@@ -105,16 +108,12 @@ const MultiplayerGame = (props) => {
         socketRef.current.emit("sendInLobby", username)
       })
 
-      socketRef.current.on("pollAllPlayers", () => {
-        socketRef.current.emit("sendInLobby", username)
-
-      })
-
-      socketRef.current.on("playerJoined", (username) => {
+      socketRef.current.on("playerJoined", (username, isSpectator) => {
         console.log("username " + username)
 
-        setLobbyPlayers(prev => new Map([...prev, [username, { index: 0, lineArrayIndex: 0 }]]))
-
+        if(!isSpectator) {
+          setLobbyPlayers(prev => new Map([...prev, [username, { index: 0, lineArrayIndex: 0 }]]))
+        }
       })
 
       socketRef.current.on("gameLines", (lineArray_) => {
@@ -310,16 +309,18 @@ const MultiplayerGame = (props) => {
     <div className="container">
       <OpponentTestVisual lobbyPlayers={lobbyPlayers} lineArray={lineArray} />
 
-      <div className="timer-wrapper-multiplayer">
-        <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
-          {timer}s
-        </div>
+      {isSpec ? null :
+        <div className="timer-wrapper-multiplayer">
+          <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
+            {timer}s
+          </div>
 
-      </div>
+        </div>
+      }
 
       <div className="word-base">
 
-        {timerActive ? null :
+        {timerActive || isSpec ? null :
           <div className="start-signal-wrapper">
             Waiting for players...
           </div>}
@@ -362,7 +363,7 @@ const MultiplayerGame = (props) => {
           </PostMatchOptions>
         </EndingPopup>
 
-
+        {isSpec ? null : 
         <div className="test-line-container">
           {randomWords.split("").map(function (char, idx) {
             return (
@@ -374,11 +375,14 @@ const MultiplayerGame = (props) => {
               </span>
             )
           })}
-        </div>
+        </div> }
 
-        <div className="test-line-container next-up">
-          {nextUpRandomWords}
-        </div>
+        {isSpec ? null :
+          <div className="test-line-container next-up">
+            {nextUpRandomWords}
+          </div>
+        }
+        
       </div>
     </div>
   )

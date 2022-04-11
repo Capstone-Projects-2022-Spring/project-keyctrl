@@ -102,7 +102,14 @@ io.on('connection', (socket) => {
     }
     if(!gameStarted[newRoom.lobbyID]) {
       socket.join(newRoom.lobbyID);
-      socket.emit('updateLobby', newRoom);
+      socket.emit('updateLobby', newRoom, false);
+
+      //Count the room's clients
+      if(numClients[newRoom.lobbyID] == undefined) {
+        numClients[newRoom.lobbyID] = 1;
+      } else {
+        numClients[newRoom.lobbyID]++;
+      }
 
       //Generate words list for this room
       if(roomWordsArray[newRoom.lobbyID] == null) {
@@ -112,18 +119,10 @@ io.on('connection', (socket) => {
         roomWordsArray[newRoom.lobbyID] = wordsArray
       }
       socket.emit('gameLines', (roomWordsArray[newRoom.lobbyID]))
-      
-      //Count the room's clients
-      if(numClients[newRoom.lobbyID] == undefined) {
-        numClients[newRoom.lobbyID] = 1;
-      } else {
-        numClients[newRoom.lobbyID]++;
-      }
-
 
       io.in(newRoom.lobbyID).emit('pollAllPlayers')
       socket.on('sendInLobby', (username) => {
-        socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username)
+        socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username, false)
       })
 
       if(numClients[newRoom.lobbyID] == gameStartPlayers) {
@@ -131,6 +130,10 @@ io.on('connection', (socket) => {
         gameStarted[newRoom.lobbyID] = true
       }
     } else {
+      socket.join(newRoom.lobbyID);
+      socket.emit('updateLobby', newRoom, true);
+      socket.emit('gameLines', (roomWordsArray[newRoom.lobbyID]))
+      io.in(newRoom.lobbyID).emit('pollAllPlayers')
       socket.emit('matchAlreadyStarted')
     }
     
