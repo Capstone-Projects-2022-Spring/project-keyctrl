@@ -43,7 +43,7 @@ const Multiplayer = ({loggedIn, accountInfo, inviteLobby, lobbyID, setLobbyID}) 
       determineName()
       if (socketRef.current == null) {
         console.log("creating new connection")
-        socketRef.current = io.connect("http://localhost:4000")
+        socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
       }
       //Finding Match code...
       socketRef.current.on('findMatchSuccess', (lobby) => {

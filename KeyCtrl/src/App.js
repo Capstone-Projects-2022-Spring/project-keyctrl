@@ -158,7 +158,7 @@ function App() {
     if (loggedIn) {
       if (socketRef.current == null) {
         console.log("creating new connection")
-        socketRef.current = io.connect("http://localhost:4000")
+        socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
         socketRef.current.emit('joinDefaultRoom', "GAME_"+accountInfo.account_id)
       }
 

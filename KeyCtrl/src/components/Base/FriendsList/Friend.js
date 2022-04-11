@@ -182,7 +182,7 @@ const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, acco
       newLobbyID = accountInfo.social_id
     }
     if(socketRef.current == null) {
-      socketRef.current = io.connect("http://localhost:4000")
+      socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
     }
     setInviteLobby(newLobbyID)
     socketRef.current.emit('sendGameInvite', accountInfo.account_id, accountInfo.display_name, accountInfo.photo, object.account_id, newLobbyID)

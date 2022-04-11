@@ -50,7 +50,7 @@ const MultiplayerGame = (props) => {
   useEffect(
     () => {
 
-      socketRef.current = io.connect("http://localhost:4000") //LOCALHOST for local testing
+      socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP) //LOCALHOST for local testing
 
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', { lobbyID }, username)

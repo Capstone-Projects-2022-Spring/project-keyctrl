@@ -15,7 +15,7 @@ const MessageContainer = ({ closeMessages, accountInfo, loggedIn }) => {
     useEffect(() => {
         if(loggedIn) {
             if(socketRef.current == null) {
-                socketRef.current = io.connect("http://localhost:4000")
+                socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
                 socketRef.current.emit('joinDefaultRoom', "MSG_"+accountInfo.account_id)
             }
     
@@ -23,7 +23,7 @@ const MessageContainer = ({ closeMessages, accountInfo, loggedIn }) => {
                 //Place message contents in senderID's chat box
             })
         }
-    }, [setMessageSent, loggedIn])
+    }, [messageSent, loggedIn])
     
     function sendMessage() {
         var message = "testMessage" //get message value here
