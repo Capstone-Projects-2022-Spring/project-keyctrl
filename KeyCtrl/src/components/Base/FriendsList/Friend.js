@@ -175,7 +175,7 @@ const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, acco
   function sendGameInvite() {
     //DETERMINE LOBBY ID VIA UI, PLACEHOLDER FOR NOW
     setSendInvite(true)
-    var lobbyID = "testingGameInvite"
+    var lobbyID = accountInfo.social_id
     if(socketRef.current == null) {
       socketRef.current = io.connect("http://localhost:4000")
     }
