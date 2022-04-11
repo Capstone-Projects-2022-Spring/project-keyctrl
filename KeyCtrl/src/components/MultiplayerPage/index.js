@@ -1,3 +1,4 @@
+const toast = require("react-toastify")
 const app = require('express')()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http, {
@@ -11,6 +12,7 @@ const io = require('socket.io')(http, {
 });
 
 var numClients = {};
+var gameStarted = {};
 var wordsArray = {};
 var roomWordsArray = {};
 var matchResultsArray = {};
@@ -95,34 +97,43 @@ io.on('connection', (socket) => {
 
   //Custom Lobby code
   socket.on('switchLobby', function(newRoom, username) {
-    socket.join(newRoom.lobbyID);
-    socket.emit('updateLobby', newRoom);
+    if(gameStarted[newRoom.lobbyID] == null) {
+      gameStarted[newRoom.lobbyID] = false
+    }
+    if(!gameStarted[newRoom.lobbyID]) {
+      socket.join(newRoom.lobbyID);
+      socket.emit('updateLobby', newRoom);
 
-    //Generate words list for this room
-    if(roomWordsArray[newRoom.lobbyID] == null) {
-      for(var i=0; i<10; i++) {
-        wordsArray[i] = getNewWordsLine()
+      //Generate words list for this room
+      if(roomWordsArray[newRoom.lobbyID] == null) {
+        for(var i=0; i<10; i++) {
+          wordsArray[i] = getNewWordsLine()
+        }
+        roomWordsArray[newRoom.lobbyID] = wordsArray
       }
-      roomWordsArray[newRoom.lobbyID] = wordsArray
-    }
-    socket.emit('gameLines', (roomWordsArray[newRoom.lobbyID]))
-    
-    //Count the room's clients
-    if(numClients[newRoom.lobbyID] == undefined) {
-      numClients[newRoom.lobbyID] = 1;
+      socket.emit('gameLines', (roomWordsArray[newRoom.lobbyID]))
+      
+      //Count the room's clients
+      if(numClients[newRoom.lobbyID] == undefined) {
+        numClients[newRoom.lobbyID] = 1;
+      } else {
+        numClients[newRoom.lobbyID]++;
+      }
+
+
+      io.in(newRoom.lobbyID).emit('pollAllPlayers')
+      socket.on('sendInLobby', (username) => {
+        socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username)
+      })
+
+      if(numClients[newRoom.lobbyID] == gameStartPlayers) {
+        io.in(newRoom.lobbyID).emit('gameStart')
+        gameStarted[newRoom.lobbyID] = true
+      }
     } else {
-      numClients[newRoom.lobbyID]++;
+      socket.emit('matchAlreadyStarted')
     }
-
-
-    io.in(newRoom.lobbyID).emit('pollAllPlayers')
-    socket.on('sendInLobby', (username) => {
-      socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username)
-    })
-
-    if(numClients[newRoom.lobbyID] == gameStartPlayers) {
-      io.in(newRoom.lobbyID).emit('gameStart')
-    }
+    
   });
 
   socket.on('sendPlayerIndex', function(playerName, playerIndex, playerLineArrayIndex, room) {
@@ -135,6 +146,10 @@ io.on('connection', (socket) => {
     if(numClients[socketInfo[1]] > 0) {
       numClients[socketInfo[1]]--
     }
+    if(numClients[socketInfo[1]] == 0) {
+      gameStarted[socketInfo[1]] = false
+    }
+
     
     findMatchPlayers.splice(findMatchPlayers.indexOf(socket.id), 1)
   })
@@ -160,6 +175,7 @@ io.on('connection', (socket) => {
       }
       roomWordsArray[room] = wordsArray
     }
+    gameStarted[room] = false
   })
 
   socket.on('message', ({ name, message }, room) => {

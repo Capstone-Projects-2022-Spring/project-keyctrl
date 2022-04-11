@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect, useInterval } from 'react'
+import { useNavigate } from 'react-router-dom';
+
 import io from "socket.io-client"
 import '../../styles/TypingTest.css'
 import { PropTypes } from 'prop-types'
+import { toast } from 'react-toastify'
 import OpponentTestVisual from './OpponentTestVisual';
 import styled from 'styled-components'
 import Popup from 'reactjs-popup'
@@ -37,6 +40,7 @@ const MultiplayerGame = (props) => {
   const [chat, setChat] = useState([])
 
   const socketRef = useRef()
+  const navigate = useNavigate()
 
   var lobbyID = props.lobbyID
   var username = props.username
@@ -49,6 +53,12 @@ const MultiplayerGame = (props) => {
 
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', { lobbyID }, username)
+
+      socketRef.current.on('matchAlreadyStarted', function () {
+        toast("That match has already started");
+        navigate('/')
+        navigate('/multiplayer')
+      });
 
       socketRef.current.on('updateLobby', function (newLobby) {
         socketRef.current.room = newLobby.lobbyID;
