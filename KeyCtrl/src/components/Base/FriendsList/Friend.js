@@ -138,7 +138,7 @@ const friendProf = ({ }) => {//requests accountInfo from a friend/user then put 
   //throw info into Account()
 }
 
-const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite, setInviteLobby }) => {//object is current person
+const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite, setInviteLobby, lobbyID }) => {//object is current person
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => setModalOpen(false);
@@ -175,12 +175,17 @@ const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, acco
   function sendGameInvite() {
     //DETERMINE LOBBY ID VIA UI, PLACEHOLDER FOR NOW
     setSendInvite(true)
-    var lobbyID = accountInfo.social_id
+    var newLobbyID
+    if(lobbyID != 0) {
+      newLobbyID = lobbyID
+    } else {
+      newLobbyID = accountInfo.social_id
+    }
     if(socketRef.current == null) {
       socketRef.current = io.connect("http://localhost:4000")
     }
-    setInviteLobby(lobbyID)
-    socketRef.current.emit('sendGameInvite', accountInfo.account_id, accountInfo.display_name, accountInfo.photo, object.account_id, lobbyID)
+    setInviteLobby(newLobbyID)
+    socketRef.current.emit('sendGameInvite', accountInfo.account_id, accountInfo.display_name, accountInfo.photo, object.account_id, newLobbyID)
     navigate('/multiplayer')
     setSendInvite(false)
     setOpenFriendList({ isPaneOpen: false })
