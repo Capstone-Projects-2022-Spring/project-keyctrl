@@ -45,10 +45,10 @@ io.on('connection', (socket) => {
     console.log(socket.id + " has joined room " + accountID)
   })
 
-  socket.on('sendGameInvite', function(senderID, receiverID, lobbyID) {
-    console.log('in sendInvite. sender: ' + senderID + ' receiver: ' + receiverID + ' lobby: ' + lobbyID)
-    io.in(receiverID).emit('joinFriendGame', lobbyID)    
-    io.in(senderID).emit('joinFriendGame', lobbyID)  
+  socket.on('sendGameInvite', function(senderID, senderDisplay, receiverID, lobbyID) {
+    console.log('in sendInvite. sender: ' + senderDisplay + ' ' + senderID + ' receiver: ' + receiverID + ' lobby: ' + lobbyID)
+    io.in(receiverID).emit('joinFriendGame', lobbyID, senderDisplay)    
+    io.in(senderID).emit('startFriendGame', lobbyID)  
   })
 
   socket.on('sendMessage', function(senderDisplay, receiverID, message) {

@@ -59,6 +59,7 @@ function App() {
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
   const socketRef = useRef()
+  const navigate = useNavigate()
 
   const onLogin = async (account_, accountStats_, friendsList_) => {
 
@@ -160,9 +161,15 @@ function App() {
         socketRef.current.emit('joinDefaultRoom', accountInfo.account_id)
       }
 
-      socketRef.current.on('joinFriendGame', (lobbyID) => {
-        toast(<GameInviteToast setInviteLobby={setInviteLobby} lobbyID={lobbyID} senderName='ColinHarker' />, toastOptions)
+      socketRef.current.on('joinFriendGame', (lobbyID, senderDisplay) => {
+          toast(<GameInviteToast setInviteLobby={setInviteLobby} lobbyID={lobbyID} senderName={senderDisplay} />, toastOptions)
       })
+
+      socketRef.current.on('startFriendGame', (lobbyID) => {
+        toast('Invite Sent')
+        setInviteLobby(lobbyID)
+        navigate('/multiplayer')
+    })
 
       socketRef.current.on('messageSent', function (message, sender) {
         alert(sender + ": " + message)

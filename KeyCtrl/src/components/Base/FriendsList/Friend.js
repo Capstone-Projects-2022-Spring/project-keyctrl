@@ -180,7 +180,7 @@ const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, acco
       socketRef.current = io.connect("http://localhost:4000")
     }
     setInviteLobby(lobbyID)
-    socketRef.current.emit('sendGameInvite', accountInfo.account_id, object.account_id, lobbyID)
+    socketRef.current.emit('sendGameInvite', accountInfo.account_id, accountInfo.display_name, object.account_id, lobbyID)
     navigate('/multiplayer')
     setSendInvite(false)
     setOpenFriendList({ isPaneOpen: false })
