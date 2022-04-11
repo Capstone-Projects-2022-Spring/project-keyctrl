@@ -159,7 +159,7 @@ function App() {
       if (socketRef.current == null) {
         console.log("creating new connection")
         socketRef.current = io.connect("http://localhost:4000")
-        socketRef.current.emit('joinDefaultRoom', accountInfo.account_id)
+        socketRef.current.emit('joinDefaultRoom', "GAME_"+accountInfo.account_id)
       }
 
       socketRef.current.on('joinFriendGame', (lobbyID, senderDisplay, senderPhoto) => {
@@ -328,7 +328,7 @@ function App() {
               <FriendsList setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} lobbyID={lobbyID}/>
             </SlidingPane>
 
-            <MessageContainer />
+            <MessageContainer accountInfo={accountInfo} loggedIn={loggedIn}/>
 
           </div>
           <SignInModal setLoading={setLoading} loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />

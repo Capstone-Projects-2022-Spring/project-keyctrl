@@ -192,11 +192,7 @@ const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, acco
   }
 
   function sendMessage() {
-    if(socketRef.current == null) {
-      socketRef.current = io.connect("http://localhost:4000")
-    }
-    var message = "testMessage"
-    socketRef.current.emit('sendMessage', accountInfo.display_name, object.account_id, message)
+
   }
 
   const deleteFriend = async () => {

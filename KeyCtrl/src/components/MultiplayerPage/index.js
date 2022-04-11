@@ -49,12 +49,14 @@ io.on('connection', (socket) => {
 
   socket.on('sendGameInvite', function(senderID, senderDisplay, senderPhoto, receiverID, lobbyID) {
     console.log('in sendInvite. sender: ' + senderDisplay + ' ' + senderID + ' receiver: ' + receiverID + ' lobby: ' + lobbyID)
-    io.in(receiverID).emit('joinFriendGame', lobbyID, senderDisplay, senderPhoto)    
-    io.in(senderID).emit('startFriendGame', lobbyID)  
+    console.log('Inviting GAME_'+receiverID)
+    console.log('Starting GAME_'+senderID)
+    io.in('GAME_'+receiverID).emit('joinFriendGame', lobbyID, senderDisplay, senderPhoto)    
+    io.in('GAME_'+senderID).emit('startFriendGame', lobbyID)  
   })
 
   socket.on('sendMessage', function(senderDisplay, receiverID, message) {
-    io.to(receiverID).emit('messageSent', message, senderDisplay)
+    io.to('MSG_'+receiverID).emit('messageSent', message, senderDisplay)
   })
 
   /*Find Match

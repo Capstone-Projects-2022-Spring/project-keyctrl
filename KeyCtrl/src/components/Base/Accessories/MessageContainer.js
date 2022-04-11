@@ -1,13 +1,35 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { MdClose } from 'react-icons/md'
 import '../../../styles/MessageContainer.css'
 import { Avatar, Badge, TextField } from '@material-ui/core';
 import MessageContent from './MessageContent'
+import io from "socket.io-client"
 
-const MessageContainer = ({ closeMessages }) => {
+const MessageContainer = ({ closeMessages, accountInfo, loggedIn }) => {
     const [messagesOpen, setMessagesOpen] = useState(false)
+    const [messageSent, setMessageSent] = useState(false)
+
+    const socketRef = useRef()
+    useEffect(() => {
+        if(loggedIn) {
+            if(socketRef.current == null) {
+                socketRef.current = io.connect("http://localhost:4000")
+                socketRef.current.emit('joinDefaultRoom', "MSG_"+accountInfo.account_id)
+            }
+    
+            socketRef.current.on('messageSent', function (message, senderID) {
+                //Place message contents in senderID's chat box
+            })
+        }
+    }, [setMessageSent, loggedIn])
+    
+    function sendMessage() {
+        var message = "testMessage" //get message value here
+        socketRef.current.emit('sendMessage', 'SenderID', 'Target', message) //add sender and target information here
+        setMessageSent(true)
+    }
 
     return (
         <div className='mc-container'>
