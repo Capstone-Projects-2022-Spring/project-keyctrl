@@ -162,14 +162,23 @@ function App() {
       }
 
       socketRef.current.on('joinFriendGame', (lobbyID, senderDisplay) => {
-          toast(<GameInviteToast setInviteLobby={setInviteLobby} lobbyID={lobbyID} senderName={senderDisplay} />, toastOptions)
+        toast(<GameInviteToast setInviteLobby={setInviteLobby} lobbyID={lobbyID} senderName={senderDisplay} />, toastOptions)
       })
 
       socketRef.current.on('startFriendGame', (lobbyID) => {
-        toast('Invite Sent')
+        toast.success('Invite Sent', {
+          position: "top-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored'
+        })
         setInviteLobby(lobbyID)
         navigate('/multiplayer')
-    })
+      })
 
       socketRef.current.on('messageSent', function (message, sender) {
         alert(sender + ": " + message)
