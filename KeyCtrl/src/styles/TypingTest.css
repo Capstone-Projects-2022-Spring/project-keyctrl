@@ -228,6 +228,8 @@
     color: var(--primary-color);
 }
 .input-text {
+    display: flex;
+    flex-direction: row;
     text-align: left;
     font-size: 2rem;
     font-weight: 400;

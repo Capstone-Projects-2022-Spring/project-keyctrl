@@ -62,12 +62,24 @@ export const TypingTest = (props) => {
     const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
     var randWordsFunc = require('random-words');          //Must require random-words
     const [wrongIndex, setWrongIndex] = useState([]);       //Initializing the variable wrongIndex.
-    
-    
+
+
     const [letterArray, setLetterArray] = useState([]); //work in progress...
-    const myObjArray = [];
-    
-    
+    const [letter, setLetter] = useState([""])
+
+    function TextBoxWords(event) {
+        if (event.code !== "Space") {
+            setLetter([...letter, {
+                value: event
+            }])
+        }
+        else {
+            setLetter([]);
+
+        }
+
+    }
+
 
     function newWords() {
         var startingLine = getNewWordsLine()
@@ -210,21 +222,21 @@ export const TypingTest = (props) => {
             //EDITED TO MAKE LETTER MISSES UPDATE
 
             case "Backspace": //If user presses backspace, the curser moves backwards. 
-                if(lineIndex > 0){
-                        setLineIndex((lineIndex) => lineIndex - 1)  
-                        props.setIndex((index) => index - 1);
+                if (lineIndex > 0) {
+                    setLineIndex((lineIndex) => lineIndex - 1)
+                    props.setIndex((index) => index - 1);
 
-                        if (lineIndex === currentLineLength - 1) {
-                            onLineChange()
-                        }
+                    if (lineIndex === currentLineLength - 1) {
+                        onLineChange()
                     }
-                    break;
-                     
+                }
+                break;
+
             default:
                 if (timerActive && !inCountdown) {
-                   
-                    //myObjArray.push(event.key);
-                      setLetterArray(event.target.value) //work in progress...............
+
+                    TextBoxWords(event.key)
+                    setLetterArray(event.target.value) //work in progress...............
                     if (event.key === randomWords[lineIndex]) { //This is where the curser is locked.
                         // add occurances here for next letter
                         if (props.loggedIn)
@@ -256,7 +268,7 @@ export const TypingTest = (props) => {
                         }
                     }
                 }
-                
+
                 break;
         }
     };
@@ -293,7 +305,7 @@ export const TypingTest = (props) => {
             props.setAccountStats(newAccountStats);
         }
     }
-    
+
     function incrementOccurrances(letter) {
 
         if (letter != " ") {
@@ -353,10 +365,10 @@ export const TypingTest = (props) => {
                                 {(idx === lineIndex) ? <span className="cursor" ></span> : <span />}
                                 {char}
                             </span>
-                            
-                            
+
+
                         )
-                        
+
                     })}
                 </div>
 
@@ -367,19 +379,27 @@ export const TypingTest = (props) => {
                 {nextUpRandomWords}
             </div>
             {/* </div> */}
-            
-        <div className="WordBox">
-          <form>
-             <label>
-             <input
-                 type="text" 
-                 className="input-text"
-                 value={letterArray}
-                 onChange={(e) => setLetterArray(e.target.value)}
-              />
-            </label>
-           </form>
-         </div>
+
+            <div className="WordBox">
+                <form>
+                    <label>
+                        <input
+                            type="text"
+                            className="input-text"
+                            value={letterArray}
+                            onChange={(e) => setLetterArray(e.target.value)}
+                        />
+                    </label>
+                </form>
+
+                <div className="input-text">
+                    {letter.map((letters) => {
+                        return (
+                            <h1 key={letters.key}>{letters.value}</h1>)
+                    })}
+
+                </div>
+            </div>
         </div>
         // <TypingSettings />
     )
