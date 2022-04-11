@@ -218,6 +218,8 @@ export const TypingTest = (props) => {
                             onLineChange()
                         }
                     }
+                    break;
+                     
             default:
                 if (timerActive && !inCountdown) {
                    
