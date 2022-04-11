@@ -57,8 +57,6 @@ const MultiplayerGame = (props) => {
 
       socketRef.current.on('matchAlreadyStarted', function () {
         toast("That match has already started");
-        //navigate('/')
-        //navigate('/multiplayer')
       });
 
       socketRef.current.on('updateLobby', function (newLobby, spectatorBool) {
@@ -357,7 +355,7 @@ const MultiplayerGame = (props) => {
           </Leaderboard>
           <PostMatchOptions>
           <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
-            <button onClick={readyUp}>Ready Up</button>
+            {isSpec ? null : <button onClick={readyUp}>Ready Up</button>}
             <button onClick={leaveRoom}>Leave</button>
           </div>
           </PostMatchOptions>
