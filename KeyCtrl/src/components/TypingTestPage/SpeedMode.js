@@ -221,8 +221,8 @@ export const TypingTest = (props) => {
             default:
                 if (timerActive && !inCountdown) {
                    
-                    myObjArray.push(event.key);
-                    setLetterArray(myObjArray) //work in progress...............
+                    //myObjArray.push(event.key);
+                      setLetterArray(event.target.value) //work in progress...............
                     if (event.key === randomWords[lineIndex]) { //This is where the curser is locked.
                         // add occurances here for next letter
                         if (props.loggedIn)
@@ -378,7 +378,6 @@ export const TypingTest = (props) => {
             </label>
            </form>
          </div>
-           
         </div>
         // <TypingSettings />
     )
