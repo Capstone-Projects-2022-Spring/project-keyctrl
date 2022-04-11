@@ -161,8 +161,8 @@ function App() {
         socketRef.current.emit('joinDefaultRoom', accountInfo.account_id)
       }
 
-      socketRef.current.on('joinFriendGame', (lobbyID, senderDisplay) => {
-        toast(<GameInviteToast setInviteLobby={setInviteLobby} lobbyID={lobbyID} senderName={senderDisplay} />, toastOptions)
+      socketRef.current.on('joinFriendGame', (lobbyID, senderDisplay, senderPhoto) => {
+        toast(<GameInviteToast setInviteLobby={setInviteLobby} lobbyID={lobbyID} senderName={senderDisplay} senderPhoto={senderPhoto} />, toastOptions)
       })
 
       socketRef.current.on('startFriendGame', (lobbyID) => {

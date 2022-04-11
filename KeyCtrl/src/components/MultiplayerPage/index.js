@@ -45,9 +45,9 @@ io.on('connection', (socket) => {
     console.log(socket.id + " has joined room " + accountID)
   })
 
-  socket.on('sendGameInvite', function(senderID, senderDisplay, receiverID, lobbyID) {
+  socket.on('sendGameInvite', function(senderID, senderDisplay, senderPhoto, receiverID, lobbyID) {
     console.log('in sendInvite. sender: ' + senderDisplay + ' ' + senderID + ' receiver: ' + receiverID + ' lobby: ' + lobbyID)
-    io.in(receiverID).emit('joinFriendGame', lobbyID, senderDisplay)    
+    io.in(receiverID).emit('joinFriendGame', lobbyID, senderDisplay, senderPhoto)    
     io.in(senderID).emit('startFriendGame', lobbyID)  
   })
 
