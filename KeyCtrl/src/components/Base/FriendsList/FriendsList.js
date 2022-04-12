@@ -68,9 +68,7 @@ function changeStat(current) {
     }
 }
 
-
-
-const FriendsList = ({ handleAddFriend, addFriend, setAddFriend, setFriendsList, friendsList, accountInfo, openFAccount, setSendInvite, setInviteLobby }) => {
+const FriendsList = ({ setOpenFriendList, handleAddFriend, addFriend, setAddFriend, setFriendsList, friendsList, accountInfo, openFAccount, setSendInvite, setInviteLobby, lobbyID  }) => {
 
     const [count, setCount] = useState(0);
     const [friendRequestsOpen, setFriendRequestsOpen] = useState(true)
@@ -187,6 +185,7 @@ const FriendsList = ({ handleAddFriend, addFriend, setAddFriend, setFriendsList,
                     {friendsList[0].map(function (obj, idx) {
                         return (
                             <Friend
+                                setOpenFriendList={setOpenFriendList}
                                 friendsList={friendsList}
                                 setState={setState}
                                 setFriendsList={setFriendsList}
@@ -195,6 +194,7 @@ const FriendsList = ({ handleAddFriend, addFriend, setAddFriend, setFriendsList,
                                 openFAccount= {openFAccount}
                                 setSendInvite={setSendInvite}
                                 setInviteLobby={setInviteLobby}
+                                lobbyID={lobbyID}
                             />
                         )
                     })}

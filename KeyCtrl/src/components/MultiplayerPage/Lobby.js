@@ -13,7 +13,7 @@ export const Lobby = (props) => {
   
     useEffect(
       () => {
-        socketRef.current = io.connect("http://localhost:4000")
+        socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
         //SENDING USERNAME TO SWITCHLOBBY
         socketRef.current.emit('switchLobby', { lobbyID }, username )
         socketRef.current.on('updateLobby', function(newLobby) {
