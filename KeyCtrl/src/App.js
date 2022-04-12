@@ -327,7 +327,6 @@ function App() {
               <FriendsList setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} />
             </SlidingPane>
 
-            <MessageContainer />
 
           </div>
           <SignInModal setLoading={setLoading} loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
@@ -349,6 +348,7 @@ function App() {
         </div>
       </StyledPopup>
 
+            <MessageContainer />
     </div>
   );
 }
