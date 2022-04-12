@@ -43,6 +43,7 @@ function App() {
   const [accountStats, setAccountStats] = useState({})
   const [currentGamemode, setCurrentGamemode] = useState(0)
   const [appStaticCountdown, setAppStaticCountdown] = useState(15);
+  const [lobbyID, setLobbyID] = useState(0)
 
   const [inviteLobby, setInviteLobby] = useState(0)
   const [sendInvite, setSendInvite] = useState(false)
@@ -157,12 +158,12 @@ function App() {
     if (loggedIn) {
       if (socketRef.current == null) {
         console.log("creating new connection")
-        socketRef.current = io.connect("http://localhost:4000")
-        socketRef.current.emit('joinDefaultRoom', accountInfo.account_id)
+        socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
+        socketRef.current.emit('joinDefaultRoom', "GAME_" + accountInfo.account_id)
       }
 
-      socketRef.current.on('joinFriendGame', (lobbyID, senderDisplay) => {
-        toast(<GameInviteToast setInviteLobby={setInviteLobby} lobbyID={lobbyID} senderName={senderDisplay} />, toastOptions)
+      socketRef.current.on('joinFriendGame', (lobbyID, senderDisplay, senderPhoto) => {
+        toast(<GameInviteToast setInviteLobby={setInviteLobby} lobbyID={lobbyID} senderName={senderDisplay} senderPhoto={senderPhoto} />, toastOptions)
       })
 
       socketRef.current.on('startFriendGame', (lobbyID) => {
@@ -308,7 +309,7 @@ function App() {
                   />
                 } />
                 <Route exact path="/training" element={<Training />} />
-                <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} />} />
+                <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} lobbyID={lobbyID} setLobbyID={setLobbyID} />} />
                 <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} inFriend={false} /> : <OfflineAccount openSignIn={openSignIn} />)} />
                 <Route exact path="/settings" element={<Settings setAccountInfo={setAccountInfo} openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
@@ -324,7 +325,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} />
+              <FriendsList setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} lobbyID={lobbyID} />
             </SlidingPane>
 
 
@@ -348,7 +349,7 @@ function App() {
         </div>
       </StyledPopup>
 
-            <MessageContainer />
+      <MessageContainer accountInfo={accountInfo} loggedIn={loggedIn} />
     </div>
   );
 }

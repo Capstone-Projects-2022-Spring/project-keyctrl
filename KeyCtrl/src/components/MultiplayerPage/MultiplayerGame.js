@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect, useInterval } from 'react'
+import { useNavigate } from 'react-router-dom';
+
 import io from "socket.io-client"
 import '../../styles/TypingTest.css'
 import { PropTypes } from 'prop-types'
+import { toast } from 'react-toastify'
 import OpponentTestVisual from './OpponentTestVisual';
 import styled from 'styled-components'
 import Popup from 'reactjs-popup'
@@ -20,6 +23,7 @@ const MultiplayerGame = (props) => {
   const [currentLineLength, setCurrentLineLength] = useState(0);
   const [numEntries, setNumEntries] = useState(0);
   const [WPMTime, setWPMTime] = useState(1);
+  const [isSpec, setIsSpec] = useState(false)
 
   const [randomWords, setCurrentRandomWords] = useState(" ");    //setting its use state
   const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
@@ -37,6 +41,7 @@ const MultiplayerGame = (props) => {
   const [chat, setChat] = useState([])
 
   const socketRef = useRef()
+  const navigate = useNavigate()
 
   var lobbyID = props.lobbyID
   var username = props.username
@@ -45,13 +50,19 @@ const MultiplayerGame = (props) => {
   useEffect(
     () => {
 
-      socketRef.current = io.connect("http://localhost:4000") //LOCALHOST for local testing
+      socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP) //LOCALHOST for local testing
 
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', { lobbyID }, username)
 
-      socketRef.current.on('updateLobby', function (newLobby) {
+      socketRef.current.on('matchAlreadyStarted', function () {
+        toast("That match has already started");
+      });
+
+      socketRef.current.on('updateLobby', function (newLobby, spectatorBool) {
         socketRef.current.room = newLobby.lobbyID;
+        setIsSpec(spectatorBool)
+        console.log("Spectate: " + isSpec)
       });
       socketRef.current.on("message", ({ name, message }, room) => {
         setChat([...chat, { name, message }])
@@ -95,16 +106,12 @@ const MultiplayerGame = (props) => {
         socketRef.current.emit("sendInLobby", username)
       })
 
-      socketRef.current.on("pollAllPlayers", () => {
-        socketRef.current.emit("sendInLobby", username)
-
-      })
-
-      socketRef.current.on("playerJoined", (username) => {
+      socketRef.current.on("playerJoined", (username, isSpectator) => {
         console.log("username " + username)
 
-        setLobbyPlayers(prev => new Map([...prev, [username, { index: 0, lineArrayIndex: 0 }]]))
-
+        if(!isSpectator) {
+          setLobbyPlayers(prev => new Map([...prev, [username, { index: 0, lineArrayIndex: 0 }]]))
+        }
       })
 
       socketRef.current.on("gameLines", (lineArray_) => {
@@ -300,16 +307,18 @@ const MultiplayerGame = (props) => {
     <div className="container">
       <OpponentTestVisual lobbyPlayers={lobbyPlayers} lineArray={lineArray} />
 
-      <div className="timer-wrapper-multiplayer">
-        <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
-          {timer}s
-        </div>
+      {isSpec ? null :
+        <div className="timer-wrapper-multiplayer">
+          <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
+            {timer}s
+          </div>
 
-      </div>
+        </div>
+      }
 
       <div className="word-base">
 
-        {timerActive ? null :
+        {timerActive || isSpec ? null :
           <div className="start-signal-wrapper">
             Waiting for players...
           </div>}
@@ -346,13 +355,13 @@ const MultiplayerGame = (props) => {
           </Leaderboard>
           <PostMatchOptions>
           <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
-            <button onClick={readyUp}>Ready Up</button>
+            {isSpec ? null : <button onClick={readyUp}>Ready Up</button>}
             <button onClick={leaveRoom}>Leave</button>
           </div>
           </PostMatchOptions>
         </EndingPopup>
 
-
+        {isSpec ? null : 
         <div className="test-line-container">
           {randomWords.split("").map(function (char, idx) {
             return (
@@ -364,11 +373,14 @@ const MultiplayerGame = (props) => {
               </span>
             )
           })}
-        </div>
+        </div> }
 
-        <div className="test-line-container next-up">
-          {nextUpRandomWords}
-        </div>
+        {isSpec ? null :
+          <div className="test-line-container next-up">
+            {nextUpRandomWords}
+          </div>
+        }
+        
       </div>
     </div>
   )

@@ -11,6 +11,7 @@ const io = require('socket.io')(http, {
 });
 
 var numClients = {};
+var gameStarted = {};
 var wordsArray = {};
 var roomWordsArray = {};
 var matchResultsArray = {};
@@ -45,14 +46,16 @@ io.on('connection', (socket) => {
     console.log(socket.id + " has joined room " + accountID)
   })
 
-  socket.on('sendGameInvite', function(senderID, senderDisplay, receiverID, lobbyID) {
+  socket.on('sendGameInvite', function(senderID, senderDisplay, senderPhoto, receiverID, lobbyID) {
     console.log('in sendInvite. sender: ' + senderDisplay + ' ' + senderID + ' receiver: ' + receiverID + ' lobby: ' + lobbyID)
-    io.in(receiverID).emit('joinFriendGame', lobbyID, senderDisplay)    
-    io.in(senderID).emit('startFriendGame', lobbyID)  
+    console.log('Inviting GAME_'+receiverID)
+    console.log('Starting GAME_'+senderID)
+    io.in('GAME_'+receiverID).emit('joinFriendGame', lobbyID, senderDisplay, senderPhoto)    
+    io.in('GAME_'+senderID).emit('startFriendGame', lobbyID)  
   })
 
   socket.on('sendMessage', function(senderDisplay, receiverID, message) {
-    io.to(receiverID).emit('messageSent', message, senderDisplay)
+    io.to('MSG_'+receiverID).emit('messageSent', message, senderDisplay)
   })
 
   /*Find Match
@@ -95,34 +98,46 @@ io.on('connection', (socket) => {
 
   //Custom Lobby code
   socket.on('switchLobby', function(newRoom, username) {
-    socket.join(newRoom.lobbyID);
-    socket.emit('updateLobby', newRoom);
+    if(gameStarted[newRoom.lobbyID] == null) {
+      gameStarted[newRoom.lobbyID] = false
+    }
+    if(!gameStarted[newRoom.lobbyID]) {
+      socket.join(newRoom.lobbyID);
+      socket.emit('updateLobby', newRoom, false);
 
-    //Generate words list for this room
-    if(roomWordsArray[newRoom.lobbyID] == null) {
-      for(var i=0; i<10; i++) {
-        wordsArray[i] = getNewWordsLine()
+      //Count the room's clients
+      if(numClients[newRoom.lobbyID] == undefined) {
+        numClients[newRoom.lobbyID] = 1;
+      } else {
+        numClients[newRoom.lobbyID]++;
       }
-      roomWordsArray[newRoom.lobbyID] = wordsArray
-    }
-    socket.emit('gameLines', (roomWordsArray[newRoom.lobbyID]))
-    
-    //Count the room's clients
-    if(numClients[newRoom.lobbyID] == undefined) {
-      numClients[newRoom.lobbyID] = 1;
+
+      //Generate words list for this room
+      if(roomWordsArray[newRoom.lobbyID] == null) {
+        for(var i=0; i<10; i++) {
+          wordsArray[i] = getNewWordsLine()
+        }
+        roomWordsArray[newRoom.lobbyID] = wordsArray
+      }
+      socket.emit('gameLines', (roomWordsArray[newRoom.lobbyID]))
+
+      io.in(newRoom.lobbyID).emit('pollAllPlayers')
+      socket.on('sendInLobby', (username) => {
+        socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username, false)
+      })
+
+      if(numClients[newRoom.lobbyID] == gameStartPlayers) {
+        io.in(newRoom.lobbyID).emit('gameStart')
+        gameStarted[newRoom.lobbyID] = true
+      }
     } else {
-      numClients[newRoom.lobbyID]++;
+      socket.join(newRoom.lobbyID);
+      socket.emit('updateLobby', newRoom, true);
+      socket.emit('gameLines', (roomWordsArray[newRoom.lobbyID]))
+      io.in(newRoom.lobbyID).emit('pollAllPlayers')
+      socket.emit('matchAlreadyStarted')
     }
-
-
-    io.in(newRoom.lobbyID).emit('pollAllPlayers')
-    socket.on('sendInLobby', (username) => {
-      socket.broadcast.to(newRoom.lobbyID).emit('playerJoined', username)
-    })
-
-    if(numClients[newRoom.lobbyID] == gameStartPlayers) {
-      io.in(newRoom.lobbyID).emit('gameStart')
-    }
+    
   });
 
   socket.on('sendPlayerIndex', function(playerName, playerIndex, playerLineArrayIndex, room) {
@@ -135,6 +150,10 @@ io.on('connection', (socket) => {
     if(numClients[socketInfo[1]] > 0) {
       numClients[socketInfo[1]]--
     }
+    if(numClients[socketInfo[1]] == 0) {
+      gameStarted[socketInfo[1]] = false
+    }
+
     
     findMatchPlayers.splice(findMatchPlayers.indexOf(socket.id), 1)
   })
@@ -160,6 +179,7 @@ io.on('connection', (socket) => {
       }
       roomWordsArray[room] = wordsArray
     }
+    gameStarted[room] = false
   })
 
   socket.on('message', ({ name, message }, room) => {
