@@ -61,3 +61,14 @@
     color: var(--selection-color);
     transition: .25s;
 }
+
+.friend-request-button-cancel{
+    color: var(--text-color);
+    font-size: 2em;
+}
+
+.friend-request-button-cancel:hover{
+    cursor: pointer;
+    color: var(--warning);
+    transition: .25s;
+}

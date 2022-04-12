@@ -15,7 +15,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: var(--bg-color);
+    /* background: var(--bg-color); */
     backdrop-filter: blur(20px);
     padding: .75em;
 }
@@ -95,14 +95,17 @@
 }
 
 .test-line-container .correct{
-    color: var(--selection-color);
-    text-shadow: 0px 0px 9px var(--selection-color);
+    color: var(--text-highlight-color);
+    text-shadow: 0px 0px 9px var(--text-highlight-color);
 }
 .test-line-container .default{
     color: var(--text-color);
 }
 
 .next-up{
+    margin: 0;
+    padding-top: 0;
+    background: var(--dark-bg);
     color: var(--next-up-text-color);
 }
 

@@ -11,7 +11,29 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 95%;
+    width: 90%;
+    position: relative;
+}
+
+.stat-keyboard-display{
+    position: absolute;
+    top: 0;
+    background: var(--bg-color);
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 2em;
+}
+
+.stat-keyboard-display-button{
+    padding: .5em;
+    padding-top: .2em;
+    color: var(--text-color);
+}
+
+.stat-keyboard-display-button:hover{
+    color: var(--selection-color);
+    transition: .25s;
+    cursor: pointer;
 }
 
 .stats-wing{
@@ -39,7 +61,8 @@
     font-style: normal;
     font-weight: bold;
     font-size: 2em;
-    text-align: center;
+    font-family: 'Almarai Light';
+    text-align: left;
     margin-left: .5em;
     align-self: flex-start;
     padding-top: 1em;

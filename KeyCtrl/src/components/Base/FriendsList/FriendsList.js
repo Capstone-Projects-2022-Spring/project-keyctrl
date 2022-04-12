@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components';
 import { Avatar, Badge, TextField, Paper, IconButton } from '@material-ui/core';
@@ -13,8 +13,8 @@ import sha256 from 'crypto-js/sha256';
 import * as api from '../../../utils/apiUtils.js'
 import { IoNotificationsSharp } from 'react-icons/io5'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
-import FriendRequests from './FriendRequests';
 import FriendRequest from './FriendRequest';
+import { toast } from 'react-toastify'
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -68,34 +68,32 @@ function changeStat(current) {
     }
 }
 
-const FriendsList = ({ friendsList, accountInfo, friendRequests }) => {
+const FriendsList = ({ setOpenFriendList, handleAddFriend, addFriend, setAddFriend, setFriendsList, friendsList, accountInfo, openFAccount, setSendInvite, setInviteLobby, lobbyID  }) => {
 
-    const [addFriend, setAddFriend] = useState([]);
-    const [count, setCount] = useState(1);
+    const [count, setCount] = useState(0);
     const [friendRequestsOpen, setFriendRequestsOpen] = useState(true)
     const [friendListOpen, setFriendListOpen] = useState(true)
 
-    // const ref = useRef()
-    // const openModal = () => ref.current.open()
+    const [state, setState] = useState(false)
 
-    const handleClick = async () => {
-        console.log(accountInfo.account_id, addFriend);
+    useEffect(() => {
+        // Update Page
+    }, [state])
 
-        var newFriendName = addFriend.replace('#', '');
-        var newFriendName = newFriendName.replace(' ', '');
-        if (newFriendName === accountInfo.social_id) {
-            alert("You can't add yourself, find more friends loser.")
-        } else {
-            await api.callAddFriend(accountInfo.account_id, newFriendName);
-        }
-        setAddFriend([])
-    };
+    useEffect(() => {
+        updateFriendsList()
+    }, [])
+
+    const updateFriendsList = async () => {
+        var tempFL = await api.getFriends(accountInfo.account_id, accountInfo.social_id);
+        setFriendsList(tempFL)
+    }
+
 
     console.log(friendsList)
 
     return (
         <div className='maincontainer'>
-            {/* <FriendRequests ref={ref}/> */}
             <div className='friends-list-header'>
                 <div>
                     <StyledBadge
@@ -120,11 +118,11 @@ const FriendsList = ({ friendsList, accountInfo, friendRequests }) => {
                     <br />
                     {"#" + accountInfo.social_id.substr(accountInfo.social_id.length - 4)}
                 </div>
-                <div style={{ paddingLeft: '.75em', paddingTop: '10%' }}>
+                {/* <div style={{ paddingLeft: '.75em', paddingTop: '10%' }}>
                     <Badge color="primary" badgeContent={count} >
                         <IoNotificationsSharp className="friends-list-notif-icon" />
                     </Badge>
-                </div>
+                </div> */}
 
             </div>
             <div className='friends-list-add'>
@@ -147,11 +145,12 @@ const FriendsList = ({ friendsList, accountInfo, friendRequests }) => {
                         fullWidth
                         sx={{ height: '3em' }}
                         value={addFriend}
+                        onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
                         onChange={(event) => { setAddFriend(event.target.value) }}
                     />
                     <IconButton>
                         <MdPersonAdd className='friends-list-button'
-                            onClick={handleClick} />
+                            onClick={handleAddFriend} />
                     </IconButton>
 
                 </Paper>
@@ -166,6 +165,10 @@ const FriendsList = ({ friendsList, accountInfo, friendRequests }) => {
                         console.log(obj)
                         return (
                             <FriendRequest
+                                accountInfo={accountInfo}
+                                setState={setState}
+                                setFriendsList={setFriendsList}
+                                friendsList={friendsList}
                                 object={obj}
                             />
                         )
@@ -182,11 +185,16 @@ const FriendsList = ({ friendsList, accountInfo, friendRequests }) => {
                     {friendsList[0].map(function (obj, idx) {
                         return (
                             <Friend
+                                setOpenFriendList={setOpenFriendList}
+                                friendsList={friendsList}
+                                setState={setState}
+                                setFriendsList={setFriendsList}
                                 accountInfo={accountInfo}
-                                username={obj.display_name}
-                                imageUrl={obj.photo}
-                                socialId={obj.social_id}
-                                status={true}
+                                object={obj}
+                                openFAccount= {openFAccount}
+                                setSendInvite={setSendInvite}
+                                setInviteLobby={setInviteLobby}
+                                lobbyID={lobbyID}
                             />
                         )
                     })}

@@ -1,15 +1,22 @@
 import { useState, useRef, useEffect, useInterval } from 'react'
+import { useNavigate } from 'react-router-dom';
+
 import io from "socket.io-client"
 import '../../styles/TypingTest.css'
+import '../../styles/MultiplayerGame.css'
+import '../../styles/MultiplayerPage.css'
 import { PropTypes } from 'prop-types'
+import { toast } from 'react-toastify'
 import OpponentTestVisual from './OpponentTestVisual';
 import styled from 'styled-components'
 import Popup from 'reactjs-popup'
+import PostMatchPlayer from './PostMatchPlayer'
+import { IoIosArrowBack } from 'react-icons/io'
 
 const MultiplayerGame = (props) => {
   const [lobbyPlayers, setLobbyPlayers] = useState(new Map())
 
-  const [staticCountdown, setStaticCountdown] = useState(15);
+  const [staticCountdown, setStaticCountdown] = useState(45);
   const [countdown, setCountdown] = useState(3);
   const [choppedCurrentLine, setChoppedCurrentLine] = useState("");    //setting its use state
   const [lineIndex, setLineIndex] = useState(0)
@@ -20,6 +27,7 @@ const MultiplayerGame = (props) => {
   const [currentLineLength, setCurrentLineLength] = useState(0);
   const [numEntries, setNumEntries] = useState(0);
   const [WPMTime, setWPMTime] = useState(1);
+  const [isSpec, setIsSpec] = useState(false)
 
   const [randomWords, setCurrentRandomWords] = useState(" ");    //setting its use state
   const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
@@ -28,8 +36,10 @@ const MultiplayerGame = (props) => {
   const [lineArray, setLineArray] = useState([])
 
   const [leaderBoardOpen, setLeaderBoardOpen] = useState(false);
-  const [leaderboard, setLeaderboard] = useState([{ player: '', WPM: '' }, { player: '', WPM: '' }, { player: '', WPM: '' }, { player: '', WPM: '' }]);
+  const [leaderboard, setLeaderboard] = useState([]);
   const closeLeaderBoard = () => setLeaderBoardOpen(false);
+
+  const [gameStatus, setGameStatus] = useState(false)
 
 
   // ---- Server Communication -------------------------------------
@@ -37,32 +47,52 @@ const MultiplayerGame = (props) => {
   const [chat, setChat] = useState([])
 
   const socketRef = useRef()
+  const navigate = useNavigate()
 
   var lobbyID = props.lobbyID
   var username = props.username
-  var la;
+  var accountId = props.accountInfo.account_id
+  var socialId = props.accountInfo.social_id
+  var loggedIn = props.loggedIn
+  var photo = props.accountInfo.photo
 
-  useEffect(() => {
-  }, [])
+  var la;
 
   useEffect(
     () => {
 
-      socketRef.current = io.connect("https://generated-respected-python.glitch.me") //LOCALHOST for local testing
+      socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP) //LOCALHOST for local testing
 
       console.log(lobbyID, username)
       socketRef.current.emit('switchLobby', { lobbyID }, username)
 
-      socketRef.current.on('updateLobby', function (newLobby) {
+      socketRef.current.on('matchAlreadyStarted', function () {
+        toast("That match has already started");
+      });
+
+      socketRef.current.on('updateLobby', function (newLobby, spectatorBool) {
         socketRef.current.room = newLobby.lobbyID;
+        setIsSpec(spectatorBool)
+        console.log("Spectate: " + isSpec)
       });
       socketRef.current.on("message", ({ name, message }, room) => {
         setChat([...chat, { name, message }])
       })
+
+      socketRef.current.on('findMatchSuccess', (lobby) => {
+        console.log(socketRef.current.id + " found a match")
+        socketRef.current.disconnect()
+        props.setLobbyID(lobby)
+        props.setShowModal(false)
+        props.setJoinLobby(false)
+        props.setJoinLobby(true)
+      })
+
       socketRef.current.on("gameStart", () => {
         console.log("Game Start")
         setInCountdown(true)
         setTimerActive(true);
+        setGameStatus(false)
       })
 
       socketRef.current.on("gameLines", (gameLines) => {
@@ -76,7 +106,7 @@ const MultiplayerGame = (props) => {
         setLeaderboard(matchResultsArray);
         sortLeaderBoard(matchResultsArray);
         setLeaderBoardOpen(o => !o);
-
+        setGameStatus(true)
       })
 
       socketRef.current.on("playerIndexUpdate", (playerName, playerIndex, playerLineArrayIndex) => {
@@ -88,16 +118,12 @@ const MultiplayerGame = (props) => {
         socketRef.current.emit("sendInLobby", username)
       })
 
-      socketRef.current.on("pollAllPlayers", () => {
-        socketRef.current.emit("sendInLobby", username)
-
-      })
-
-      socketRef.current.on("playerJoined", (username) => {
+      socketRef.current.on("playerJoined", (username, isSpectator) => {
         console.log("username " + username)
 
-        setLobbyPlayers(prev => new Map([...prev, [username, { index: 0, lineArrayIndex: 0 }]]))
-
+        if (!isSpectator) {
+          setLobbyPlayers(prev => new Map([...prev, [username, { index: 0, lineArrayIndex: 0 }]]))
+        }
       })
 
       socketRef.current.on("gameLines", (lineArray_) => {
@@ -209,7 +235,7 @@ const MultiplayerGame = (props) => {
     return wpm;
   };
 
-  function sortLeaderBoard(matchResultsArray){
+  function sortLeaderBoard(matchResultsArray) {
     function compare(a, b) {
       return b.WPM - a.WPM
     }
@@ -246,10 +272,9 @@ const MultiplayerGame = (props) => {
 
   useInterval(() => {
     if (!inCountdown && timer === 0) {
-
-      var WPM = grossWPM()
-      console.log("wpm: ", WPM);
-      socketRef.current.emit("gameEnd", username, grossWPM(), socketRef.current.room)
+      // loggedIn, //social_id, //account_id
+      // socketRef.current.emit("gameEnd", username, grossWPM(), socketRef.current.room)
+      socketRef.current.emit("gameEnd", photo, username, grossWPM(), accountId, socialId, loggedIn, socketRef.current.room)
 
       reset();
 
@@ -269,23 +294,55 @@ const MultiplayerGame = (props) => {
 
   // ---------------------------------------------------
 
+  function readyUp() {
+    if (props.isFindMatch) {
+      //get back in Find Match queue
+      props.setShowModal(true)
+      socketRef.current.emit('findMatch')
+    } else {
+      socketRef.current.emit('switchLobby', { lobbyID }, username)
+      //reinitiate same private game
+    }
+    closeLeaderBoard()
+  }
+
+  function leaveRoom() {
+    //back to mp menu
+    props.setJoinLobby(false)
+    props.setFindMatch(false)
+    props.setLobbyID(0)
+    props.setInviteLobby(0)
+  }
 
 
 
   return (
     <div className="container">
+
+      <div className='mp-exit-button' style={isSpec ? {marginLeft: '0em'} : null}>
+        <div onClick={leaveRoom} className='mp-exit-button-leave'>
+          <IoIosArrowBack />
+          Leave
+        </div>
+        <div className='lobby-id'>
+          {isSpec ? <span style={{color: 'var(--selection-color)'}}>Spectating </span> : null}
+          Lobby: {props.lobbyID}
+          </div>
+      </div>
       <OpponentTestVisual lobbyPlayers={lobbyPlayers} lineArray={lineArray} />
 
-      <div className="timer-wrapper-multiplayer">
-        <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
-          {timer}s
-        </div>
+      {isSpec ? null :
+        <div className="timer-wrapper-multiplayer">
+          <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
+            {timer}s
+          </div>
 
-      </div>
+        </div>
+      }
 
       <div className="word-base">
 
-        {timerActive ? null :
+        {timerActive || isSpec ? null :
           <div className="start-signal-wrapper">
             Waiting for players...
           </div>}
@@ -301,45 +358,52 @@ const MultiplayerGame = (props) => {
           onClose={closeLeaderBoard}
           position="center"
           modal
-          closeOnDocumentClick
         >
           <Leaderboard>
-            <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
-              {leaderboard[0].player + " won!"}
-              <br />
-              {leaderboard[0].WPM + " WPM"}
-            </div>
-            <div>
-              {"2nd: " + leaderboard[1].player + " " + leaderboard[1].WPM + " WPM"}
-              <br />
-              {"3rd: " + leaderboard[2].player + " " + leaderboard[2].WPM + " WPM"}
-            </div>
-            {/* {leaderboard.map(function (player, idx) {
+
+            {leaderboard.map(function (player, idx) {
+              console.log(player)
               return (
-                <div>{idx+1}. {player.player}  {player.WPM} WPM</div>
+                <>
+                  <PostMatchPlayer myAccId={accountId} handleAddFriend={props.handleAddFriend} setAddFriend={props.setAddFriend} photo={player.photo} socialId={player.socialId} accountId={player.accountId} openFAccount={props.openFAccount} currentName={props.accountInfo.display_name} loggedIn={loggedIn} playerLoggedIn={player.loggedIn} index={idx + 1} playerName={player.player} wpm={player.WPM} />
+                </>
               )
-            })} */}
+            })}
+
           </Leaderboard>
+          <PostMatchOptions>
+            <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
+              {isSpec ? null : <button className='post-match-options-button' onClick={readyUp}>Ready Up</button>}
+              <button className='post-match-options-button' onClick={leaveRoom}>Leave</button>
+            </div>
+          </PostMatchOptions>
         </EndingPopup>
 
+        {isSpec ? null :
+          <div className="test-line-container">
+            {randomWords.split("").map(function (char, idx) {
+              return (
+                <span key={idx}
+                  className={(idx < lineIndex) ? 'correct' : 'default'}
+                >
+                  {(idx === lineIndex) ? <span className="cursor" ></span> : <span />}
+                  {char}
+                </span>
+              )
+            })}
+          </div>}
 
-        <div className="test-line-container">
-          {randomWords.split("").map(function (char, idx) {
-            return (
-              <span key={idx}
-                className={(idx < lineIndex) ? 'correct' : 'default'}
-              >
-                {(idx === lineIndex) ? <span className="cursor" ></span> : <span />}
-                {char}
-              </span>
-            )
-          })}
-        </div>
+        {isSpec ? null :
+          <div className="test-line-container next-up">
+            {nextUpRandomWords}
+          </div>
+        }
 
-        <div className="test-line-container next-up">
-          {nextUpRandomWords}
-        </div>
       </div>
+      {!leaderBoardOpen && gameStatus ? <button className='post-match-options-button' onClick={() => setLeaderBoardOpen(true)}>Post Match Stats</button>
+        : null
+
+      }
     </div>
   )
 }
@@ -361,6 +425,16 @@ const EndingPopup = styled(Popup)`
 `;
 
 const Leaderboard = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: var(--text-color);
+  font-family: "almarai";
+  font-size: 2em;
+  justify-content: center;
+  text-align: center;
+`
+
+const PostMatchOptions = styled.div`
   display: flex;
   flex-direction: column;
   color: var(--text-color);

@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import styled from 'styled-components';
 import Popup from 'reactjs-popup'
 import { Avatar, Badge, TextField } from '@material-ui/core';
@@ -9,6 +9,13 @@ import { BsThreeDots } from "react-icons/bs"
 import { Menu, MenuItem } from '@material-ui/core';
 import { blue, green, purple, red } from '@material-ui/core/colors';
 import * as api from '../../../utils/apiUtils.js'
+import { toast } from 'react-toastify'
+import Account from '../../AccountPage/Account'
+import Scrollbars from 'react-custom-scrollbars-2'
+import passOpenFAccount from '../../../App.js'
+import io from "socket.io-client"
+import { useNavigate } from 'react-router-dom';
+
 
 const StyledPopup = styled(Popup)`
     
@@ -126,8 +133,12 @@ const StyledMenu = styled((props) => (
   },
 }));
 
-const Friend = ({ accountInfo, imageUrl, username, status, socialId }) => {
+const friendProf = ({ }) => {//requests accountInfo from a friend/user then put into Account() 
+  //request info using user email being passed in
+  //throw info into Account()
+}
 
+const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite, setInviteLobby, lobbyID }) => {//object is current person
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => setModalOpen(false);
@@ -136,16 +147,85 @@ const Friend = ({ accountInfo, imageUrl, username, status, socialId }) => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = (item) => {
+
+  const handleMenuClick = async (item) => {
     setAnchorEl(null);
-    if (item === 3) {
-      setModalOpen(true)
+    switch(item) {
+      case(0):
+        openFAccount(object)
+        break;
+      case(1):
+        sendGameInvite()
+        break;
+      case(2):
+        //sendMessage()
+        break;
+      case(3):
+        console.log(accountInfo)
+        console.log(object)
+        setModalOpen(true)
+        break;
+      default:
+        break;
     }
   };
 
-  const deleteFriend = () => {
-    api.removeFriend(accountInfo.account_id, accountInfo.social_id, socialId)
+  const socketRef = useRef()
+  const navigate = useNavigate()
+  function sendGameInvite() {
+    //DETERMINE LOBBY ID VIA UI, PLACEHOLDER FOR NOW
+    setSendInvite(true)
+    var newLobbyID
+    if(lobbyID != 0) {
+      newLobbyID = lobbyID
+    } else {
+      newLobbyID = accountInfo.social_id
+    }
+    if(socketRef.current == null) {
+      socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
+    }
+    setInviteLobby(newLobbyID)
+    socketRef.current.emit('sendGameInvite', accountInfo.account_id, accountInfo.display_name, accountInfo.photo, object.account_id, newLobbyID)
+    navigate('/multiplayer')
+    setSendInvite(false)
+    setOpenFriendList({ isPaneOpen: false })
+  }
+
+  function sendMessage() {
+
+  }
+
+  const deleteFriend = async () => {
+
     closeModal()
+
+    console.log(friendsList[0]);
+
+    var tempList = friendsList;
+
+    const index = friendsList[0].indexOf(object);
+
+    if (index > -1) {
+      tempList[0].splice(index, 1); // 2nd parameter means remove one item only
+    }
+
+    console.log(tempList);
+
+    setFriendsList(tempList)
+    setState(o => !o);
+
+    toast.error(object.display_name + ' Removed!', {
+      position: "top-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored'
+    });
+
+    await api.removeFriend(accountInfo.account_id, accountInfo.social_id, object.social_id)
   }
 
   return (
@@ -156,10 +236,10 @@ const Friend = ({ accountInfo, imageUrl, username, status, socialId }) => {
             overlap="circular"
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
             variant="dot"
-            status={status}
+            status={true}
           >
             <Avatar
-              src={imageUrl}
+              src={object.photo}
               sx={{
                 width: '3em',
                 height: '3em',
@@ -171,11 +251,11 @@ const Friend = ({ accountInfo, imageUrl, username, status, socialId }) => {
           </StyledBadge>
         </div>
         <div className='friend-username'>
-          {username}
+          {object.display_name}
         </div>
         <div className='friend-options-button'>
           <BsThreeDots
-            style={{fontSize: '2em' }}
+            style={{ fontSize: '2em' }}
             aria-controls={open ? 'basic-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
@@ -186,15 +266,15 @@ const Friend = ({ accountInfo, imageUrl, username, status, socialId }) => {
             anchorEl={anchorEl}
             getContentAnchorEl={null}
             open={open}
-            onClose={handleClose}
+            onClose={handleMenuClick}
             MenuListProps={{
               'aria-labelledby': 'basic-button',
             }}
           >
-            <MenuItem onClick={() => handleClose(0)}>View Profile</MenuItem>
-            <MenuItem onClick={() => handleClose(1)}>Invite</MenuItem>
-            <MenuItem onClick={() => handleClose(2)}>Message</MenuItem>
-            <MenuItem onClick={() => handleClose(3)}>Remove Friend</MenuItem>
+            <MenuItem onClick={() => handleMenuClick(0)}>View Profile</MenuItem>
+            <MenuItem onClick={() => handleMenuClick(1)}>Invite</MenuItem>
+            <MenuItem onClick={() => handleMenuClick(2)}>Message</MenuItem>
+            <MenuItem onClick={() => handleMenuClick(3)}>Remove Friend</MenuItem>
           </StyledMenu>
         </div>
       </div>
@@ -206,14 +286,15 @@ const Friend = ({ accountInfo, imageUrl, username, status, socialId }) => {
       >
         Are you sure you want to remove
         <br />
-        {username}?
+        {object.display_name}?
         <div className="delete-account-popup">
           <ConfirmationButtonYes onClick={deleteFriend}>YES, REMOVE</ConfirmationButtonYes>
           <ConfirmationButtonNo onClick={() => setModalOpen(false)}>NO, GO BACK</ConfirmationButtonNo>
         </div>
-
       </StyledPopup>
+
     </div>
+
   )
 }
 

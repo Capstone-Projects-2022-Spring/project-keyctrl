@@ -13,8 +13,9 @@
 
   .container .modal {
     z-index: 1;
-    width: 350px;
-    height: 220px;
+    width: auto;
+    height: auto;
+    padding: 1.5em;
     color: var(--text-color);
     background: var(--bg-color);
     display: flex;
@@ -24,6 +25,9 @@
     border-radius: 5px;
     position: relative;
     animation: animate 0.3s;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--selection-color);
   }
 
   #lobbySubmit {
@@ -31,9 +35,6 @@
   }
 
   .modal button {
-    position: absolute;
-    top: 7px;
-    right: 7px;
     padding: 8px 11px;
     background: var(--selection-color);;
     color: white;
@@ -42,4 +43,16 @@
     outline: none;
     border-radius: 2px;
     cursor: pointer;
+  }
+
+  .multiplayer-game-input{
+    background: var(--dark-bg);
+    padding: .5em;
+    border: none;
+    border-radius: 10%/20%;
+    color: var(--text-color);
+  }
+
+  .multiplayer-game-input:focus{
+    border: none;
   }

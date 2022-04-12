@@ -3,13 +3,15 @@ import useForm from '../../../../utils/useForm';
 import validate from '../../../../utils/validateInfo'
 import '../../../../styles/SignInModal.css'
 import { useSpring, animated } from 'react-spring';
-import { MdClose } from 'react-icons/md';
+import { MdClose, MdOutlineFacebook } from 'react-icons/md';
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login'
 // import * as db from '../utils/dbUtils.js';
 import sha256 from 'crypto-js/sha256';
 
 import * as api from '../../../../utils/apiUtils.js'
 import { AiFillPicture } from 'react-icons/ai';
+import styled from 'styled-components';
 
 /**
  * @module SignInModal
@@ -61,8 +63,11 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
 
         var account = await api.callLogin(hash.toString(), photo, name)
 
-        if (account.account_id === -1) {
+        console.log(account)
+
+        if (account === -1) {
             var name = name.substring(0, 14)
+
             var socialId = Math.floor(Math.random() * (9999 - 1000) + 1000)
             var noSpaceName = name.replace(/\s+/g, '')
             await api.callRegisterAccount(hash.toString(), photo, name, noSpaceName + "" + socialId.toString())
@@ -150,12 +155,20 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
     const responseGoogle = response => {
         setShowSignIn(false)
         console.log(response);
-        console.log(response.profileObj.imageUrl)
-        console.log(response.profileObj.email)
+        console.log(response.profileObj.email, response.profileObj.imageUrl, response.profileObj.name)
         login(response.profileObj.email, response.profileObj.imageUrl, response.profileObj.name)
         //after login in on google login, we call login
     };
 
+    const responseFacebook = (response) => {
+        setShowSignIn(false)
+        console.log(response);
+        login(response.email, response.picture.url, response.name)
+    }
+
+    const componentClicked = () => {
+        console.log("Clicked")
+    }
 
     return (
         <>
@@ -177,6 +190,14 @@ const SignInModal = ({ accountInfo, setLoading, loggedIn, onLogin, showSignIn, s
                                     onSuccess={responseGoogle}
                                     onFailure={responseGoogle}
                                     cookiePolicy="single_host_origin" />
+                                <FacebookLogin
+                                    appId="1021992962032784"
+                                    fields="name,email,picture"
+                                    onClick={() => componentClicked()}
+                                    callback={responseFacebook}
+                                    cssClass="my-facebook-button-class"
+                                     />
+                                    
                             </div>
                         </div>
                     </animated.div>

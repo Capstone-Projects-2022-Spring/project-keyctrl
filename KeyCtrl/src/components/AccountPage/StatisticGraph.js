@@ -39,9 +39,9 @@ const StatisticGraph = ({ dataAvg, dataTop, dataRank, gameMode }) => {
     }
 
     return (
-        <div style={{ width: '100%' }}>
+        <div style={{ width: '90%', marginLeft: '5em'}}>
             {gameMode === 2 ?
-                <div className='stat-container' style={{ flexDirection: 'column', justifySelf: 'flex-start', height: '20em', paddingRight: '5em' }}>
+                <div className='stat-container' style={{ flexDirection: 'column', alignSelf: 'center', justifySelf:'center', height: '20em'}}>
                     <div style={{ fontSize: '1.5em', fontFamily: 'Almarai Light', color: 'var(--text-color)' }}>
                         Rank Over Time
                     </div>
@@ -62,7 +62,7 @@ const StatisticGraph = ({ dataAvg, dataTop, dataRank, gameMode }) => {
                     </ResponsiveContainer>
                 </div>
                 : null}
-            <div className='stat-container' style={{ flexDirection: 'column', justifySelf: 'flex-start', height: '20em', paddingRight: '5em' }}>
+            <div className='stat-container' style={{ flexDirection: 'column', justifySelf: 'flex-start', height: '20em'}}>
                 <div style={{ fontSize: '1.5em', fontFamily: 'Almarai Light', color: 'var(--text-color)' }}>
                     Average WPM Over Time
                 </div>
@@ -81,7 +81,7 @@ const StatisticGraph = ({ dataAvg, dataTop, dataRank, gameMode }) => {
                     </LineChart>
                 </ResponsiveContainer>
             </div>
-            <div className='stat-container' style={{ flexDirection: 'column', justifySelf: 'flex-start', height: '20em', paddingRight: '5em' }}>
+            <div className='stat-container' style={{ flexDirection: 'column', justifySelf: 'flex-start', height: '20em'}}>
                 <div style={{ fontSize: '1.5em', fontFamily: 'Almarai Light', color: 'var(--text-color)' }}>
                     Top WPM Over Time
                 </div>
