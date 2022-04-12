@@ -356,7 +356,7 @@ function App() {
                   />
                 } />
                 <Route exact path="/training" element={<Training />} />
-                <Route exact path="/multiplayer" element={<Multiplayer openFAccount={openFAccount} loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} />} />
+                <Route exact path="/multiplayer" element={<Multiplayer openFAccount={openFAccount} loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} lobbyID={lobbyID} setLobbyID={setLobbyID}/>} />
                 <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} inFriend={false}/> : <OfflineAccount openSignIn={openSignIn}/>)} />
                 <Route exact path="/settings" element={<Settings setAccountInfo={setAccountInfo} openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
