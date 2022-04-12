@@ -310,6 +310,8 @@ const MultiplayerGame = (props) => {
     //back to mp menu
     props.setJoinLobby(false)
     props.setFindMatch(false)
+    props.setLobbyID(0)
+    props.setInviteLobby(0)
   }
 
 
