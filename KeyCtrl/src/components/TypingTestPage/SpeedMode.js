@@ -63,23 +63,30 @@ export const TypingTest = (props) => {
     var randWordsFunc = require('random-words');          //Must require random-words
     const [wrongIndex, setWrongIndex] = useState([]);       //Initializing the variable wrongIndex.
 
-
+////////////////////////////////////////////////////////////////////////
     const [letterArray, setLetterArray] = useState([]); //work in progress...
-    const [letter, setLetter] = useState([""])
+    const [letter, setLetter] = useState([])
+    useEffect((event)=>{
+   
+    //setLetter([])
+  
+    },[letter]);
 
     function TextBoxWords(event) {
-        if (event.code !== "Space") {
+        console.log(event)
+        
+
+        if(event!==" "){
             setLetter([...letter, {
                 value: event
             }])
-        }
-        else {
-            setLetter([]);
-
+        }else if(event===" "){
+            console.log("Saved")
+            setLetter([])
         }
 
     }
-
+////////////////////////////////////////////////////////////////////////////////////
 
     function newWords() {
         var startingLine = getNewWordsLine()
@@ -234,9 +241,10 @@ export const TypingTest = (props) => {
 
             default:
                 if (timerActive && !inCountdown) {
-
+////////////////////////////////////////////////////////
                     TextBoxWords(event.key)
                     setLetterArray(event.target.value) //work in progress...............
+                    /////////////////////////////////////////////////////////////////
                     if (event.key === randomWords[lineIndex]) { //This is where the curser is locked.
                         // add occurances here for next letter
                         if (props.loggedIn)
@@ -379,7 +387,7 @@ export const TypingTest = (props) => {
                 {nextUpRandomWords}
             </div>
             {/* </div> */}
-
+            
             <div className="WordBox">
                 <form>
                     <label>
