@@ -349,7 +349,7 @@ function App() {
         </div>
       </StyledPopup>
 
-      <MessageContainer accountInfo={accountInfo} loggedIn={loggedIn} />
+      <MessageContainer friendsList={friendsList} accountInfo={accountInfo} loggedIn={loggedIn} />
     </div>
   );
 }

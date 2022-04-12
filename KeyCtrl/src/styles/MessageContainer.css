@@ -64,7 +64,6 @@
 }
 
 .mc-content-friends{
-    padding: .5em;
     border-style: solid;
     border-width: 0 0 0 .4em;
     border-color: var(--bg-color);
@@ -93,6 +92,9 @@
 
 .mc-friend{
     padding-bottom: .5em;
+    padding-left: .6em;
+    padding-right: .8em;
+    padding-top: .3em;
 }
 
 .message-container{

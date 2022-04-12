@@ -7,7 +7,7 @@ import { Avatar, Badge, TextField } from '@material-ui/core';
 import MessageContent from './MessageContent'
 import io from "socket.io-client"
 
-const MessageContainer = ({ closeMessages, accountInfo, loggedIn }) => {
+const MessageContainer = ({ friendsList, closeMessages, accountInfo, loggedIn }) => {
     const [messagesOpen, setMessagesOpen] = useState(false)
     const [messageSent, setMessageSent] = useState(false)
 
@@ -31,6 +31,8 @@ const MessageContainer = ({ closeMessages, accountInfo, loggedIn }) => {
         setMessageSent(true)
     }
 
+    console.log(friendsList)
+
     return (
         <div className='mc-container'>
             <div onClick={() => setMessagesOpen((o) => !o)} className='mc-header'>
@@ -50,9 +52,9 @@ const MessageContainer = ({ closeMessages, accountInfo, loggedIn }) => {
 
                     <div className='mc-content-message-container'>
                         <div className='mc-content-messages'>
-                            <MessageContent type={0} name="KeyCtrl" message="Hello, I am a message" />
-                            <MessageContent type={1} name="" message="I am a message response" />
-                            <MessageContent type={0} name="KeyCtrl" message="Can you fuck off please" />
+                            <MessageContent type={0} name="KeyCtrl" photo={friendsList[0][1].photo} message="Want to hop in a game?" />
+                            <MessageContent type={1} name="" message="Yeah give me a few minutes" />
+                            <MessageContent type={0} name="KeyCtrl" photo={friendsList[0][1].photo} message="No problem, ill sent an invite in a bit" />
                         </div>
                         <div contenteditable="true" className='mc-content-message-input'>
 
@@ -62,10 +64,11 @@ const MessageContainer = ({ closeMessages, accountInfo, loggedIn }) => {
                         <div className='mc-friend'>
                             <Badge color="primary" badgeContent={3} >
                                 <Avatar
+                                    src={friendsList[0][1].photo}
                                     sx={{
                                         width: '3em',
                                         height: '3em',
-                                        borderColor: 'var(--text-color)',
+                                        borderColor: 'var(--selection-color)',
                                         borderStyle: 'solid',
                                         borderWidth: '2px'
                                     }}
