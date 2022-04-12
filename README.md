@@ -36,39 +36,40 @@ npm start
 ```
 
 ## Using the Release: How to Test
-<p>This release adds two new components and updates an existing one: Friend List, Multiplayer find match, and the UI respectively. The testing steps for each element are listed below.</p>  
-Updated UI:
-  
-    -New UI can now be found at the top of the screen as 5 buttons that can be highlighted over for a description of each.
-    
-Friend List 
-
+<p>This release changed up a bunch of different modules, some such major changes are to the multiplayer, Account Statistics, and Friend invites. The testing steps for each element are listed below.</p>  
+Friend Invitations & Profile Viewing
     -Login to the site from the button on the far right of the top UI 
     -Click "Login with Google" in the popup modal  
     -Sign in with your respective Google Account
-    -The friend list should now be available on the right side of the screen click the text to uncollapse (and off the friend list to recollapse)
-    -From here you can see your own ID and your own (currently empty) friend list
-    -You can add another player by entering their name and clicking the button besides the add friend box
-    -The person you added will receive the request and be prompted to either deny or accept your friend request on their side of things
-    
-Multiplayer (requires 4 players for a match to be created)
-
-    -Click the World icon on the left navigation bar  
-    -Click "Find Game"  
-    -The game will start once atleast 4 people are searching  
-    -After the timer runs out, the match results will appear in a popup modal in the center of your screen.
-
+    -Open up the friend list module and click on the three dots next to a friend (if you find yourself friendless you'll need to add one if you suffer from no friends, make another account in a new tab and add yourself then invite yourself)
+    -From here you can see you've automatically created a lobby using your own ID other players can join normally without an invite if they enter in your ID
+    -If you're the receiver of the invite a popup will appear in the top right and you'll be prompted to join
+    -To test the profile viewing you can click those same three dots to select view profile and a popup module will appear that'll allow you to see their account stats
+Multiplayer Changes
+    -Join a private lobby and complete a match
+    -The leave button appears in private lobbys from the start but ready up only appears at game end
+    -To test the post game leaderboard when the popup appears you're given two buttons next to other logged in users that allow you to view their profiles or ad them as a friend
+    -To test the spectator mode join a full lobby or alternatively a game in progress and you'll automatically be put into spectator mode and will be able to view the racers.
+Username Editing
+    -You can edit your username by going to the setting page and clicking the button next to your name and a popup will appear that'll allow you to update your username.
 ## Patch Notes
 - Release notes indicating what is new
-
-v1.0 Milestone 1
+v3.0 Milestone 3
 ```
--Google Sign In 
-  -Use your Google account to login to our application.
--Multiplayer 
-  -Connect to a custom lobby and play with your friends to see who has the highest words per minute!
--Theme Select 
-  -Change the look and feel of KeyCTRL with theme selection.
+-Ready up and leave buttons on private lobbies
+  -Private lobbies now has ready up buttons to continue playing and leave buttons to disconnect from the lobby
+-Endgame Leaderboard UI update
+  -New endgame screen that better displays users and allows you to add opponents as well as view their profile
+-View Profiles
+  -You can now view other user's profiles on your friendlist or through the post game leaderboard
+-Friend Invites
+  -Users on your friendlist can be invited to a private game
+-Spectator Mode
+  -When a joined game is already full you're now able to spectate the match
+-Account Stats
+  -Account stats are now live updating and new statistics can be viewed making changes
+-Username Editing
+  -User names can now be edited in settings (notice only the name prefix will change not your numbers)
 ```
 
 v2.0 Milestone 2
@@ -79,6 +80,16 @@ v2.0 Milestone 2
     -Add friends by ID, receive requests from other players and either accept or deny them.
 -Multiplayer Find Match
     -Find game option added in addition to private lobbies to be automatically paired with other currently searching players
+```
+
+v1.0 Milestone 1
+```
+-Google Sign In 
+  -Use your Google account to login to our application.
+-Multiplayer 
+  -Connect to a custom lobby and play with your friends to see who has the highest words per minute!
+-Theme Select 
+  -Change the look and feel of KeyCTRL with theme selection.
 ```
 
 - Source Code For Release
