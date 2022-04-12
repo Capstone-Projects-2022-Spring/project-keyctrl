@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 import io from "socket.io-client"
 import '../../styles/TypingTest.css'
+import '../../styles/MultiplayerPage.css'
 import { PropTypes } from 'prop-types'
 import { toast } from 'react-toastify'
 import OpponentTestVisual from './OpponentTestVisual';
 import styled from 'styled-components'
 import Popup from 'reactjs-popup'
+import { IoIosArrowBack } from 'react-icons/io'
 
 const MultiplayerGame = (props) => {
   const [lobbyPlayers, setLobbyPlayers] = useState(new Map())
@@ -109,7 +111,7 @@ const MultiplayerGame = (props) => {
       socketRef.current.on("playerJoined", (username, isSpectator) => {
         console.log("username " + username)
 
-        if(!isSpectator) {
+        if (!isSpectator) {
           setLobbyPlayers(prev => new Map([...prev, [username, { index: 0, lineArrayIndex: 0 }]]))
         }
       })
@@ -223,7 +225,7 @@ const MultiplayerGame = (props) => {
     return wpm;
   };
 
-  function sortLeaderBoard(matchResultsArray){
+  function sortLeaderBoard(matchResultsArray) {
     function compare(a, b) {
       return b.WPM - a.WPM
     }
@@ -284,7 +286,7 @@ const MultiplayerGame = (props) => {
   // ---------------------------------------------------
 
   function readyUp() {
-    if(props.isFindMatch) {
+    if (props.isFindMatch) {
       //get back in Find Match queue
       props.setShowModal(true)
       socketRef.current.emit('findMatch')
@@ -296,15 +298,26 @@ const MultiplayerGame = (props) => {
   }
 
   function leaveRoom() {
-      //back to mp menu
-      props.setJoinLobby(false)
-      props.setFindMatch(false)
+    //back to mp menu
+    props.setJoinLobby(false)
+    props.setFindMatch(false)
   }
 
 
 
   return (
     <div className="container">
+
+      <div className='mp-exit-button' style={isSpec ? {marginLeft: '0em'} : null}>
+        <div onClick={leaveRoom} className='mp-exit-button-leave'>
+          <IoIosArrowBack />
+          Leave
+        </div>
+        <div className='lobby-id'>
+          {isSpec ? <span style={{color: 'var(--selection-color)'}}>Spectating </span> : null}
+          Lobby: {props.lobbyID}
+          </div>
+      </div>
       <OpponentTestVisual lobbyPlayers={lobbyPlayers} lineArray={lineArray} />
 
       {isSpec ? null :
@@ -354,33 +367,33 @@ const MultiplayerGame = (props) => {
             })} */}
           </Leaderboard>
           <PostMatchOptions>
-          <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
-            {isSpec ? null : <button onClick={readyUp}>Ready Up</button>}
-            <button onClick={leaveRoom}>Leave</button>
-          </div>
+            <div style={{ color: 'var(--selection-color)', fontWeight: 'bold' }}>
+              {isSpec ? null : <button onClick={readyUp}>Ready Up</button>}
+              <button onClick={leaveRoom}>Leave</button>
+            </div>
           </PostMatchOptions>
         </EndingPopup>
 
-        {isSpec ? null : 
-        <div className="test-line-container">
-          {randomWords.split("").map(function (char, idx) {
-            return (
-              <span key={idx}
-                className={(idx < lineIndex) ? 'correct' : 'default'}
-              >
-                {(idx === lineIndex) ? <span className="cursor" ></span> : <span />}
-                {char}
-              </span>
-            )
-          })}
-        </div> }
+        {isSpec ? null :
+          <div className="test-line-container">
+            {randomWords.split("").map(function (char, idx) {
+              return (
+                <span key={idx}
+                  className={(idx < lineIndex) ? 'correct' : 'default'}
+                >
+                  {(idx === lineIndex) ? <span className="cursor" ></span> : <span />}
+                  {char}
+                </span>
+              )
+            })}
+          </div>}
 
         {isSpec ? null :
           <div className="test-line-container next-up">
             {nextUpRandomWords}
           </div>
         }
-        
+
       </div>
     </div>
   )
