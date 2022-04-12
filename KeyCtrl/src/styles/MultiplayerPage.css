@@ -100,3 +100,31 @@ span {
 .ranked-mmr{
   font-size: 2em;
 }
+
+.mp-exit-button{
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: flex-start;
+  margin-left: 4em;
+}
+
+.mp-exit-button-leave{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.5em;
+}
+
+.mp-exit-button-leave:hover{
+  color: var(--selection-color);
+  cursor: pointer;
+  transition: .25s;
+}
+
+.lobby-id{
+  font-size: 2em;
+  font-family: "Almarai";
+  padding-left: .7em;
+}

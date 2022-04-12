@@ -29,11 +29,10 @@ const Button = styled.button`
   }
 `
 
-const Multiplayer = ({loggedIn, accountInfo, inviteLobby}) => {
+const Multiplayer = ({loggedIn, accountInfo, inviteLobby, lobbyID, setLobbyID}) => {
 
   //Set lobby join state and update during button press
   const [joinLobby, setJoinLobby] = useState(false)
-  const [lobbyID, setLobbyID] = useState(0)
   const [name, setName] = useState('guest' + Math.floor(Math.random() * 1000))
   const [isFindMatch, setFindMatch] = useState(false)
 
@@ -44,7 +43,7 @@ const Multiplayer = ({loggedIn, accountInfo, inviteLobby}) => {
       determineName()
       if (socketRef.current == null) {
         console.log("creating new connection")
-        socketRef.current = io.connect("http://localhost:4000")
+        socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
       }
       //Finding Match code...
       socketRef.current.on('findMatchSuccess', (lobby) => {

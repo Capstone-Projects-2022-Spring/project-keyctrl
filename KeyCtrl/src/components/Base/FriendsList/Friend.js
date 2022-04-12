@@ -14,6 +14,7 @@ import Account from '../../AccountPage/Account'
 import Scrollbars from 'react-custom-scrollbars-2'
 import passOpenFAccount from '../../../App.js'
 import io from "socket.io-client"
+import { useNavigate } from 'react-router-dom';
 
 
 const StyledPopup = styled(Popup)`
@@ -137,7 +138,7 @@ const friendProf = ({ }) => {//requests accountInfo from a friend/user then put 
   //throw info into Account()
 }
 
-const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite, setInviteLobby }) => {//object is current person
+const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite, setInviteLobby, lobbyID }) => {//object is current person
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => setModalOpen(false);
@@ -152,38 +153,46 @@ const Friend = ({ friendsList, setState, setFriendsList, accountInfo, object, op
     switch(item) {
       case(0):
         openFAccount(object)
+        break;
       case(1):
         sendGameInvite()
+        break;
       case(2):
         //sendMessage()
+        break;
       case(3):
         console.log(accountInfo)
         console.log(object)
         setModalOpen(true)
+        break;
       default:
         break;
     }
   };
 
   const socketRef = useRef()
+  const navigate = useNavigate()
   function sendGameInvite() {
     //DETERMINE LOBBY ID VIA UI, PLACEHOLDER FOR NOW
     setSendInvite(true)
-    var lobbyID = "testingGameInvite"
-    if(socketRef.current == null) {
-      socketRef.current = io.connect("http://localhost:4000")
+    var newLobbyID
+    if(lobbyID != 0) {
+      newLobbyID = lobbyID
+    } else {
+      newLobbyID = accountInfo.social_id
     }
-    setInviteLobby(lobbyID)
-    socketRef.current.emit('sendGameInvite', accountInfo.account_id, object.account_id, lobbyID)
+    if(socketRef.current == null) {
+      socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
+    }
+    setInviteLobby(newLobbyID)
+    socketRef.current.emit('sendGameInvite', accountInfo.account_id, accountInfo.display_name, accountInfo.photo, object.account_id, newLobbyID)
+    navigate('/multiplayer')
     setSendInvite(false)
+    setOpenFriendList({ isPaneOpen: false })
   }
 
   function sendMessage() {
-    if(socketRef.current == null) {
-      socketRef.current = io.connect("http://localhost:4000")
-    }
-    var message = "testMessage"
-    socketRef.current.emit('sendMessage', accountInfo.display_name, object.account_id, message)
+
   }
 
   const deleteFriend = async () => {

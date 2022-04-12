@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import TypingTest from './components/TypingTestPage/TypingTest.js';
 import SignInModal from './components/Base/TitleBar/SignInModal/SignInModal.js';
 import TitleBar from './components/Base/TitleBar/TitleBar.js';
-import TaskBar from './components/Base/TaskBar/TaskBar.js';
 import './App.css';
 import Account from './components/AccountPage/Account.js';
 import OfflineAccount from './components/AccountPage/OfflineAccount.js';
@@ -12,18 +11,17 @@ import LoadingSpinner from './components/Base/LoadingSpinner/LoadingSpinner.js';
 import * as api from './utils/apiUtils.js'
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Multiplayer from './components/MultiplayerPage/Multiplayer.js';
-import MultiplayerGame from './components/MultiplayerPage/MultiplayerGame.js';
 import SlidingPane from "react-sliding-pane"
 import "react-sliding-pane/dist/react-sliding-pane.css"
 import FriendsList from './components/Base/FriendsList/FriendsList.js';
 import Scrollbars from 'react-custom-scrollbars-2'
-import { RemoveScrollBar } from 'react-remove-scroll-bar'
-import { ToastContainer, toast } from 'react-toastify'
+import { ToastContainer, toast, Bounce } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import GameInviteToast from './components/Base/Accessories/GameInviteToast.js';
 import styled from 'styled-components';
 import Popup from 'reactjs-popup'
 import io from "socket.io-client"
-import { Link } from '@material-ui/core';
+import MessageContainer from './components/Base/Accessories/MessageContainer.js';
 
 
 // Set default theme on first initialization
@@ -45,6 +43,7 @@ function App() {
   const [accountStats, setAccountStats] = useState({})
   const [currentGamemode, setCurrentGamemode] = useState(0)
   const [appStaticCountdown, setAppStaticCountdown] = useState(15);
+  const [lobbyID, setLobbyID] = useState(0)
 
   const [inviteLobby, setInviteLobby] = useState(0)
   const [sendInvite, setSendInvite] = useState(false)
@@ -61,6 +60,7 @@ function App() {
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
   const socketRef = useRef()
+  const navigate = useNavigate()
 
   const onLogin = async (account_, accountStats_, friendsList_) => {
 
@@ -104,7 +104,7 @@ function App() {
     await api.updateStats(currentGamemode, tempAccountStats)
   }
 
-  const updateAccInfo = async() => {
+  const updateAccInfo = async () => {
 
     if (loggedIn) {
       var tempAccountStats = accountStats
@@ -121,7 +121,7 @@ function App() {
         //new top wpm
         typingStats.wpm_top = wpm
         api.insertHistory(accountInfo.account_id, "top", wpm, currentGamemode)
-      } 
+      }
 
       // setting new average wpm
       var minutes = typingStats.wpm_total_time / 60
@@ -154,44 +154,38 @@ function App() {
 
   }
 
-  const navigate = useNavigate()
   useEffect(() => {
-    if(loggedIn) {
+    if (loggedIn) {
       if (socketRef.current == null) {
         console.log("creating new connection")
-        socketRef.current = io.connect("http://localhost:4000")
-        socketRef.current.emit('joinDefaultRoom', accountInfo.account_id)
+        socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
+        socketRef.current.emit('joinDefaultRoom', "GAME_" + accountInfo.account_id)
       }
 
-      socketRef.current.on('joinFriendGame', (lobbyID) => {
+      socketRef.current.on('joinFriendGame', (lobbyID, senderDisplay, senderPhoto) => {
+        toast(<GameInviteToast setInviteLobby={setInviteLobby} lobbyID={lobbyID} senderName={senderDisplay} senderPhoto={senderPhoto} />, toastOptions)
+      })
+
+      socketRef.current.on('startFriendGame', (lobbyID) => {
+        toast.success('Invite Sent', {
+          position: "top-left",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored'
+        })
         setInviteLobby(lobbyID)
-        console.log('joining ' + lobbyID)
         navigate('/multiplayer')
       })
 
-      socketRef.current.on('messageSent', function(message, sender) {
+      socketRef.current.on('messageSent', function (message, sender) {
         alert(sender + ": " + message)
       })
     }
   }, [loggedIn, setInviteLobby, setSendInvite])
-
-
-  useEffect(() => {
-  
-    document.addEventListener('keydown', emptyForNow);
-
-    // if (timer === 0 && !timerActive && loggedIn) {
-    //   updateAccInfo(numEntries, WPMTime, grossWPM());
-    // }
-
-    // if (updateOnce && loggedIn) {
-    //   updateAccInfo();
-    // }
-
-    return () => {
-      document.removeEventListener('keydown', emptyForNow);
-    };
-  }, [accountInfo, index, page, numEntries, WPMTime, updateAccInfo, updateOnce])
 
 
   const StyledPopup = styled(Popup)`
@@ -215,6 +209,19 @@ function App() {
     color: var(--text-color);
   } 
 `;
+
+  const toastOptions = {
+    position: 'top-right',
+    autoClose: 30000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: false,
+    draggable: false,
+    hideProgressBar: false,
+    transition: Bounce,
+    rtl: false,
+    closeButton: false
+  }
 
   const [modalFOpen, setModalFOpen] = useState(false);
   const [friendAcc, setFriendAcc] = useState({});
@@ -302,8 +309,8 @@ function App() {
                   />
                 } />
                 <Route exact path="/training" element={<Training />} />
-                <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} />} />
-                <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} inFriend={false}/> : <OfflineAccount openSignIn={openSignIn}/>)} />
+                <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} lobbyID={lobbyID} setLobbyID={setLobbyID} />} />
+                <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} inFriend={false} /> : <OfflineAccount openSignIn={openSignIn} />)} />
                 <Route exact path="/settings" element={<Settings setAccountInfo={setAccountInfo} openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
 
@@ -318,8 +325,9 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby}/>
+              <FriendsList setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} lobbyID={lobbyID} />
             </SlidingPane>
+
 
           </div>
           <SignInModal setLoading={setLoading} loggedIn={loggedIn} onLogin={onLogin} showSignIn={showSignIn} setShowSignIn={setShowSignIn} />
@@ -336,11 +344,12 @@ function App() {
         <div className="view-account-modal">
           <button className="exit-view-account-button" onClick={() => closeFModal()}>X</button>
           <Scrollbars style={{ height: '90vh' }}>
-            <Account accountInfo={friendAcc} accountStats={friendAccStat} inFriend={true}/>
+            <Account accountInfo={friendAcc} accountStats={friendAccStat} inFriend={true} />
           </Scrollbars>
         </div>
       </StyledPopup>
 
+      {/* <MessageContainer friendsList={friendsList} accountInfo={accountInfo} loggedIn={loggedIn} /> */}
     </div>
   );
 }
