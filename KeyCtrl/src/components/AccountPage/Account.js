@@ -59,6 +59,7 @@ const Account = ({ accountInfo, accountStats, setAccountStats, inFriend }) => {
 
     useEffect(async () => {
         if (!inFriend) {
+            console.log(accountInfo.account_id)
             var newStats = await api.getStats(accountInfo.account_id)
             setAccountStats(newStats)
         }

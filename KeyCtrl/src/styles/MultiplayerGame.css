@@ -1,0 +1,61 @@
+.postmatch-player-base{
+    width: 32ch;
+    background: var(--dark-bg);
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+    margin-top: .15em;
+    margin-bottom: .15em;
+    border-style: solid;
+    border-width: 0px;
+    border-color: var(--text-color);
+    font-family: "Almarai Light";
+}
+
+.postmatch-player-placement{
+    width: 1em;
+    padding: .3em;
+}
+
+.postmatch-player-icons{
+    position: absolute;
+    display: flex;
+    right: 1em;
+    align-content: center;
+}
+
+.postmatch-icon-button{
+    padding-left: .2em;
+    color: var(--text-color);
+}
+
+.postmatch-icon-button:hover{
+    color: var(--selection-color);
+    cursor: pointer;
+    transition: .25s;
+}
+
+.inner-icon-wrap{
+    display: flex;
+    align-items: center;
+}
+
+.post-match-options-button{
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0px;
+    border-color: var(--text-color);
+    margin-left: .5em;
+    margin-right: .5em;
+    color: var(--text-color);
+    font-family: "Almarai";
+    font-size: 1em;
+}
+
+.post-match-options-button:hover{
+    cursor: pointer;
+    transition: .25s;
+    color: var(--selection-color);
+    border-color: var(--selection-color);
+}

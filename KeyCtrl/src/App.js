@@ -43,6 +43,7 @@ function App() {
   const [accountStats, setAccountStats] = useState({})
   const [currentGamemode, setCurrentGamemode] = useState(0)
   const [appStaticCountdown, setAppStaticCountdown] = useState(15);
+  const [addFriend, setAddFriend] = useState([]);
   const [lobbyID, setLobbyID] = useState(0)
 
   const [inviteLobby, setInviteLobby] = useState(0)
@@ -199,7 +200,7 @@ function App() {
     width: 95%;
     height: 90%;
     padding: 1em;
-    background: var(--bg-color);
+    background: var(--dark-bg);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -229,12 +230,58 @@ function App() {
   const closeFModal = () => setModalFOpen(false);
 
   async function openFAccount(object) {
+     const id = toast.loading("Loading profile...", {
+                position: "top-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored'
+            })
+    console.log(object)
     setFriendAcc(object);
     var account_stats = await api.getStats(object.account_id);
     setFriendAccStat(account_stats);
+    toast.update(id, { autoClose: 1000, render: "Profile loaded", type: "success", theme: "colored", isLoading: false })
     setModalFOpen(true);
   }
 
+  const handleAddFriend = async () => {
+        console.log(accountInfo.account_id, addFriend);
+
+        var newFriendName = addFriend.replace('#', '');
+        var newFriendName = newFriendName.replace(' ', '');
+        if (newFriendName === accountInfo.social_id) {
+            toast.error("You can't add yourself, find more friends loser.", {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored'
+            });
+
+        } else {
+            const id = toast.loading("Sending request...", {
+                position: "top-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'colored'
+            })
+            console.log(accountInfo.account_id, newFriendName)
+            await api.callAddFriend(accountInfo.account_id, newFriendName);
+            toast.update(id, { autoClose: 2000, render: "Friend request sent!", type: "success", theme: "colored", isLoading: false })
+        }
+        setAddFriend([])
+    };
 
   return (
     <div className="App">
@@ -309,8 +356,8 @@ function App() {
                   />
                 } />
                 <Route exact path="/training" element={<Training />} />
-                <Route exact path="/multiplayer" element={<Multiplayer loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} lobbyID={lobbyID} setLobbyID={setLobbyID} />} />
-                <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} inFriend={false} /> : <OfflineAccount openSignIn={openSignIn} />)} />
+                <Route exact path="/multiplayer" element={<Multiplayer openFAccount={openFAccount} loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} />} />
+                <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} inFriend={false}/> : <OfflineAccount openSignIn={openSignIn}/>)} />
                 <Route exact path="/settings" element={<Settings setAccountInfo={setAccountInfo} openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
 
@@ -325,7 +372,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} lobbyID={lobbyID} />
+              <FriendsList setOpenFriendList={setState} handleAddFriend={handleAddFriend} addFriend={addFriend} setAddFriend={setAddFriend} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} lobbyID={lobbyID}/>
             </SlidingPane>
 
 

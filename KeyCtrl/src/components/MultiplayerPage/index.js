@@ -162,12 +162,12 @@ io.on('connection', (socket) => {
     console.log(socket.id + " disconnected")
   })
 
-  socket.on('gameEnd', function(player, WPM, room) {
+  socket.on('gameEnd', function(photo, player, WPM, accountId, socialId, loggedIn, room) {
     console.log('gameEnd')
     if(matchResultsArray[room] == null) {
       matchResultsArray[room] = new Array()
     }
-    matchResultsArray[room].push({player, WPM})
+    matchResultsArray[room].push({photo, player, WPM, accountId, socialId, loggedIn})
     if(matchResultsArray[room].length === numClients[room]) {
       io.in(room).emit('matchResults', matchResultsArray[room])
       numClients[room] = 0

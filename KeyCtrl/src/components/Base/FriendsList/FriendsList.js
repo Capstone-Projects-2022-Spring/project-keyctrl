@@ -68,10 +68,8 @@ function changeStat(current) {
     }
 }
 
+const FriendsList = ({ setOpenFriendList, handleAddFriend, addFriend, setAddFriend, setFriendsList, friendsList, accountInfo, openFAccount, setSendInvite, setInviteLobby, lobbyID  }) => {
 
-const FriendsList = ({ setOpenFriendList, setFriendsList, friendsList, accountInfo, openFAccount, setSendInvite, setInviteLobby, lobbyID }) => {
-
-    const [addFriend, setAddFriend] = useState([]);
     const [count, setCount] = useState(0);
     const [friendRequestsOpen, setFriendRequestsOpen] = useState(true)
     const [friendListOpen, setFriendListOpen] = useState(true)
@@ -91,41 +89,6 @@ const FriendsList = ({ setOpenFriendList, setFriendsList, friendsList, accountIn
         setFriendsList(tempFL)
     }
 
-
-
-    const handleClick = async () => {
-        console.log(accountInfo.account_id, addFriend);
-
-        var newFriendName = addFriend.replace('#', '');
-        var newFriendName = newFriendName.replace(' ', '');
-        if (newFriendName === accountInfo.social_id) {
-            toast.error("You can't add yourself, find more friends loser.", {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: 'colored'
-            });
-
-        } else {
-            const id = toast.loading("Sending request...", {
-                position: "top-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: true,
-                progress: undefined,
-                theme: 'colored'
-            })
-            await api.callAddFriend(accountInfo.account_id, newFriendName);
-            toast.update(id, { autoClose: 2000, render: "Friend request sent!", type: "success", theme: "colored", isLoading: false })
-        }
-        setAddFriend([])
-    };
 
     console.log(friendsList)
 
@@ -187,7 +150,7 @@ const FriendsList = ({ setOpenFriendList, setFriendsList, friendsList, accountIn
                     />
                     <IconButton>
                         <MdPersonAdd className='friends-list-button'
-                            onClick={handleClick} />
+                            onClick={handleAddFriend} />
                     </IconButton>
 
                 </Paper>
