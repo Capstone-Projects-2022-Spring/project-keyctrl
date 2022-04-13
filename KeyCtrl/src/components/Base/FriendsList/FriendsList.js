@@ -69,7 +69,7 @@ function changeStat(current) {
 }
 
 
-const FriendsList = ({ setOpenFriendList, setFriendsList, friendsList, accountInfo, openFAccount, setSendInvite, setInviteLobby, lobbyID }) => {
+const FriendsList = ({ currentMessageIndex, setCurrentMessageIndex, messages, setMessages, setMessagesOpen, setOpenFriendList, setFriendsList, friendsList, accountInfo, openFAccount, setSendInvite, setInviteLobby, lobbyID }) => {
 
     const [addFriend, setAddFriend] = useState([]);
     const [count, setCount] = useState(0);
@@ -222,6 +222,11 @@ const FriendsList = ({ setOpenFriendList, setFriendsList, friendsList, accountIn
                     {friendsList[0].map(function (obj, idx) {
                         return (
                             <Friend
+                                currentMessageIndex={currentMessageIndex}
+                                setCurrentMessageIndex={setCurrentMessageIndex}
+                                messages={messages}
+                                setMessages={setMessages}
+                                setMessagesOpen={setMessagesOpen}
                                 setOpenFriendList={setOpenFriendList}
                                 friendsList={friendsList}
                                 setState={setState}

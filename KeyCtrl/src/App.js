@@ -22,6 +22,8 @@ import styled from 'styled-components';
 import Popup from 'reactjs-popup'
 import io from "socket.io-client"
 import MessageContainer from './components/Base/Accessories/MessageContainer.js';
+import { FiMessageSquare } from 'react-icons/fi'
+import { Tooltip, Badge } from '@material-ui/core';
 
 
 // Set default theme on first initialization
@@ -56,6 +58,16 @@ function App() {
   });
 
   const [showFriendList, setShowFriendList] = useState(false)
+
+  // Messaging variables and logic ------------
+  const [messages, setMessages] = useState([])
+  const [messagesOpen, setMessagesOpen] = useState(false)
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
+  const [messageSent, setMessageSent] = useState(false)
+  const [update, setUpdate] = useState(false)
+  const [unreadMessageCount, setUnreadMessageCount] = useState(0)
+  //--------------------------------
+
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -156,11 +168,65 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) {
+      console.log(messages)
       if (socketRef.current == null) {
         console.log("creating new connection")
         socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
         socketRef.current.emit('joinDefaultRoom', "GAME_" + accountInfo.account_id)
+        socketRef.current.emit('joinDefaultRoom', "MSG_" + accountInfo.account_id)
       }
+
+      socketRef.current.on('messageSent', function (account_id, display_name, photo, social_id, message) {
+        //Place message contents in senderID's chat box
+        if (messages.length === 0) {
+          var messages_object = messages
+          messages_object.push({
+            player: {
+              account_id: account_id,
+              display_name: display_name,
+              photo: photo,
+              social_id: social_id
+            },
+            messages: [{ name: display_name, message: message, photo: photo }]
+          })
+          setMessages(messages_object)
+        } else {
+          var obj = messages
+          console.log(obj, display_name)
+
+          // If current message is from current loaded person
+          if (obj[currentMessageIndex].player.display_name == display_name) {
+            console.log("Same person")
+            obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo, photo })
+          } else {
+            console.log("Should not be here")
+            obj.map(function (object, idx) {
+              // new message exists
+              if (object.player.name == display_name) {
+                obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo, photo })
+              } else {
+                // new message from new person
+                obj.push({
+                  player: {
+                    account_id: account_id,
+                    display_name: display_name,
+                    photo: photo,
+                    social_id: social_id
+                  },
+                  messages: [{ name: display_name, message: message, photo: photo }]
+                })
+              }
+            })
+          }
+          setMessages(obj)
+        }
+
+        if (!messagesOpen) {
+          setUnreadMessageCount((i) => i + 1)
+        }
+        setUpdate((o) => !o)
+      })
+
 
       socketRef.current.on('joinFriendGame', (lobbyID, senderDisplay, senderPhoto) => {
         toast(<GameInviteToast setInviteLobby={setInviteLobby} lobbyID={lobbyID} senderName={senderDisplay} senderPhoto={senderPhoto} />, toastOptions)
@@ -181,12 +247,22 @@ function App() {
         navigate('/multiplayer')
       })
 
-      socketRef.current.on('messageSent', function (message, sender) {
-        alert(sender + ": " + message)
-      })
     }
-  }, [loggedIn, setInviteLobby, setSendInvite])
+  }, [messageSent, loggedIn, setInviteLobby, setSendInvite])
 
+  const openMessageContainer = () => {
+    setUnreadMessageCount(0)
+    setMessagesOpen(true)
+  }
+
+  const sendMessage = (message) => {
+    var obj = messages
+    console.log("-------", obj, currentMessageIndex)
+    obj[currentMessageIndex].messages.push({ name: accountInfo.display_name, message: message, photo: accountInfo.photo })
+    socketRef.current.emit('sendMessage', accountInfo.account_id, accountInfo.display_name, accountInfo.photo, accountInfo.social_id, messages[currentMessageIndex].player.account_id, message) //add sender and target information here
+    setUpdate((o) => !o)
+    setMessageSent(true)
+  }
 
   const StyledPopup = styled(Popup)`
     
@@ -325,7 +401,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} lobbyID={lobbyID} />
+              <FriendsList currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex} messages={messages} setMessages={setMessages} setMessagesOpen={setMessagesOpen} setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} lobbyID={lobbyID} />
             </SlidingPane>
 
 
@@ -349,7 +425,19 @@ function App() {
         </div>
       </StyledPopup>
 
-      {/* <MessageContainer friendsList={friendsList} accountInfo={accountInfo} loggedIn={loggedIn} /> */}
+      {loggedIn && messagesOpen ?
+        <MessageContainer update={update} sendMessage={sendMessage} messageSent={messageSent} setMessageSent={setMessageSent} currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex} messages={messages} setMessages={setMessages} setMessagesRendered={setMessagesOpen} friendsList={friendsList} accountInfo={accountInfo} loggedIn={loggedIn} />
+        : null}
+      {loggedIn && !messagesOpen ?
+        <Tooltip title='Open Messages'>
+          <div onClick={openMessageContainer} className='message-open-button'>
+            <Badge color="primary" badgeContent={unreadMessageCount} >
+              <FiMessageSquare className='message-open-button-inner' />
+            </Badge>
+          </div>
+        </Tooltip>
+        : null
+      }
     </div>
   );
 }

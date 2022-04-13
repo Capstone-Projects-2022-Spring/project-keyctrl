@@ -140,6 +140,30 @@
     transition: .25s;
 }
 
+.message-open-button{
+    position: absolute;
+    right: 1em;
+    bottom: .5em;
+    font-size: 2.5em;
+    color: var(--text-color);
+}
+
+.message-open-button:hover{
+    color: var(--selection-color);
+    cursor: pointer;
+    transition: .25s;
+}
+
+.message-open-button-inner{
+    color: var(--text-color);
+}
+
+.message-open-button-inner:hover{
+    color: var(--selection-color);
+    cursor: pointer;
+    transition: .25s;
+}
+
 [data-theme="default"]{
     --primary-color: #3d3883;
     --secondary-color: #5b5a99;

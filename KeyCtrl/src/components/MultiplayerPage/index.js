@@ -54,8 +54,8 @@ io.on('connection', (socket) => {
     io.in('GAME_'+senderID).emit('startFriendGame', lobbyID)  
   })
 
-  socket.on('sendMessage', function(senderDisplay, receiverID, message) {
-    io.to('MSG_'+receiverID).emit('messageSent', message, senderDisplay)
+  socket.on('sendMessage', function(account_id, display_name, photo, social_id, receiverID, message) {
+    io.to('MSG_'+receiverID).emit('messageSent', account_id, display_name, photo, social_id, message)
   })
 
   /*Find Match

@@ -137,7 +137,7 @@ const Multiplayer = ({loggedIn, accountInfo, inviteLobby, lobbyID, setLobbyID}) 
                 </div>
                 <div className='ranked-tile'>
                   <img src={Unranked} />
-                  <div style={{ color: 'var(--selection-color)' }}>Unranked</div>
+                  <div style={{ color: 'var(--selection-color)'}}>Unranked</div>
                 </div>
               </div>
             </div>

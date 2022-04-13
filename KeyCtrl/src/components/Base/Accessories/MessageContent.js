@@ -1,8 +1,9 @@
 import React from 'react'
 import '../../../styles/MessageContainer.css'
-import { Avatar} from '@material-ui/core';
+import { Avatar } from '@material-ui/core';
 
 const MessageContent = ({ type, photo, name, message }) => {
+    console.log(photo)
     return (
         <div className='message-container'>
             {type == 0 ?
@@ -17,6 +18,7 @@ const MessageContent = ({ type, photo, name, message }) => {
                             borderWidth: '2px'
                         }}
                     />
+
                     <div className='message-friend-content'>
                         <div className='message-friend-name'>{name}</div>
                         <div className='message-friend'>{message}</div>
@@ -26,7 +28,7 @@ const MessageContent = ({ type, photo, name, message }) => {
                 <div className='message-response'>
                     {message}
                 </div>
-                }
+            }
         </div>
     )
 }
