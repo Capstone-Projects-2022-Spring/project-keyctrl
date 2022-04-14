@@ -3,7 +3,6 @@ import '../../../styles/MessageContainer.css'
 import { Avatar } from '@material-ui/core';
 
 const MessageContent = ({ type, photo, name, message }) => {
-    console.log(photo)
     return (
         <div className='message-container'>
             {type == 0 ?

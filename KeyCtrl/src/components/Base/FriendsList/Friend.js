@@ -161,8 +161,6 @@ const Friend = ({currentMessageIndex, setCurrentMessageIndex, messages, setMessa
         sendMessage()
         break;
       case (3):
-        console.log(accountInfo)
-        console.log(object)
         setModalOpen(true)
         break;
       default:
@@ -194,7 +192,6 @@ const Friend = ({currentMessageIndex, setCurrentMessageIndex, messages, setMessa
   function sendMessage() {
     setMessagesOpen(true)
     setOpenFriendList({ isPaneOpen: false })
-    console.log(messages.length)
     if (messages.length === 0) {
       var messages_object = messages
       messages_object.push({
@@ -216,7 +213,6 @@ const Friend = ({currentMessageIndex, setCurrentMessageIndex, messages, setMessa
       })
     }
 
-    console.log(object, messages)
   }
 
   const deleteFriend = async () => {
@@ -233,7 +229,6 @@ const Friend = ({currentMessageIndex, setCurrentMessageIndex, messages, setMessa
       tempList[0].splice(index, 1); // 2nd parameter means remove one item only
     }
 
-    console.log(tempList);
 
     setFriendsList(tempList)
     setState(o => !o);

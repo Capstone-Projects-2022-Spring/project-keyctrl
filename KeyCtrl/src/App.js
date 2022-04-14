@@ -29,6 +29,27 @@ import { Tooltip, Badge } from '@material-ui/core';
 // Set default theme on first initialization
 document.documentElement.setAttribute('data-theme', 'default');
 
+const StyledPopup = styled(Popup)`
+    
+  // use your custom style for ".popup-overlay"
+  &-overlay {
+    backdrop-filter: blur(10px);
+  }
+  // use your custom style for ".popup-content"
+  &-content {
+    width: 95%;
+    height: 90%;
+    padding: 1em;
+    background: var(--bg-color);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-style: solid;
+    border-color: var(--selection-color);
+    color: var(--text-color);
+  } 
+`;
 
 function App() {
 
@@ -177,6 +198,7 @@ function App() {
       }
 
       socketRef.current.on('messageSent', function (account_id, display_name, photo, social_id, message) {
+        console.log("On messageSent")
         //Place message contents in senderID's chat box
         if (messages.length === 0) {
           var messages_object = messages
@@ -192,18 +214,17 @@ function App() {
           setMessages(messages_object)
         } else {
           var obj = messages
-          console.log(obj, display_name)
 
           // If current message is from current loaded person
           if (obj[currentMessageIndex].player.display_name == display_name) {
-            console.log("Same person")
             obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo, photo })
+            console.log("push")
           } else {
-            console.log("Should not be here")
             obj.map(function (object, idx) {
               // new message exists
               if (object.player.name == display_name) {
                 obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo, photo })
+                console.log("push")
               } else {
                 // new message from new person
                 obj.push({
@@ -215,6 +236,7 @@ function App() {
                   },
                   messages: [{ name: display_name, message: message, photo: photo }]
                 })
+                console.log("push")
               }
             })
           }
@@ -263,28 +285,6 @@ function App() {
     setUpdate((o) => !o)
     setMessageSent(true)
   }
-
-  const StyledPopup = styled(Popup)`
-    
-  // use your custom style for ".popup-overlay"
-  &-overlay {
-    backdrop-filter: blur(10px);
-  }
-  // use your custom style for ".popup-content"
-  &-content {
-    width: 95%;
-    height: 90%;
-    padding: 1em;
-    background: var(--bg-color);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-style: solid;
-    border-color: var(--selection-color);
-    color: var(--text-color);
-  } 
-`;
 
   const toastOptions = {
     position: 'top-right',

@@ -67,7 +67,6 @@ const MessageContainer = ({ update, sendMessage, messageSent, setMessageSent, cu
 
     const updateIndex = (index) => {
         setCurrentMessageIndex(index)
-        console.log(currentMessageIndex, index)
     }
 
     return (
