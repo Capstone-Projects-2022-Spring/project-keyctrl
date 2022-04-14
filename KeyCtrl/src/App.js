@@ -217,29 +217,35 @@ function App() {
 
           // If current message is from current loaded person
           if (obj[currentMessageIndex].player.display_name == display_name) {
-            obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo, photo })
+            obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo: photo })
             console.log("push")
           } else {
+            var newPerson = true;
             obj.map(function (object, idx) {
               // new message exists
-              if (object.player.name == display_name) {
-                obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo, photo })
+              if (object.player.display_name == display_name) {
+                obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo: photo })
                 console.log("push")
-              } else {
-                // new message from new person
-                obj.push({
-                  player: {
-                    account_id: account_id,
-                    display_name: display_name,
-                    photo: photo,
-                    social_id: social_id
-                  },
-                  messages: [{ name: display_name, message: message, photo: photo }]
-                })
-                console.log("push")
+                newPerson = false
               }
-            })
+            }
+            )
           }
+
+          if (newPerson) {
+            // new message from new person
+            obj.push({
+              player: {
+                account_id: account_id,
+                display_name: display_name,
+                photo: photo,
+                social_id: social_id
+              },
+              messages: [{ name: display_name, message: message, photo: photo }]
+            })
+            console.log("push")
+          }
+
           setMessages(obj)
         }
 

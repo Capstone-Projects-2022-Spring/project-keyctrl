@@ -17,6 +17,7 @@ const MessageContainer = ({ update, sendMessage, messageSent, setMessageSent, cu
         if (messages.length != 0) {
             scrollbars.current.scrollToBottom()
         }
+        
     }, [])
 
 
@@ -24,6 +25,7 @@ const MessageContainer = ({ update, sendMessage, messageSent, setMessageSent, cu
         if (messages.length != 0) {
             scrollbars.current.scrollToBottom()
         }
+        console.log(messages)
     }, [update])
 
 
@@ -91,7 +93,7 @@ const MessageContainer = ({ update, sendMessage, messageSent, setMessageSent, cu
                                 <Scrollbars ref={scrollbars} autoHeight autoHeightMin={'20em'}>
                                     {messages[currentMessageIndex].messages.map(function (object, index) {
                                         var type = object.name == accountInfo.display_name ? 1 : 0
-                                        
+
                                         return (
                                             <MessageContent type={type} photo={object.photo} name={object.name} message={object.message} />
                                         )
@@ -104,26 +106,26 @@ const MessageContainer = ({ update, sendMessage, messageSent, setMessageSent, cu
                     </div>
                     <div className='mc-content-friends'>
 
-                        {messages.map(function (object, index) {
-                            return (
-                                <div onClick={() => updateIndex(index)} className='mc-friend'>
-                                    <Badge color="primary" badgeContent={0} >
-                                        <Avatar
-                                            src={object.player.photo}
-                                            sx={{
-                                                width: '3em',
-                                                height: '3em',
-                                                borderColor: 'var(--text-color)',
-                                                borderStyle: 'solid',
-                                                borderWidth: '2px'
-                                            }}
-                                        />
-                                    </Badge>
-                                </div>
-                            )
-                        })}
-
-
+                        <Scrollbars ref={scrollbars} autoHeight autoHeightMin={'24.5em'}>
+                            {messages.map(function (object, index) {
+                                return (
+                                    <div onClick={() => updateIndex(index)} className='mc-friend'>
+                                        <Badge color="primary" badgeContent={0} >
+                                            <Avatar
+                                                src={object.player.photo}
+                                                sx={{
+                                                    width: '3em',
+                                                    height: '3em',
+                                                    borderColor: 'var(--text-color)',
+                                                    borderStyle: 'solid',
+                                                    borderWidth: '2px'
+                                                }}
+                                            />
+                                        </Badge>
+                                    </div>
+                                )
+                            })}
+                        </ Scrollbars>
                     </div>
                 </div>
                 : null}
