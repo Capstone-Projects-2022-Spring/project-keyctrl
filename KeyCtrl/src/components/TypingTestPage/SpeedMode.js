@@ -119,7 +119,7 @@ export const TypingTest = (props) => {
         setTimer(staticCountdown);
         newWords();
         setLetter([])
-        setf([])
+        setcopyWord([])
     }
 
     /**
@@ -222,7 +222,7 @@ export const TypingTest = (props) => {
 
             case "Enter":
                 // setUpdateOnce(true);
-                setf(compareWord(randomWords))//getting word box
+                setcopyWord(compareWord(randomWords))//getting word box
 
                 if (!timerActive || props.showFriendList) {
                     setTimerActive(true);
