@@ -63,30 +63,30 @@ export const TypingTest = (props) => {
     var randWordsFunc = require('random-words');          //Must require random-words
     const [wrongIndex, setWrongIndex] = useState([]);       //Initializing the variable wrongIndex.
 
-////////////////////////////////////////////////////////////////////////
-    const [letterArray, setLetterArray] = useState([]); //work in progress...
     const [letter, setLetter] = useState([])
-    useEffect((event)=>{
-   
-    //setLetter([])
-  
-    },[letter]);
+    const [copyWord, setcopyWord] = useState(" ")
+
 
     function TextBoxWords(event) {
-        console.log(event)
-        
 
-        if(event!==" "){
+        if (event !== " " && lineIndex !== "Backspace") {
             setLetter([...letter, {
                 value: event
             }])
-        }else if(event===" "){
+            console.log("animal")
+        }
+        else if (event === " " && copyWord[lineIndex] === " ") {
             console.log("Saved")
             setLetter([])
+            console.log("bug")
+        } else if (event == "Backspace") {
+            console.log("k")
+            setLetter(letter => {
+                return [...letter.splice(0, lineIndex - 1)];
+            });
         }
 
     }
-////////////////////////////////////////////////////////////////////////////////////
 
     function newWords() {
         var startingLine = getNewWordsLine()
@@ -118,6 +118,8 @@ export const TypingTest = (props) => {
         setLineIndex(0)
         setTimer(staticCountdown);
         newWords();
+        setLetter([])
+        setf([])
     }
 
     /**
@@ -165,7 +167,17 @@ export const TypingTest = (props) => {
             var lastIndex = trimmedString.lastIndexOf(" ")
             trimmedString = trimmedString.substring(0, lastIndex)
         }
+
+
         return trimmedString
+    }
+    function compareWord(wordString) {
+        var item = "";
+        for (const element of wordString) {
+
+            item = item + element;
+        }
+        return item;
     }
 
     function getNewWordsLine() {
@@ -181,6 +193,7 @@ export const TypingTest = (props) => {
         setNextUpRandomWords(chopLineToLength(getNewWordsLine()))
         setLineIndex(0)
         setWrongIndex([])
+
     }
 
     useEffect(() => {
@@ -209,6 +222,8 @@ export const TypingTest = (props) => {
 
             case "Enter":
                 // setUpdateOnce(true);
+                setf(compareWord(randomWords))//getting word box
+
                 if (!timerActive || props.showFriendList) {
                     setTimerActive(true);
                     if (countdownToggleChecked && countdown > 0) {
@@ -235,16 +250,15 @@ export const TypingTest = (props) => {
 
                     if (lineIndex === currentLineLength - 1) {
                         onLineChange()
+
                     }
+
                 }
                 break;
 
             default:
                 if (timerActive && !inCountdown) {
-////////////////////////////////////////////////////////
                     TextBoxWords(event.key)
-                    setLetterArray(event.target.value) //work in progress...............
-                    /////////////////////////////////////////////////////////////////
                     if (event.key === randomWords[lineIndex]) { //This is where the curser is locked.
                         // add occurances here for next letter
                         if (props.loggedIn)
@@ -387,26 +401,18 @@ export const TypingTest = (props) => {
                 {nextUpRandomWords}
             </div>
             {/* </div> */}
-            
+
             <div className="WordBox">
-                <form>
-                    <label>
-                        <input
-                            type="text"
-                            className="input-text"
-                            value={letterArray}
-                            onChange={(e) => setLetterArray(e.target.value)}
-                        />
-                    </label>
-                </form>
 
-                <div className="input-text">
-                    {letter.map((letters) => {
-                        return (
-                            <h1 key={letters.key}>{letters.value}</h1>)
-                    })}
 
-                </div>
+
+                {letter.map((letters) => {
+                    return (
+                        <span className="input-text" key={letters.key}>
+                            {letters.value}
+                        </span>
+                    )
+                })}
             </div>
         </div>
         // <TypingSettings />

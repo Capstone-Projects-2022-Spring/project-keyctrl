@@ -208,36 +208,25 @@
     display: flex;
     position: relative;
     right:300px;
+    width: 300px;
     margin-top: .1em;
     margin-bottom: .1em;
-    padding-top: .5em;
-    padding-bottom: .5em;
+    padding-top: 1ch;
+    padding-bottom: 1ch;
     padding-left: 1ch;
     padding-right: 1ch;
-    font-family: Almarai;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 2em;
     text-align: left;
     letter-spacing: .03em;
-  }
-.WordBox label{
-    display: flex;
-    text-align: left;
-    font-size: 20px;
-    color: var(--primary-color);
-}
-.input-text {
-    display: flex;
-    flex-direction: row;
-    text-align: left;
-    font-size: 2rem;
-    font-weight: 400;
-    width: 300px;
-    padding-right: 5px;
-    padding-left: 5px;
-    border-radius: 10px;
     background-color: var(--text-container);
-    border-color:var(--selection-color);
-    color:var(--selection-color)
+    color:var(--selection-color);
+    border: 10px solid var(--selection-color);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+  }
+ 
+.input-text {
+    display: inline-block;
+    color:var(--selection-color);
+    font-size: 2em;
   }
