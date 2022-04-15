@@ -290,3 +290,33 @@
     --bg-color: #464646;
     --dark-bg: #282828;
 }
+[data-theme="diamond"]{
+    --primary-color: #0b304a;
+    --text-container: #6d9dc2;
+    --secondary-color: #788cac;
+    --text-color: #0c7080;
+    --next-up-text-color: #788cac;
+    --selection-color: #99d3ff;
+    --bg-color: #58a4d8;
+    --dark-bg: #003f5a;
+}
+[data-theme="masters"]{
+    --primary-color: #464646;
+    --text-container: #444444;
+    --secondary-color: #c16666;
+    --text-color: #fce981;
+    --next-up-text-color: #ffe96d;
+    --selection-color: #FFD700;
+    --bg-color: #464646;
+    --dark-bg: #282828;
+}
+[data-theme="challenger"]{
+    --primary-color: #464646;
+    --text-container: #e5383b;
+    --secondary-color: #ba181b;
+    --text-color: #0b090a;
+    --next-up-text-color: #161a1d;
+    --selection-color: #dbc858;
+    --bg-color: #a4161a;
+    --dark-bg: #2c343a;
+}

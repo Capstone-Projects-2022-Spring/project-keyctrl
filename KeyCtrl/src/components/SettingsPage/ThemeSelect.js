@@ -207,6 +207,27 @@ const ThemeSelect = ({updateOptions}) => {
                     onClick={() => changeTheme('gold')}>
                     gold
                 </BaseThemeBox>
+                <BaseThemeBox
+                    background="#58a4d8"
+                    border="#8ac4f0"
+                    text="#1be2ff"
+                    onClick={() => changeTheme('diamond')}>
+                    diamond
+                </BaseThemeBox>
+                <BaseThemeBox
+                    background="#464646"
+                    border="#fbc401"
+                    text="#fce981"
+                    onClick={() => changeTheme('masters')}>
+                    masters
+                </BaseThemeBox>
+                <BaseThemeBox
+                    background="#a4161a"
+                    border="#dbc858"
+                    text="#0b090a"
+                    onClick={() => changeTheme('challenger')}>
+                    challenger
+                </BaseThemeBox>
             </StyledPopup>
         </div>
     )
