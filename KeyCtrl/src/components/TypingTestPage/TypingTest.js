@@ -62,15 +62,94 @@ export const TypingTest = (props) => {
     const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
     var randWordsFunc = require('random-words');          //Must require random-words
 
+    const [checkedCap, setCheckedCap] = useState(true);    //Captial letters 
+    const [prevWords, setprevWords] = useState(" ");    //setting its use state
+    const [prevNextUpWords, setPrevNextUpWords] = useState(" ");
+
+    const [maxWLn, setMaxWLn] = useState(10)
+    //maxWLn---------------------------------------------------
+    const changeMaxWLn = (int) =>{
+        setMaxWLn(int)
+    }
+    //Capital---------------------------------------------------
+    function setCheckedCapfunc() {//passed to TypingTestSettings
+        setCheckedCap(!checkedCap)
+    }
+
+    useEffect(() => {   //refreshes words displayed calling new words
+        if (!checkedCap) {
+            setprevWords(randomWords)
+            setPrevNextUpWords(nextUpRandomWords)
+            setCurrentRandomWords(randomWords.toLowerCase());
+            setNextUpRandomWords(nextUpRandomWords.toLowerCase());
+        } else {//return to normal including capts
+            setCurrentRandomWords(prevWords);
+            setNextUpRandomWords(prevNextUpWords);
+        }
+
+    }, [checkedCap])
+
+    //Custom input states-----------------------------------------------
+    const [wordBank, setWordBank] = useState([]);//Contains all the lines that will be used for custom words
+
+    const showFile = async (e) => {//takes in and chops text of min 1 and max 60 into chopped
+        e.preventDefault()
+        const reader = new FileReader()
+        reader.onload = async (e) => {
+            if (e.target.result != null) {
+                var textTemp = e.target.result
+                textTemp = textTemp.replace(/\s\s+/g, ' ');//remove all multiple spaces with single space
+                console.log(textTemp)
+                //var parts = textTemp.match(/.{1,60}/g) || [];//chop 60 per arr
+                var parts = textTemp.split(" ")//split words by space
+                console.log(parts)
+                setWordBank(parts)
+            }
+        };
+        reader.readAsText(e.target.files[0])
+
+    }
+
+    function customWordsFunc(amount) {
+        var words = wordBank[Math.floor(Math.random() * wordBank.length)]
+        console.log(wordBank)
+        for (let i = 0; i < amount - 1; i++) {
+            words = words + " " + wordBank[Math.floor(Math.random() * wordBank.length)]
+        }
+        console.log(words)
+        return words
+    }
+
+    function shortestWLn(){// gets shortest custom word's length, pass to typingTestSetting to be wordlength floor
+        var shortest = wordBank[0].length
+        for(let i = 1; i < wordBank.length-1; i++){
+            if(wordBank[i].length < shortest){
+                shortest = wordBank[i].length
+            }
+        }
+        return shortest;
+    }
+    //--------------------------------------------------------------------
 
     function newWords() {
         var startingLine = getNewWordsLine()
         var nextUpLine = getNewWordsLine()
 
+        if (!checkedCap) {//if checkedCap is false, we save the words so it can be reversed, and then make the lines lower case only
+            setprevWords(startingLine)
+            setPrevNextUpWords(nextUpLine)
+            startingLine = prevWords.toLowerCase()
+            nextUpLine = prevNextUpWords.toLowerCase()
+        }
+
         setCurrentRandomWords(startingLine);
         setNextUpRandomWords(chopLineToLength(nextUpLine))
         console.log(startingLine)
     }
+
+    useEffect(() => {   //using another useEffect so random words does not refresh everytime.
+        newWords();  //Setting how many words given for the test right here.
+    }, [wordBank, maxWLn])
 
     useEffect(() => {   //using another useEffect so random words does not refresh everytime.
 
@@ -144,10 +223,17 @@ export const TypingTest = (props) => {
     }
 
     function getNewWordsLine() {
-        const words = randWordsFunc({ exactly: 20, join: ' ' });
-        const letters = words.length;
-        console.log("letter", letters, "words", 13);
-
+        var words = []
+        var letters = ""
+        if (wordBank.length > 0) {// if there are words in wordbank, use it
+            words = customWordsFunc(20)
+            letters = words.length;
+            console.log("Custom letter", letters, "words", words);
+        } else {//default
+            words = randWordsFunc({ exactly: 20, join: ' ', maxLength: maxWLn});
+            letters = words.length;
+            console.log("letter", letters, "words", words);
+        }
         return words
     }
 
@@ -273,7 +359,6 @@ export const TypingTest = (props) => {
         }
     }
 
-
     return (
         <div className="container">
             <div className="timer-wrapper">
@@ -332,9 +417,8 @@ export const TypingTest = (props) => {
             <div className="test-line-container next-up">
                 {nextUpRandomWords}
             </div>
-            {/* </div> */}
+            <TypingSettings setCheckedCapfunc={setCheckedCapfunc} showFile={showFile} changeMaxWLn={changeMaxWLn} shortestWLn = {shortestWLn}/>
         </div>
-        // <TypingSettings />
     )
 
 }
