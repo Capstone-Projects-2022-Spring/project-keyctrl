@@ -66,42 +66,40 @@ export const TypingTest = (props) => {
     const [letter, setLetter] = useState([])
     const [copyword,setCopyword]=useState(" ")
     const [counter,setCounter]=useState(-1)
+   const [wrongword, setWrongword] = useState(false);// trying to set colors 
     
-   
-   const prevCount = usePrevious([letter])
-  
-    function usePrevious(value) {
-        const ref = useRef();
-        useEffect(() => {
-          ref.current = value; //assign the value of ref to the argument
-        },[value]); //this code will run when the value of 'value' changes
-        return ref.current; //in the end, return the current ref value.
-      } 
       function DeleteLetter(index){
               var nwlist=letter;
               nwlist.splice(index-1,1);
               setLetter(nwlist)
-              setCounter((counter) => counter - 1)
-
-          
+              setCounter((counter) => counter - 1) 
       }
       
     function TextBoxWords(event) {
         
+       if(event!==choppedCurrentLine[lineIndex]){
+            console.log("Hello")
+            setWrongword(true)// trying to set colors
+        }
+        if(event===choppedCurrentLine[lineIndex]){
+            console.log("Hello")
+            setWrongword(false)// trying to set colors
+        }
+        console.log(copyword[lineIndex])
         if(event!==" " && lineIndex!=="Backspace"){
             
             setLetter([...letter, {
                 value: event
             }])
             setCounter((counter) => counter + 1)
+            // trying to set colors
+            //setWrongIndex(false) trying to set colors
            
         }
-        else if(event===" " && copyword[lineIndex]===" "){
+        else if(event===" " && choppedCurrentLine[lineIndex]===" "){
            setLetter([])
            setCounter(-1)
-        console.log("sav")
         }
-        return letter;
 
     }
 
@@ -137,7 +135,7 @@ export const TypingTest = (props) => {
         newWords();
         setLetter([])
         setCopyword([])
-        setCounter(0)
+        setCounter(-1)
     }
 
     /**
@@ -270,16 +268,7 @@ export const TypingTest = (props) => {
                         onLineChange()
                         
                     }
-                    console.log(counter);
                     DeleteLetter(counter)
-                    console.log(counter);
-                    
-                    //console.log(prevCount)
-                   // console.log("before")
-                   // setLetter([prevCount])
-                  //  setLetter([prevCount])
-                   // console.log(prevCount)
-                   // console.log("after")
                     
                 }
                 break;
@@ -439,7 +428,9 @@ export const TypingTest = (props) => {
                     {letter.map((letters) => {
                         
                         return (
-                            <span className="input-text" key={letters.key}>
+                           
+                            <span key={letters.key} className={((wrongword) === true) ? 'input-text2' : 'input-text'} >
+                               
                             {letters.value}
                             </span>)
                     })}
