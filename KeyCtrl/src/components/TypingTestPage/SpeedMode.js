@@ -62,29 +62,46 @@ export const TypingTest = (props) => {
     const [nextUpRandomWords, setNextUpRandomWords] = useState(" ");
     var randWordsFunc = require('random-words');          //Must require random-words
     const [wrongIndex, setWrongIndex] = useState([]);       //Initializing the variable wrongIndex.
-
+    
     const [letter, setLetter] = useState([])
-    const [copyWord, setcopyWord] = useState(" ")
+    const [copyword,setCopyword]=useState(" ")
+    const [counter,setCounter]=useState(-1)
+    
+   
+   const prevCount = usePrevious([letter])
+  
+    function usePrevious(value) {
+        const ref = useRef();
+        useEffect(() => {
+          ref.current = value; //assign the value of ref to the argument
+        },[value]); //this code will run when the value of 'value' changes
+        return ref.current; //in the end, return the current ref value.
+      } 
+      function DeleteLetter(index){
+              var nwlist=letter;
+              nwlist.splice(index-1,1);
+              setLetter(nwlist)
+              setCounter((counter) => counter - 1)
 
-
+          
+      }
+      
     function TextBoxWords(event) {
-
-        if (event !== " " && lineIndex !== "Backspace") {
+        
+        if(event!==" " && lineIndex!=="Backspace"){
+            
             setLetter([...letter, {
                 value: event
             }])
-            console.log("animal")
+            setCounter((counter) => counter + 1)
+           
         }
-        else if (event === " " && copyWord[lineIndex] === " ") {
-            console.log("Saved")
-            setLetter([])
-            console.log("bug")
-        } else if (event == "Backspace") {
-            console.log("k")
-            setLetter(letter => {
-                return [...letter.splice(0, lineIndex - 1)];
-            });
+        else if(event===" " && copyword[lineIndex]===" "){
+           setLetter([])
+           setCounter(-1)
+        console.log("sav")
         }
+        return letter;
 
     }
 
@@ -119,7 +136,8 @@ export const TypingTest = (props) => {
         setTimer(staticCountdown);
         newWords();
         setLetter([])
-        setcopyWord([])
+        setCopyword([])
+        setCounter(0)
     }
 
     /**
@@ -161,23 +179,23 @@ export const TypingTest = (props) => {
 
     function chopLineToLength(wordString) {
         var trimmedString = wordString.substring(0, 60)
-
+        
         // If we do not chop perfectly at end of word
         if (wordString[60] !== " ") {
             var lastIndex = trimmedString.lastIndexOf(" ")
             trimmedString = trimmedString.substring(0, lastIndex)
         }
-
-
+        
+        
         return trimmedString
     }
-    function compareWord(wordString) {
-        var item = "";
+    function compareWord(wordString){
+        var item="";
         for (const element of wordString) {
-
-            item = item + element;
-        }
-        return item;
+            
+                item=item+element;
+          }
+          return item;
     }
 
     function getNewWordsLine() {
@@ -193,7 +211,7 @@ export const TypingTest = (props) => {
         setNextUpRandomWords(chopLineToLength(getNewWordsLine()))
         setLineIndex(0)
         setWrongIndex([])
-
+        
     }
 
     useEffect(() => {
@@ -222,8 +240,8 @@ export const TypingTest = (props) => {
 
             case "Enter":
                 // setUpdateOnce(true);
-                setcopyWord(compareWord(randomWords))//getting word box
-
+                setCopyword(compareWord(randomWords))//getting word box
+                    
                 if (!timerActive || props.showFriendList) {
                     setTimerActive(true);
                     if (countdownToggleChecked && countdown > 0) {
@@ -250,9 +268,19 @@ export const TypingTest = (props) => {
 
                     if (lineIndex === currentLineLength - 1) {
                         onLineChange()
-
+                        
                     }
-
+                    console.log(counter);
+                    DeleteLetter(counter)
+                    console.log(counter);
+                    
+                    //console.log(prevCount)
+                   // console.log("before")
+                   // setLetter([prevCount])
+                  //  setLetter([prevCount])
+                   // console.log(prevCount)
+                   // console.log("after")
+                    
                 }
                 break;
 
@@ -294,6 +322,7 @@ export const TypingTest = (props) => {
                 break;
         }
     };
+  
 
     useInterval(() => {
         if (!inCountdown && timer === 0) {
@@ -401,20 +430,24 @@ export const TypingTest = (props) => {
                 {nextUpRandomWords}
             </div>
             {/* </div> */}
-
+            
+            r
             <div className="WordBox">
+                  
 
-
-
-                {letter.map((letters) => {
-                    return (
-                        <span className="input-text" key={letters.key}>
+                
+                    {letter.map((letters) => {
+                        
+                        return (
+                            <span className="input-text" key={letters.key}>
                             {letters.value}
-                        </span>
-                    )
-                })}
+                            </span>)
+                    })}
+                   
             </div>
+            
         </div>
+        
         // <TypingSettings />
     )
 
