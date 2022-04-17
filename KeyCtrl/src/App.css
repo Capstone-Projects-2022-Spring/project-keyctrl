@@ -300,15 +300,15 @@
     --bg-color: #58a4d8;
     --dark-bg: #003f5a;
 }
-[data-theme="masters"]{
+[data-theme="platinum"]{
     --primary-color: #464646;
     --text-container: #444444;
-    --secondary-color: #c16666;
-    --text-color: #fce981;
-    --next-up-text-color: #ffe96d;
-    --selection-color: #FFD700;
-    --bg-color: #464646;
-    --dark-bg: #282828;
+    --secondary-color: #66c1bc;
+    --text-color: #81fcc9;
+    --next-up-text-color: #6dffda;
+    --selection-color: #00ffaa;
+    --bg-color: #435a55;
+    --dark-bg: #2a383f;
 }
 [data-theme="challenger"]{
     --primary-color: #464646;

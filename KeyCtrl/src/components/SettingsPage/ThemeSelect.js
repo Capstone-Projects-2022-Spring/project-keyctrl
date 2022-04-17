@@ -208,18 +208,18 @@ const ThemeSelect = ({updateOptions}) => {
                     gold
                 </BaseThemeBox>
                 <BaseThemeBox
+                    background="#435a55"
+                    border="#00ffaa"
+                    text="#81fcc9"
+                    onClick={() => changeTheme('platinum')}>
+                    platinum
+                </BaseThemeBox>
+                <BaseThemeBox
                     background="#58a4d8"
                     border="#8ac4f0"
                     text="#1be2ff"
                     onClick={() => changeTheme('diamond')}>
                     diamond
-                </BaseThemeBox>
-                <BaseThemeBox
-                    background="#464646"
-                    border="#fbc401"
-                    text="#fce981"
-                    onClick={() => changeTheme('masters')}>
-                    masters
                 </BaseThemeBox>
                 <BaseThemeBox
                     background="#a4161a"
