@@ -63,37 +63,36 @@ export const TypingTest = (props) => {
     var randWordsFunc = require('random-words');          //Must require random-words
     const [wrongIndex, setWrongIndex] = useState([]);       //Initializing the variable wrongIndex.
 
-    const [letter, setLetter] = useState([])
-    const [counter, setCounter] = useState(0)
-    const [wrongword, setWrongword] = useState(false);// trying to set colors 
+    const [letter, setLetter] = useState([]) // Stores the keybaord input from user with event.key
+    const [counter, setCounter] = useState(0)//stores a counter to help with deletion of each letter
+    const [wrongword, setWrongword] = useState(false);// sets word to a red color if a wrong input is entered.
     
+    //Deletion function, removed the last item in the array for deletion
     function DeleteLetter(index) {
         var nwlist = letter;
         nwlist.splice(index - 1, 1);
         setLetter(nwlist)
         
     }
-
+    //function that sets the array, coloring, and resets the word if space is entered at the end of each word.
     function TextBoxWords(event) {
 
         if (event !== choppedCurrentLine[lineIndex]) {
-            setWrongword(true)// trying to set colors
+            setWrongword(true)// settings color to red
             
         }
         if (event === choppedCurrentLine[lineIndex]) {
-            setWrongword(false)// trying to set colors
+            setWrongword(false)// setting color to blue/green
         }
-        if (event !== " " && lineIndex !== "Backspace") {
+        if (event !== " " && lineIndex !== "Backspace") {//stores event.key in array
 
             setLetter([...letter, {
                 value: event
             }])
-            setCounter((counter) => counter + 1)
-            // trying to set colors
-            //setWrongIndex(false) trying to set colors
+            setCounter((counter) => counter + 1) // incrementing counter for deletion of letter array
 
         }
-        else if (event === " " && choppedCurrentLine[lineIndex] === " ") {
+        else if (event === " " && choppedCurrentLine[lineIndex] === " ") {// resets counter and word letter to 0
             setLetter([])
             setCounter(0)
         }
@@ -248,8 +247,8 @@ export const TypingTest = (props) => {
 
             case "Backspace": //If user presses backspace, the curser moves backwards. 
                 if (lineIndex > 0) {
-                    setCounter((counter) => counter - 1)
-                    DeleteLetter(counter)
+                    setCounter((counter) => counter - 1) // decrements the letter for deletion
+                    DeleteLetter(counter) //Function to delete the letter
                     setLineIndex((lineIndex) => lineIndex - 1)
                     props.setIndex((index) => index - 1);
 
@@ -417,15 +416,9 @@ export const TypingTest = (props) => {
 
 
         </div><div className="WordBox">
-
-
-
                 {letter.map((letters) => {
-
                     return (
-
                         <span key={letters.key} className={((wrongword) === true) ? 'input-text2' : 'input-text'}>
-
                             {letters.value}
                         </span>);
                 })}
