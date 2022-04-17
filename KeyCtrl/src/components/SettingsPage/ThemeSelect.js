@@ -225,8 +225,8 @@ const ThemeSelect = ({updateOptions}) => {
                     background="#a4161a"
                     border="#dbc858"
                     text="#0b090a"
-                    onClick={() => changeTheme('challenger')}>
-                    challenger
+                    onClick={() => changeTheme('champion')}>
+                    champion
                 </BaseThemeBox>
             </StyledPopup>
         </div>
