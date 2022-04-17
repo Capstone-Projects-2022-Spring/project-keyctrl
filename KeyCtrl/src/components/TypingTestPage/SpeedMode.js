@@ -278,6 +278,10 @@ export const TypingTest = (props) => {
                         setLineIndex((lineIndex) => lineIndex + 1)
                         props.setIndex((index) => index + 1);
 
+                        var tempArray = wrongIndex; //manipulating the wrong index code to show its right instead
+                        tempArray[lineIndex] = 0;   // sets to 0, cause setting it to 1 means wrong.
+                        setWrongIndex(tempArray);
+
                         if (lineIndex === currentLineLength - 1) {
                             onLineChange()
                         }
@@ -287,7 +291,7 @@ export const TypingTest = (props) => {
                         //props.setIndex((index) => index + 1);
 
                         var tempArray = wrongIndex; //Creating a wrong index for incorrect words.
-                        tempArray[lineIndex] = 1;
+                        tempArray[lineIndex] = 1;   // sets to 1, cause setting to wrong means the letter is wrong.
                         setWrongIndex(tempArray);
 
                         if (lineIndex === currentLineLength - 1) {
