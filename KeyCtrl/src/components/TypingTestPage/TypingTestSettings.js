@@ -51,7 +51,7 @@ export default function TypingSettings(props) {
             <div class="TitleButtonSettings">
             <div class="slideButton">
               <label class="switch">
-                <input type="checkbox" onChange={props.setCheckedCapfunc()}></input>
+                <input type="checkbox" defaultChecked={true} onChange={props.setCheckedCapfunc}></input>
                 <span class="slider"></span></label> </div>
                 
             <div className="increOrDecre">

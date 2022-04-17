@@ -68,7 +68,7 @@ export const TypingTest = (props) => {
 
     const [maxWLn, setMaxWLn] = useState(10)
     //maxWLn---------------------------------------------------
-    const changeMaxWLn = (int) =>{
+    const changeMaxWLn = (int) =>{    
         setMaxWLn(int)
     }
     //Capital---------------------------------------------------
@@ -86,7 +86,6 @@ export const TypingTest = (props) => {
             setCurrentRandomWords(prevWords);
             setNextUpRandomWords(prevNextUpWords);
         }
-
     }, [checkedCap])
 
     //Custom input states-----------------------------------------------
