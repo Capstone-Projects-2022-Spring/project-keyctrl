@@ -64,20 +64,21 @@ export const TypingTest = (props) => {
     const [wrongIndex, setWrongIndex] = useState([]);       //Initializing the variable wrongIndex.
 
     const [letter, setLetter] = useState([])
-    const [counter, setCounter] = useState(-1)
+    const [counter, setCounter] = useState(0)
     const [wrongword, setWrongword] = useState(false);// trying to set colors 
-
+    
     function DeleteLetter(index) {
         var nwlist = letter;
         nwlist.splice(index - 1, 1);
         setLetter(nwlist)
-        setCounter((counter) => counter - 1)
+        
     }
 
     function TextBoxWords(event) {
 
         if (event !== choppedCurrentLine[lineIndex]) {
             setWrongword(true)// trying to set colors
+            
         }
         if (event === choppedCurrentLine[lineIndex]) {
             setWrongword(false)// trying to set colors
@@ -94,7 +95,7 @@ export const TypingTest = (props) => {
         }
         else if (event === " " && choppedCurrentLine[lineIndex] === " ") {
             setLetter([])
-            setCounter(-1)
+            setCounter(0)
         }
 
     }
@@ -130,7 +131,7 @@ export const TypingTest = (props) => {
         setTimer(staticCountdown);
         newWords();
         setLetter([])
-        setCounter(-1)
+        setCounter(0)
     }
 
     /**
@@ -181,14 +182,6 @@ export const TypingTest = (props) => {
 
 
         return trimmedString
-    }
-    function compareWord(wordString) {
-        var item = "";
-        for (const element of wordString) {
-
-            item = item + element;
-        }
-        return item;
     }
 
     function getNewWordsLine() {
@@ -255,6 +248,8 @@ export const TypingTest = (props) => {
 
             case "Backspace": //If user presses backspace, the curser moves backwards. 
                 if (lineIndex > 0) {
+                    setCounter((counter) => counter - 1)
+                    DeleteLetter(counter)
                     setLineIndex((lineIndex) => lineIndex - 1)
                     props.setIndex((index) => index - 1);
 
@@ -262,7 +257,8 @@ export const TypingTest = (props) => {
                         onLineChange()
 
                     }
-                    DeleteLetter(counter)
+                    
+                    
 
                 }
                 break;
@@ -356,7 +352,7 @@ export const TypingTest = (props) => {
     }
 
     return (
-        <div className="container">
+        <><div className="container">
             <div className="timer-wrapper">
                 <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
                     {timer}s
@@ -400,12 +396,12 @@ export const TypingTest = (props) => {
                             <span key={idx}
                                 className={(idx < lineIndex) ? ((1 === wrongIndex[idx]) ? 'wrong' : 'correct') : 'default'}
                             >
-                                {(idx === lineIndex) ? <span className="cursor" ></span> : <span />}
+                                {(idx === lineIndex) ? <span className="cursor"></span> : <span />}
                                 {char}
                             </span>
 
 
-                        )
+                        );
 
                     })}
                 </div>
@@ -419,7 +415,8 @@ export const TypingTest = (props) => {
             {/* </div> */}
 
 
-            <div className="WordBox">
+
+        </div><div className="WordBox">
 
 
 
@@ -427,15 +424,13 @@ export const TypingTest = (props) => {
 
                     return (
 
-                        <span key={letters.key} className={((wrongword) === true) ? 'input-text2' : 'input-text'} >
+                        <span key={letters.key} className={((wrongword) === true) ? 'input-text2' : 'input-text'}>
 
                             {letters.value}
-                        </span>)
+                        </span>);
                 })}
 
-            </div>
-
-        </div>
+            </div></>
 
         // <TypingSettings />
     )
