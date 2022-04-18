@@ -72,6 +72,7 @@ export const TypingTest = (props) => {
         var nwlist = letter;
         nwlist.splice(index - 1, 1);
         setLetter(nwlist)
+        setWrongword(false)// setting color to blue/green
         
     }
     //function that sets the array, coloring, and resets the word if space is entered at the end of each word.
