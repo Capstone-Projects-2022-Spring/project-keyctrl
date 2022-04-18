@@ -351,7 +351,7 @@ export const TypingTest = (props) => {
     }
 
     return (
-        <><div className="container">
+        <div className="container">
             <div className="timer-wrapper">
                 <div style={timerActive && !inCountdown ? { color: 'var(--selection-color)', textShadow: ' 0px 0px 9px var(--selection-color)' } : { color: 'var(--text-color)' }} className="timer">
                     {timer}s
@@ -413,9 +413,7 @@ export const TypingTest = (props) => {
             </div>
             {/* </div> */}
 
-
-
-        </div><div className="WordBox">
+            <div className="WordBox">
                 {letter.map((letters) => {
                     return (
                         <span key={letters.key} className={((wrongword) === true) ? 'input-text2' : 'input-text'}>
@@ -423,7 +421,9 @@ export const TypingTest = (props) => {
                         </span>);
                 })}
 
-            </div></>
+            </div>
+
+        </div>
 
         // <TypingSettings />
     )

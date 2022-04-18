@@ -207,8 +207,8 @@
 
     display: flex;
     position: relative;
-    left:70px;
-    bottom: 190px;
+    right:300px;
+    top: 15px;
     width: 300px;
     text-align: left;
     border: 1px solid black;
@@ -222,7 +222,7 @@
   }
  
 .input-text {
-    display: inline-block;
+    display: flex;
     color:var(--selection-color);
     font-size: 2em;
     white-space: nowrap;
@@ -230,7 +230,7 @@
     text-overflow: ellipsis;
   }
   .input-text2 {
-    display: inline-block;
+    display: flex;
     color:brown;
     font-size: 2em;
     
