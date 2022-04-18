@@ -52,6 +52,9 @@ function changerank(placement, current, matchaverage, streak) {
 
     //STREAKING
     currentstreak = streak;
+
+    //OUTCOME Base
+    result = 1;
     //1st and 2nd placement add 1 to streak OR if streak is negative sets it to 1
     //KEEP MMR MULTIPLIER POSITIVE FOR THE INCREASED DUB GAINS
     //3rd placement +1 doesn't affect win streak but resets negative streak to 0
@@ -79,13 +82,15 @@ function changerank(placement, current, matchaverage, streak) {
             console.log("4th place = -10 base points")
             if(currentstreak>0){currentstreak=-1}
             else{currentstreak += -1;}
-            ptgain = -10;
+            ptgain = 10;
+            result = 0;
             break;
         case 5:
             console.log("5th place = -20 base points")
             if(currentstreak>0){currentstreak=-1}
             else{currentstreak += -1;}
-            ptgain = -20;
+            ptgain = 20;
+            result = 0;
             break;
     }
     //STREAK MULTIPLIER
@@ -99,7 +104,10 @@ function changerank(placement, current, matchaverage, streak) {
         ptgain = Math.round(ptgain*(-1+mmrmultiplier+streakmultiplier));
     }
     else{
-        ptgain = Math.round(ptgain*(1+mmrmultiplier+streakmultiplier));
+        ptgain = Math.round(ptgain*(result+mmrmultiplier+streakmultiplier));
+    }
+    if(result == 0 && ptgain > 0){
+        ptgain = ptgain * -1;
     }
     return ptgain;
   }
