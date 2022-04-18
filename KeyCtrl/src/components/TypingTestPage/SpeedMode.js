@@ -292,6 +292,9 @@ export const TypingTest = (props) => {
 
                         if (lineIndex === currentLineLength - 1) {
                             onLineChange()
+                            var tempArray = wrongIndex; //manipulating the wrong index code to show its right instead
+                            tempArray[lineIndex] = 0;   // sets to 0, cause setting it to 1 means wrong.
+                            setWrongIndex(tempArray);
                         }
                         if (props.loggedIn) {
 
