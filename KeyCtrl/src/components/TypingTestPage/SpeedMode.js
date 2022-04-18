@@ -66,7 +66,7 @@ export const TypingTest = (props) => {
     const [letter, setLetter] = useState([]) // Stores the keybaord input from user with event.key
     const [counter, setCounter] = useState(0)//stores a counter to help with deletion of each letter
     const [wrongword, setWrongword] = useState(false);// sets word to a red color if a wrong input is entered.
-    
+    //const [counter2, setCounter2] = useState(0)
     //Deletion function, removed the last item in the array for deletion
     function DeleteLetter(index) {
         var nwlist = letter;
@@ -80,6 +80,8 @@ export const TypingTest = (props) => {
 
         if (event !== choppedCurrentLine[lineIndex]) {
             setWrongword(true)// settings color to red
+           // setCounter2((counter2) => counter2 + 1)
+           // console.log(counter2)
             
         }
         if (event === choppedCurrentLine[lineIndex]) {
@@ -96,6 +98,7 @@ export const TypingTest = (props) => {
         else if (event === " " && choppedCurrentLine[lineIndex] === " ") {// resets counter and word letter to 0
             setLetter([])
             setCounter(0)
+            //setCounter2(0)
         }
 
     }
@@ -220,7 +223,7 @@ export const TypingTest = (props) => {
         };
     }, [randomWords, nextUpRandomWords, lineIndex, timerActive, inCountdown])
 
-    const onKeyPress = (event) => {
+    const onKeyPress = (event) =>  {
 
         switch (event.key) {
 
@@ -416,7 +419,7 @@ export const TypingTest = (props) => {
                 {nextUpRandomWords}
             </div>
             {/* </div> */}
-
+         <div className="WordBoxContainer">
             <div className="WordBox">
                 {letter.map((letters) => {
                     return (
@@ -424,9 +427,11 @@ export const TypingTest = (props) => {
                             {letters.value}
                         </span>);
                 })}
-
+                   
             </div>
-
+            <div className="WordBox2">{props.grossWPM()} WPM</div>
+            </div>
+            
         </div>
 
         // <TypingSettings />

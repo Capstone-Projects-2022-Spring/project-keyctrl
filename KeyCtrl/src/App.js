@@ -131,7 +131,7 @@ function App() {
   const grossWPM = () => {
     var words = (numEntries / 5);
     var wpm = ((words / WPMTime) * 60).toFixed(2);
-    console.log(numEntries, WPMTime)
+    //console.log(numEntries, WPMTime)
     return wpm;
   };
 

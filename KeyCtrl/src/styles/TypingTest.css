@@ -207,9 +207,9 @@
 
     display: flex;
     position: relative;
-    right:300px;
+    right:150px;
     top: 15px;
-    width: 300px;
+    width: 400px;
     text-align: left;
     border: 1px solid black;
     outline-style: solid;
@@ -219,6 +219,29 @@
     padding-left: 10px;
     border-radius: 10px;
     background-color: var(--text-container);
+  }
+  .WordBox2 {
+
+    display: flex;
+    position: relative;
+    text-align: center;
+    right:130px;
+    top: 15px;
+    width: 200px;
+    font-size: 2em;
+    outline-width: medium;
+    color: var(--selection-color);
+    height: 50px;
+    padding-left: 20px;
+    border-radius: 10px;
+    background-color: var(--text-container);
+  }
+  .WordBoxContainer {
+
+    display: flex;
+    flex-direction: row;
+    
+
   }
  
 .input-text {
