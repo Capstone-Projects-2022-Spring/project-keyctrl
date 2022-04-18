@@ -142,7 +142,7 @@ div.BoxAndUploadSettings {
  }
  #box {
  
-  background-color:#5B5A99;
+  background-color: var(--primary-color);
   font-size: 1rem;
   border-style: solid;
   border-width: 1px;
@@ -153,6 +153,7 @@ div.BoxAndUploadSettings {
   flex-wrap: wrap;
   text-align:center;
   padding: 30px 100px;
+  color: var(--text-color);
  }
  .secondOption {
    display: flex;
@@ -184,23 +185,25 @@ div.BoxAndUploadSettings {
 }
 .inputfile {
   overflow: hidden;
+  display: none;
   position: relative;
   z-index: -1;
+
 }
 .inputfile + label {
-  display: flex;
-  border-radius: 14px;
-  font-size: 1rem;
-  border-style: solid;
-  border-color: var(--selection-color);
-  font-weight: 400;
-  
-  position: relative;
-  top: 1px;
-  left:65px;
-  width: 70px;
-  color: var(--text-color);
-  
+  margin-left: 1.5em;
+  margin-right: .5em;
+  padding: .5em;
+  border-radius: .5em;
+  border: 0px;
+  font-size: 1em;
+  background: var(--primary-color);
+  color: var(--text-color); 
+}
+.inputfile + label:hover{
+  transition: .25s;
+  color: var(--selection-color);
+  cursor: pointer;
 }
 
  .buttons{
@@ -210,9 +213,27 @@ div.BoxAndUploadSettings {
   border-color: transparent;
   position: relative;
   left:210px;
-  top:10px;
+
 }
 ::-webkit-input-placeholder {
  position:fixed; left:0%; top:0%;
  color:var(--selection-color);
+}
+
+.customButtons{
+  margin-left: 1.5em;
+  margin-right: .5em;
+  margin-top: 0.5em;
+  padding: .5em;
+  border-radius: .5em;
+  border: 0px;
+  font-size: 1em;
+  background: var(--primary-color);
+  color: var(--text-color); 
+}
+
+.customButtons:hover{
+  transition: .25s;
+  color: var(--selection-color);
+  cursor: pointer;
 }

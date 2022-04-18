@@ -61,13 +61,13 @@ export default function TypingSettings(props) {
             </div>
                 <div class="slideButton2">
               <label class="switch">
-                <input type="checkbox"></input>
+                <input type="checkbox" defaultChecked={true} onChange={props.setCheckedPuncfunc}></input>
                 <span class="slider"></span></label></div>
                 </div>
               <div class="BoxAndUploadSettings">
             <input id="box" type="text" name="text" placeholder="Paste custom word list here..." />
-           
             <div class="secondOption">
+            <button class="customButtons">Submit</button>
               OR 
            <input type="file" name="file" id="file" class="inputfile" accept=".txt" onChange={(e) => props.showFile(e)} /><label for="file">Choose file</label><div>
            </div></div> </div>

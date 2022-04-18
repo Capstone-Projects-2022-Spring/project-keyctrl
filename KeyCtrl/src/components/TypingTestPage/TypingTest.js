@@ -66,11 +66,31 @@ export const TypingTest = (props) => {
     const [prevWords, setprevWords] = useState(" ");    //setting its use state
     const [prevNextUpWords, setPrevNextUpWords] = useState(" ");
 
+    const [checkedPunc, setCheckedPunc] = useState(true);    //Captial letters 
+    const [prevWordsP, setprevWordsP] = useState(" ");    //setting its use state
+    const [prevNextUpWordsP, setPrevNextUpWordsP] = useState(" ");
+
     const [maxWLn, setMaxWLn] = useState(10)
     //maxWLn---------------------------------------------------
     const changeMaxWLn = (int) =>{    
         setMaxWLn(int)
     }
+    //Punc
+    function setCheckedPuncfunc() {//passed to TypingTestSettings
+        setCheckedPunc(!checkedPunc)
+    }
+
+    useEffect(() => {   //refreshes words displayed calling new words
+        if (!checkedPunc) {
+            setprevWordsP(randomWords)
+            setPrevNextUpWordsP(nextUpRandomWords)
+            setCurrentRandomWords(randomWords.replace(/[^\w\s]|_/g, ""));
+            setNextUpRandomWords(nextUpRandomWords.replace(/[^\w\s]|_/g, ""));
+        } else {//return to normal including capts
+            setCurrentRandomWords(prevWordsP);
+            setNextUpRandomWords(prevNextUpWordsP);
+        }
+    }, [checkedPunc])
     //Capital---------------------------------------------------
     function setCheckedCapfunc() {//passed to TypingTestSettings
         setCheckedCap(!checkedCap)
@@ -140,7 +160,12 @@ export const TypingTest = (props) => {
             startingLine = prevWords.toLowerCase()
             nextUpLine = prevNextUpWords.toLowerCase()
         }
-
+        if (!checkedPunc) {
+            setprevWordsP(startingLine)
+            setPrevNextUpWordsP(nextUpLine)
+            startingLine = prevWordsP.replace(/[^\w\s]|_/g, "")
+            nextUpLine = prevNextUpWordsP.replace(/[^\w\s]|_/g, "")
+        }
         setCurrentRandomWords(startingLine);
         setNextUpRandomWords(chopLineToLength(nextUpLine))
         console.log(startingLine)
@@ -416,7 +441,7 @@ export const TypingTest = (props) => {
             <div className="test-line-container next-up">
                 {nextUpRandomWords}
             </div>
-            <TypingSettings setCheckedCapfunc={setCheckedCapfunc} showFile={showFile} changeMaxWLn={changeMaxWLn} shortestWLn = {shortestWLn}/>
+            <TypingSettings setCheckedCapfunc={setCheckedCapfunc} setCheckedPuncfunc={setCheckedPuncfunc} showFile={showFile} changeMaxWLn={changeMaxWLn} shortestWLn = {shortestWLn}/>
         </div>
     )
 
