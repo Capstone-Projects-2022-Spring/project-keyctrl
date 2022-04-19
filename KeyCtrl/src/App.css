@@ -294,11 +294,11 @@
     --primary-color: #0b304a;
     --text-container: #6d9dc2;
     --secondary-color: #788cac;
-    --text-color: #0c7080;
+    --text-color: #2e6abe;
     --next-up-text-color: #788cac;
     --selection-color: #99d3ff;
-    --bg-color: #7abfec;
-    --dark-bg: #c4c5ca;
+    --bg-color: #7db6fa;
+    --dark-bg: #243864;
 }
 [data-theme="platinum"]{
     --primary-color: #464646;

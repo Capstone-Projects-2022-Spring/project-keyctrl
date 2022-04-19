@@ -215,9 +215,9 @@ const ThemeSelect = ({updateOptions}) => {
                     platinum
                 </BaseThemeBox>
                 <BaseThemeBox
-                    background="#58a4d8"
-                    border="#8ac4f0"
-                    text="#0c7080"
+                    background="#7db6fa"
+                    border="#99d3ff"
+                    text="#2e6abe"
                     onClick={() => changeTheme('diamond')}>
                     diamond
                 </BaseThemeBox>
