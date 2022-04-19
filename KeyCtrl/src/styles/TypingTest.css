@@ -254,9 +254,8 @@
   }
   .input-text2 {
     display: flex;
-    color:brown;
+    color:var(--warning);
     font-size: 2em;
-    
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
