@@ -274,6 +274,9 @@ export const TypingTest = (props) => {
             default:
                 if (timerActive && !inCountdown) {
                     TextBoxWords(event.key)
+                    var tempArray = wrongIndex; // Should maybe have the letter typed in be blue, instead of red.
+                    tempArray[lineIndex] = 0;   
+                    setWrongIndex(tempArray);
                     if (event.key === randomWords[lineIndex]) { //This is where the curser is locked.
                         // add occurances here for next letter
                         if (props.loggedIn)
