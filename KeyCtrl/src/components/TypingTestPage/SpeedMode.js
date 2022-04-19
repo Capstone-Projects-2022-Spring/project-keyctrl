@@ -66,25 +66,31 @@ export const TypingTest = (props) => {
     const [letter, setLetter] = useState([]) // Stores the keybaord input from user with event.key
     const [counter, setCounter] = useState(0)//stores a counter to help with deletion of each letter
     const [wrongword, setWrongword] = useState(false);// sets word to a red color if a wrong input is entered.
-    //const [counter2, setCounter2] = useState(0)
+    const [counter2, setCounter2] = useState(0)
     //Deletion function, removed the last item in the array for deletion
     function DeleteLetter(index) {
         var nwlist = letter;
         nwlist.splice(index - 1, 1);
         setLetter(nwlist)
-        setWrongword(false)// setting color to blue/green
+        console.log(counter2)
+        if(counter2==1){
+        setWrongword(false)// setting color to blue/green}
         
+        }
+        setCounter2((counter2) => counter2 - 1)
     }
     //function that sets the array, coloring, and resets the word if space is entered at the end of each word.
     function TextBoxWords(event) {
 
         if (event !== choppedCurrentLine[lineIndex]) {
             setWrongword(true)// settings color to red
-           // setCounter2((counter2) => counter2 + 1)
+            setCounter2((counter2) => counter2 + 1)
            // console.log(counter2)
             
         }
+        
         if (event === choppedCurrentLine[lineIndex]) {
+            setCounter2(0)
             setWrongword(false)// setting color to blue/green
         }
         if (event !== " " && lineIndex !== "Backspace") {//stores event.key in array
@@ -98,7 +104,7 @@ export const TypingTest = (props) => {
         else if (event === " " && choppedCurrentLine[lineIndex] === " ") {// resets counter and word letter to 0
             setLetter([])
             setCounter(0)
-            //setCounter2(0)
+            setCounter2(0)
         }
 
     }
@@ -255,7 +261,6 @@ export const TypingTest = (props) => {
                     DeleteLetter(counter) //Function to delete the letter
                     setLineIndex((lineIndex) => lineIndex - 1)
                     props.setIndex((index) => index - 1);
-
                     if (lineIndex === currentLineLength - 1) {
                         onLineChange()
 
