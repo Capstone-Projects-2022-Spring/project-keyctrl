@@ -259,14 +259,14 @@
 }
 
 [data-theme="bronze"]{
-    --primary-color: #9c832f;
+    --primary-color: #806b27;
     --text-container: #3a3b2d;
-    --secondary-color: #6688c1;
+    --secondary-color: #a47e1b;
     --text-color: #c49515;
     --next-up-text-color: #db9004;
     --selection-color: #b67534;
-    --bg-color: #795c0d;
-    --dark-bg: #6f5006;
+    --bg-color: #53410e;
+    --dark-bg: #413f23;
 }
 
 [data-theme="silver"]{

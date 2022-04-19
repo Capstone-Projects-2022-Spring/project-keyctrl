@@ -187,9 +187,9 @@ const ThemeSelect = ({updateOptions}) => {
                     wood
                 </BaseThemeBox>
                 <BaseThemeBox
-                    background="#122738"
+                    background="#53410e"
                     border="#b67534"
-                    text="#c0caf5"
+                    text="#c49515"
                     onClick={() => changeTheme('bronze')}>
                     bronze
                 </BaseThemeBox>
