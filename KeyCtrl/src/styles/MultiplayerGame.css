@@ -1,5 +1,5 @@
 .postmatch-player-base{
-    width: 32ch;
+    width: auto;
     background: var(--dark-bg);
     display: flex;
     justify-content: flex-start;
@@ -11,6 +11,7 @@
     border-width: 0px;
     border-color: var(--text-color);
     font-family: "Almarai Light";
+    color: var(--text-color);
 }
 
 .postmatch-player-placement{

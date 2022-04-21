@@ -5,7 +5,7 @@ import '../../styles/MultiplayerGame.css'
 import * as api from '../../utils/apiUtils.js'
 import { toast } from 'react-toastify'
 
-const PostMatchPlayer = ({myAccId, photo, socialId, accountId, openFAccount, currentName, playerLoggedIn, loggedIn, index, playerName, wpm }) => {
+const PostMatchPlayer = ({inRanked, myAccId, photo, socialId, accountId, openFAccount, currentName, playerLoggedIn, loggedIn, index, playerName, wpm }) => {
    
     const handleAddFriend = async () => {
 
@@ -27,8 +27,25 @@ const PostMatchPlayer = ({myAccId, photo, socialId, accountId, openFAccount, cur
         toast.update(id, { autoClose: 2000, render: "Friend request sent!", type: "success", theme: "colored", isLoading: false })
     };
 
+    var mmr;
+
+    switch(index){
+        case 1:
+        mmr = "+20"
+        break;
+        case 2:
+        mmr = "+10"
+        break;
+        case 3:
+        mmr = "-10"
+        break;
+        case 4:
+        mmr = "-20"
+        break;
+    }
+
     return (
-        <div style={index == 1 ? { borderWidth: '1px', color: 'var(--selection-color)', borderColor: 'var(--selection-color)' } : null} className='postmatch-player-base'>
+        <div style={myAccId == accountId ? { borderWidth: '1px', color: 'var(--selection-color)', borderColor: 'var(--selection-color)' } : null} className='postmatch-player-base'>
             <div className='postmatch-player-placement'>{index}</div>
             <div>{playerName}</div>
             {loggedIn && playerLoggedIn && (currentName != playerName) ? <>
@@ -44,8 +61,8 @@ const PostMatchPlayer = ({myAccId, photo, socialId, accountId, openFAccount, cur
                 </Tooltip></>
                 : null}
             <div className='postmatch-player-icons'>
+                {inRanked ? <div style={{paddingRight: ".5em"}}>{mmr + " mmr"}</div> : null }
                 <div>{wpm} wpm</div>
-
             </div>
         </div>
     )

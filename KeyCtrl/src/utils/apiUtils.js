@@ -254,5 +254,24 @@ export function changeUsername(account_id, social_id, display_name ) {
         })    
 }
 
+export function updateMMR(account_id, mmr) {
+   
+    var options = {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+        url: 'https://9x38qblue2.execute-api.us-east-1.amazonaws.com/dev/updatemmr',
+        body: JSON.stringify( {
+        "userId": account_id,
+        "mmr": mmr
+        })
+    };
+
+    return rp(options)
+        .then(function(res){
+            console.log("updateMMR", res);
+            return res
+        })    
+}
+
 
 
