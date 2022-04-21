@@ -69,8 +69,8 @@
 }
 
 .stat-tab{
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 5em 5em 5em;
     justify-content: center;
     color: var(--text-color);
 }
