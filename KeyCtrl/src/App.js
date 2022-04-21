@@ -24,6 +24,15 @@ import io from "socket.io-client"
 import MessageContainer from './components/Base/Accessories/MessageContainer.js';
 import { FiMessageSquare } from 'react-icons/fi'
 import { Tooltip, Badge } from '@material-ui/core';
+import Unranked from './assets/unranked.png'
+import Wood from './assets/wood_rank.png'
+import Bronze from './assets/bronze_rank.png'
+import Silver from './assets/silver_rank.png'
+import Gold from './assets/gold_rank.png'
+import Platinum from './assets/platinum_rank.png'
+import Diamond from './assets/diamond_rank.png'
+import Champion from './assets/champion_rank.png'
+
 
 
 // Set default theme on first initialization
@@ -68,6 +77,8 @@ function App() {
   const [appStaticCountdown, setAppStaticCountdown] = useState(15);
   const [addFriend, setAddFriend] = useState([]);
   const [lobbyID, setLobbyID] = useState(0)
+  const [rank, setRank] = useState('')
+  const [rankImage, setRankImage] = useState()
 
   const [inviteLobby, setInviteLobby] = useState(0)
   const [sendInvite, setSendInvite] = useState(false)
@@ -126,6 +137,38 @@ function App() {
     });
 
 
+  }
+
+  useEffect(() => {
+    if(loggedIn){
+      updateRank()
+    }
+  }, [accountStats])
+  
+  function updateRank(){
+    var mmr = accountStats[6][0].mmr
+    if(mmr < 500){
+      setRank('Wood')
+      setRankImage(Wood)
+    }else if(mmr < 1000){
+      setRank('Bronze')
+      setRankImage(Bronze)
+    }else if(mmr < 1500){
+      setRank('Silver')
+      setRankImage(Silver)
+    }else if(mmr < 2000){
+      setRank('Gold')
+      setRankImage(Gold)
+    }else if(mmr < 2500){
+      setRank('Platinum')
+      setRankImage(Platinum)
+    }else if(mmr < 3000){
+      setRank('Diamond')
+      setRankImage(Diamond)
+    }else if(mmr > 2999 ){
+      setRank('Champion')
+      setRankImage(Champion)
+    }
   }
 
   function logout() {
@@ -462,8 +505,8 @@ function App() {
                   />
                 } />
                 <Route exact path="/training" element={<Training />} />
-                <Route exact path="/multiplayer" element={<Multiplayer openFAccount={openFAccount} loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} setInviteLobby={setInviteLobby} lobbyID={lobbyID} setLobbyID={setLobbyID}/>} />
-                <Route exact path="/account" element={(loggedIn ? <Account setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} inFriend={false}/> : <OfflineAccount openSignIn={openSignIn}/>)} />
+                <Route exact path="/multiplayer" element={<Multiplayer rankImage={rankImage} rank={rank} setAccountStats={setAccountStats} accountStats={accountStats} openFAccount={openFAccount} loggedIn={loggedIn} accountInfo={accountInfo} inviteLobby={inviteLobby} setInviteLobby={setInviteLobby} lobbyID={lobbyID} setLobbyID={setLobbyID}/>} />
+                <Route exact path="/account" element={(loggedIn ? <Account rankImage={rankImage} rank={rank} setAccountStats={setAccountStats} accountInfo={accountInfo} accountStats={accountStats} inFriend={false}/> : <OfflineAccount openSignIn={openSignIn}/>)} />
                 <Route exact path="/settings" element={<Settings setAccountInfo={setAccountInfo} openSignIn={openSignIn} setShowThemeOptions={setShowThemeOptions} accountInfo={accountInfo} logout={logout} loggedIn={loggedIn} />} />
               </Routes>
 

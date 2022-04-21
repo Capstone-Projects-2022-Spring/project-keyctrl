@@ -11,6 +11,7 @@ import styled from 'styled-components'
 import Popup from 'reactjs-popup'
 import PostMatchPlayer from './PostMatchPlayer'
 import { IoIosArrowBack } from 'react-icons/io'
+import * as api from '../../utils/apiUtils.js'
 
 const MultiplayerGame = (props) => {
   const [lobbyPlayers, setLobbyPlayers] = useState(new Map())
@@ -109,7 +110,6 @@ const MultiplayerGame = (props) => {
       })
 
       socketRef.current.on("playerIndexUpdate", (playerName, playerIndex, playerLineArrayIndex) => {
-        console.log("Index update: ", playerName, playerIndex, playerLineArrayIndex)
         setLobbyPlayers((prev) => new Map(prev).set(playerName, { index: playerIndex, lineArrayIndex: playerLineArrayIndex }))
       })
 
@@ -215,7 +215,6 @@ const MultiplayerGame = (props) => {
             if (lineIndex === randomWords.length - 1) {
               onLineChange()
             }
-            console.log(props.username, lineIndex, lineArrayIndex - 2, socketRef.current.room)
             socketRef.current.emit("sendPlayerIndex", props.username, lineIndex, lineArrayIndex - 2, socketRef.current.room)
           }
           // Do we add logged in stats for multiplayer?
@@ -273,7 +272,7 @@ const MultiplayerGame = (props) => {
     if (!inCountdown && timer === 0) {
       // loggedIn, //social_id, //account_id
       // socketRef.current.emit("gameEnd", username, grossWPM(), socketRef.current.room)
-      socketRef.current.emit("gameEnd", photo, username, grossWPM(), accountId, socialId, loggedIn, socketRef.current.room)
+      socketRef.current.emit("gameEnd", props.inRanked, photo, username, grossWPM(), accountId, socialId, loggedIn, socketRef.current.room)
 
       reset();
 
@@ -313,20 +312,68 @@ const MultiplayerGame = (props) => {
     props.setInviteLobby(0)
   }
 
+  const [newMMR, setNewMMR] = useState(0)
 
+  useEffect(async () => {
+    console.log("leaderboard updated")
+    getMMR()
+  }, [leaderboard])
+
+
+  const getMMR = () => {
+
+    if (props.inRanked) {
+      var placement;
+
+      leaderboard.map(function (player, idx) {
+        if (player.accountId == props.accountInfo.account_id) {
+          placement = idx;
+          console.log(player)
+        }
+      })
+
+      var rank = props.accountStats[6][0].mmr;
+
+      switch (placement) {
+        case 0:
+          rank += 20
+          break;
+        case 1:
+          rank += 10
+          break;
+        case 2:
+          rank -= 10
+          if (rank < 0)
+            rank = 0
+          break;
+        case 3:
+          rank -= 20
+          if (rank < 0)
+            rank = 0
+          break;
+      }
+
+      var stats = props.accountStats
+      stats[6][0].mmr = rank
+      props.setAccountStats(stats)
+      setNewMMR(rank)
+      api.updateMMR(props.accountInfo.account_id, rank)
+      api.insertHistory(props.accountInfo.account_id, "rank", rank, 2)
+    }
+  }
 
   return (
     <div className="container">
 
-      <div className='mp-exit-button' style={isSpec ? {marginLeft: '0em'} : null}>
+      <div className='mp-exit-button' style={isSpec ? { marginLeft: '0em' } : null}>
         <div onClick={leaveRoom} className='mp-exit-button-leave'>
           <IoIosArrowBack />
           Leave
         </div>
         <div className='lobby-id'>
-          {isSpec ? <span style={{color: 'var(--selection-color)'}}>Spectating </span> : null}
+          {isSpec ? <span style={{ color: 'var(--selection-color)' }}>Spectating </span> : null}
           Lobby: {props.lobbyID}
-          </div>
+        </div>
       </div>
       <OpponentTestVisual lobbyPlayers={lobbyPlayers} lineArray={lineArray} />
 
@@ -358,13 +405,19 @@ const MultiplayerGame = (props) => {
           position="center"
           modal
         >
-          <Leaderboard>
+          <Leaderboard width={props.inRanked ? "38ch" : "32ch"}>
+            <div style={{ color: 'var(--selection-color)' }}>
+              <span style={{ color: 'var(--text-color)', textDecoration: 'underline' }}>
+                New Rank
+              </span>
+              <br />
+              {newMMR}
+            </div>
 
             {leaderboard.map(function (player, idx) {
-              console.log(player)
               return (
                 <>
-                  <PostMatchPlayer myAccId={accountId} handleAddFriend={props.handleAddFriend} setAddFriend={props.setAddFriend} photo={player.photo} socialId={player.socialId} accountId={player.accountId} openFAccount={props.openFAccount} currentName={props.accountInfo.display_name} loggedIn={loggedIn} playerLoggedIn={player.loggedIn} index={idx + 1} playerName={player.player} wpm={player.WPM} />
+                  <PostMatchPlayer inRanked={props.inRanked} myAccId={accountId} handleAddFriend={props.handleAddFriend} setAddFriend={props.setAddFriend} photo={player.photo} socialId={player.socialId} accountId={player.accountId} openFAccount={props.openFAccount} currentName={props.accountInfo.display_name} loggedIn={loggedIn} playerLoggedIn={player.loggedIn} index={idx + 1} playerName={player.player} wpm={player.WPM} />
                 </>
               )
             })}
@@ -431,6 +484,7 @@ const Leaderboard = styled.div`
   font-size: 2em;
   justify-content: center;
   text-align: center;
+  width: ${props => props.width};
 `
 
 const PostMatchOptions = styled.div`

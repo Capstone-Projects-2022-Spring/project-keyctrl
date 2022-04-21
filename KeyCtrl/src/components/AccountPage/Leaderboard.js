@@ -1,75 +1,50 @@
-import React, {useEffect, useState} from "react";
-export default function Datatable(){
-    const [order,setorder]= useState("ASC");
-    const [data, setData] = useState([]);
-    const [query, setQuery] = useState('');
-    const columns = data[0] && Object.keys(data[0]);
-   
-    
-  useEffect(() => {
-    fetch('https://swapi.dev/api/people')
-      .then((response) => response.json())
-      .then((json) => setData(json.results));
-  }, []);
-    
-    const sorting=(col)=>{
-      if(order==="ASC"){
-          const sorted=[...data].sort((a,b)=>
-          a[col].toLowerCase()>b[col].toLowerCase()?1:-1);
-        
-      
-      setData(sorted);
-      setorder("DSC");
-    }
-        if(order==="DSC"){
-            const sorted=[...data].sort((a,b)=>
-            a[col].toLowerCase()<b[col].toLowerCase()?1:-1);
-          
-        
-        setData(sorted);
-        setorder("ASC")
-    }
-      
-  };
-function search(rows) {
-    
-        return rows.filter((row) => columns.some((column) =>
-              row[column].toString().toLowerCase().indexOf(query.toLowerCase()) > -1
-          )
-        );
-      }
-      
-      
-    return(
-        <> 
-           <div id="pageselect">Page Select <div id="leaderboard">&lt;Leaderboard&gt;</div></div>
-           <div className="topwpm">TOP WPM</div>
-           <div className="searchBox">Leaderboard Search</div>
-          
-				
-           <input className="search-bar"
-            type="text" value={query} onChange={(e) => setQuery(e.target.value)}
-             />
-              
-            <div class="scrollit">
-                <table cellPadding={3} cellSpacing={3}>
-                <thead>
-                    <th onClick={()=>sorting("name")}>#</th>
-                    <th onClick={()=>sorting("height")}>Username</th>
-                    <th onClick={()=>sorting("mass")}>Rank</th>
-                    <th onClick={()=>sorting("hair_color")}>Top WPM</th>
-                    <th onClick={()=>sorting("skin_color")}>Avg WPM</th>
-                    <tr>{data[0] && columns.map((heading) => <th>{heading}</th>)}</tr>
-                    
-                </thead>
-                <tbody>{data.map(row => <tr>{columns.map(column => <td>{row[column]}</td>)}
-                </tr>)}
-                </tbody>
-                
-            </table>
-            
-            
+import React, { useState, useEffect } from 'react'
+import '../../styles/Leaderboard.css'
+import Scrollbars from 'react-custom-scrollbars-2'
+import styled from 'styled-components'
+
+const SortButton = styled.div`
+  background: var(--dark-bg);
+  margin-inline: 1em;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--selection-color);
+  color: var(--text-color);
+  border-radius: 5%/20%;
+  padding: .5em;
+  padding-inline: 0;
+`
+
+const Leaderboard = ({accountStats}) => {
+
+    const [current, setCurrent] = useState(9)
+
+    return (
+        <div className='leaderboard-base'>
+            <div className='leaderboard-header'>
+                <SortButton>#</SortButton>
+                <SortButton>Name</SortButton>
+                <SortButton className='sort-button' onClick={() => setCurrent(9)}><span style={current == 9 ? {color: 'var(--selection-color)'} : {color: 'var(--text-color)'}}>Rank</span></SortButton>
+                <SortButton className='sort-button' onClick={() => setCurrent(10)}><span style={current == 10 ? {color: 'var(--selection-color)'} : {color: 'var(--text-color)'}}>WPM Top</span></SortButton>
+                <SortButton className='sort-button' onClick={() => setCurrent(11)}><span style={current == 11 ? {color: 'var(--selection-color)'} : {color: 'var(--text-color)'}}>WPM Avg</span></SortButton>
             </div>
-            </>
-    );
+            <div className='leaderboard-list'>
+                <Scrollbars autoHeight autoHeightMin={'58em'}>
+                    {accountStats[current].map(function (object, index) {
+                        return (
+                            <div style={index % 2 == 0 ? {background: 'var(--dark-bg)'} : {background: 'var(--primary-color)'}} className='leaderboard-person-base'>
+                                <div>{index + 1}</div>
+                                <div>{object.display_name}</div>
+                                <div>{object.mmr} mmr</div>
+                                <div>{object.wpm_top} wpm</div>
+                                <div>{object.wpm_average} wpm</div>
+                                </div>
+                        )
+                    })}
+                </ Scrollbars>
+            </div>
+        </div>
+    )
 }
+
+export default Leaderboard

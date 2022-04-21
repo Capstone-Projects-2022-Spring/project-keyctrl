@@ -12,6 +12,7 @@
     font-family: 'Almarai';
     font-size: 2em;
     width: 30%;
+        min-width: 32ch;
 }
 
 .hl-title{
@@ -58,20 +59,21 @@
 }
 
 .expanded-game-container{
-    background: var(--text-container);
-    padding-top: .5em;
-    padding-bottom: .5em;
-    padding-left: 1ch;
-    padding-right: 1ch;
-}
-.expanded-game-container{
     border-style: solid;
     border-width: .2em;
     border-color: var(--text-container);
     background: var(--bg-color);
-    padding-top: .5em;
-    padding-bottom: .5em;
-    padding-left: 1ch;
-    padding-right: 1ch;
     color: var(--text-color);
+    font-family: "Almarai";
+}
+
+.game-container-date{
+    text-align: left;
+    font-size: .5em;
+    font-family: "Almarai Light";
+    padding: .2em;
+}
+
+.game-container-leaderboard{
+    padding-inline: .25em;
 }

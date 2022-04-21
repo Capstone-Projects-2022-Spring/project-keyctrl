@@ -8,6 +8,8 @@ const StatisticGraph = ({ dataAvg, dataTop, dataRank, gameMode }) => {
 
     const [dataAvg_, setDataAvg] = useState([{}]);
     const [dataTop_, setDataTop] = useState([{}]);
+    const [dataRank_, setDataRank] = useState([{}]);
+
 
     useEffect(() => {
 
@@ -18,30 +20,38 @@ const StatisticGraph = ({ dataAvg, dataTop, dataRank, gameMode }) => {
     const parseData = () => {
         var newAvg = [];
         var newTop = [];
+        var newRank = [];
 
         console.log(dataAvg)
 
         dataAvg.forEach(element => {
             if (element.avg_gamemode === gameMode) {
-                newAvg.push({ new_avg: element.new_avg, avg_timestamps: element.avg_timestamps.substr(0, 10) + " | " + element.avg_timestamps.substr(11, 8) })
+                var dt = new Date(element.avg_timestamps)
+                newAvg.push({ new_avg: element.new_avg, avg_timestamps: dt.toLocaleString() })
             }
         });
 
         dataTop.forEach(element => {
             if (element.top_gamemode === gameMode) {
-                newTop.push({ new_top: element.new_top, top_timestamps: element.top_timestamps.substr(0, 10) + " | " + element.top_timestamps.substr(11, 8) })
+                var dt = new Date(element.top_timestamps)
+                newTop.push({ new_top: element.new_top, top_timestamps: dt.toLocaleString() })
             }
         });
 
-        console.log(newAvg, newTop)
+        dataRank.forEach(element => {
+            var dt = new Date(element.rank_timestamps)
+            newRank.push({ new_rank: element.new_rank, rank_timestamps: dt.toLocaleString() })
+        });
+
         setDataAvg(newAvg);
         setDataTop(newTop);
+        setDataRank(newRank);
     }
 
     return (
-        <div style={{ width: '90%', marginLeft: '5em'}}>
+        <div style={{ width: '90%', marginLeft: '5em' }}>
             {gameMode === 2 ?
-                <div className='stat-container' style={{ flexDirection: 'column', alignSelf: 'center', justifySelf:'center', height: '20em'}}>
+                <div className='stat-container' style={{ flexDirection: 'column', alignSelf: 'center', justifySelf: 'center', height: '20em' }}>
                     <div style={{ fontSize: '1.5em', fontFamily: 'Almarai Light', color: 'var(--text-color)' }}>
                         Rank Over Time
                     </div>
@@ -49,7 +59,7 @@ const StatisticGraph = ({ dataAvg, dataTop, dataRank, gameMode }) => {
                         <LineChart
                             width={400}
                             height={300}
-                            data={dataRank}
+                            data={dataRank_}
                             title="Rank Over Time"
                             margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
 
@@ -57,12 +67,12 @@ const StatisticGraph = ({ dataAvg, dataTop, dataRank, gameMode }) => {
                             <XAxis dataKey="rank_timestamps" stroke='var(--text-color)' />
                             <YAxis stroke='var(--text-color)' />
                             <Tooltip />
-                            <Brush dataKey="rank_timestamps" height={25} stroke="var(--selection-color)" fill="var(--bg-color)" />
+                            <Brush startIndex={dataRank.length > 20 ? dataRank.length - 20 : 0} dataKey="rank_timestamps" height={25} stroke="var(--selection-color)" fill="var(--bg-color)" />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
                 : null}
-            <div className='stat-container' style={{ flexDirection: 'column', justifySelf: 'flex-start', height: '20em'}}>
+            <div className='stat-container' style={{ flexDirection: 'column', justifySelf: 'flex-start', height: '20em' }}>
                 <div style={{ fontSize: '1.5em', fontFamily: 'Almarai Light', color: 'var(--text-color)' }}>
                     Average WPM Over Time
                 </div>
@@ -77,11 +87,11 @@ const StatisticGraph = ({ dataAvg, dataTop, dataRank, gameMode }) => {
                         <XAxis dataKey="avg_timestamps" stroke='var(--text-color)' />
                         <YAxis stroke='var(--text-color)' />
                         <Tooltip />
-                        <Brush dataKey="avg_timestamps" height={25} stroke="var(--selection-color)" fill="var(--bg-color)" />
+                        <Brush startIndex={dataAvg_.length > 20 ? dataAvg_.length - 20 : 0} dataKey="avg_timestamps" height={25} stroke="var(--selection-color)" fill="var(--bg-color)" />
                     </LineChart>
                 </ResponsiveContainer>
             </div>
-            <div className='stat-container' style={{ flexDirection: 'column', justifySelf: 'flex-start', height: '20em'}}>
+            <div className='stat-container' style={{ flexDirection: 'column', justifySelf: 'flex-start', height: '20em' }}>
                 <div style={{ fontSize: '1.5em', fontFamily: 'Almarai Light', color: 'var(--text-color)' }}>
                     Top WPM Over Time
                 </div>
@@ -96,7 +106,7 @@ const StatisticGraph = ({ dataAvg, dataTop, dataRank, gameMode }) => {
                         <XAxis dataKey="top_timestamps" stroke='var(--text-color)' />
                         <YAxis stroke='var(--text-color)' />
                         <Tooltip />
-                        <Brush dataKey="top_timestamps" height={25} stroke="var(--selection-color)" fill="var(--bg-color)" />
+                        <Brush startIndex={dataTop_.length > 20 ? dataTop_.length - 20 : 0} dataKey="top_timestamps" height={25} stroke="var(--selection-color)" fill="var(--bg-color)" />
                     </LineChart>
                 </ResponsiveContainer>
             </div>
