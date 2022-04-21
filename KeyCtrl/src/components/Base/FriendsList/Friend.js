@@ -292,7 +292,7 @@ const Friend = ({currentMessageIndex, setCurrentMessageIndex, messages, setMessa
           >
             <MenuItem onClick={() => handleMenuClick(0)}>View Profile</MenuItem>
             <MenuItem onClick={() => handleMenuClick(1)}>Invite</MenuItem>
-            <MenuItem onClick={() => handleMenuClick(2)}>Message</MenuItem>
+            {/* <MenuItem onClick={() => handleMenuClick(2)}>Message</MenuItem> */}
             <MenuItem onClick={() => handleMenuClick(3)}>Remove Friend</MenuItem>
           </StyledMenu>
         </div>

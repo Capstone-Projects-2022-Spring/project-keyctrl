@@ -189,7 +189,7 @@ function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      console.log(messages)
+      // console.log(messages)
       if (socketRef.current == null) {
         console.log("creating new connection")
         socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
@@ -197,63 +197,63 @@ function App() {
         socketRef.current.emit('joinDefaultRoom', "MSG_" + accountInfo.account_id)
       }
 
-      socketRef.current.on('messageSent', function (account_id, display_name, photo, social_id, message) {
-        console.log("On messageSent")
-        //Place message contents in senderID's chat box
-        if (messages.length === 0) {
-          var messages_object = messages
-          messages_object.push({
-            player: {
-              account_id: account_id,
-              display_name: display_name,
-              photo: photo,
-              social_id: social_id
-            },
-            messages: [{ name: display_name, message: message, photo: photo }]
-          })
-          setMessages(messages_object)
-        } else {
-          var obj = messages
+      // socketRef.current.on('messageSent', function (account_id, display_name, photo, social_id, message) {
+      //   console.log("On messageSent")
+      //   //Place message contents in senderID's chat box
+      //   if (messages.length === 0) {
+      //     var messages_object = messages
+      //     messages_object.push({
+      //       player: {
+      //         account_id: account_id,
+      //         display_name: display_name,
+      //         photo: photo,
+      //         social_id: social_id
+      //       },
+      //       messages: [{ name: display_name, message: message, photo: photo }]
+      //     })
+      //     setMessages(messages_object)
+      //   } else {
+      //     var obj = messages
 
-          // If current message is from current loaded person
-          if (obj[currentMessageIndex].player.display_name == display_name) {
-            obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo: photo })
-            console.log("push")
-          } else {
-            var newPerson = true;
-            obj.map(function (object, idx) {
-              // new message exists
-              if (object.player.display_name == display_name) {
-                obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo: photo })
-                console.log("push")
-                newPerson = false
-              }
-            }
-            )
-          }
+      //     // If current message is from current loaded person
+      //     if (obj[currentMessageIndex].player.display_name == display_name) {
+      //       obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo: photo })
+      //       console.log("push")
+      //     } else {
+      //       var newPerson = true;
+      //       obj.map(function (object, idx) {
+      //         // new message exists
+      //         if (object.player.display_name == display_name) {
+      //           obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo: photo })
+      //           console.log("push")
+      //           newPerson = false
+      //         }
+      //       }
+      //       )
+      //     }
 
-          if (newPerson) {
-            // new message from new person
-            obj.push({
-              player: {
-                account_id: account_id,
-                display_name: display_name,
-                photo: photo,
-                social_id: social_id
-              },
-              messages: [{ name: display_name, message: message, photo: photo }]
-            })
-            console.log("push")
-          }
+      //     if (newPerson) {
+      //       // new message from new person
+      //       obj.push({
+      //         player: {
+      //           account_id: account_id,
+      //           display_name: display_name,
+      //           photo: photo,
+      //           social_id: social_id
+      //         },
+      //         messages: [{ name: display_name, message: message, photo: photo }]
+      //       })
+      //       console.log("push")
+      //     }
 
-          setMessages(obj)
-        }
+      //     setMessages(obj)
+      //   }
 
-        if (!messagesOpen) {
-          setUnreadMessageCount((i) => i + 1)
-        }
-        setUpdate((o) => !o)
-      })
+      //   if (!messagesOpen) {
+      //     setUnreadMessageCount((i) => i + 1)
+      //   }
+      //   setUpdate((o) => !o)
+      // })
 
 
       socketRef.current.on('joinFriendGame', (lobbyID, senderDisplay, senderPhoto) => {
@@ -430,7 +430,7 @@ function App() {
           </Scrollbars>
         </div>
       </StyledPopup>
-
+{/* 
       {loggedIn && messagesOpen ?
         <MessageContainer update={update} sendMessage={sendMessage} messageSent={messageSent} setMessageSent={setMessageSent} currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex} messages={messages} setMessages={setMessages} setMessagesRendered={setMessagesOpen} friendsList={friendsList} accountInfo={accountInfo} loggedIn={loggedIn} />
         : null}
@@ -443,7 +443,7 @@ function App() {
           </div>
         </Tooltip>
         : null
-      }
+      } */}
     </div>
   );
 }
