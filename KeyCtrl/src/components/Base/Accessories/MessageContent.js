@@ -17,7 +17,6 @@ const MessageContent = ({ type, photo, name, message }) => {
                             borderWidth: '2px'
                         }}
                     />
-
                     <div className='message-friend-content'>
                         <div className='message-friend-name'>{name}</div>
                         <div className='message-friend'>{message}</div>

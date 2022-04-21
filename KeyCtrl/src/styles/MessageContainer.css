@@ -57,21 +57,17 @@
 }
 
 .mc-content{
-    background: var(--bg-color);
+    background: var(--dark-bg);
     height: 25em;
+    border-style: solid;
+    border-width: .4em;
+    border-color: var(--bg-color);
     display: flex;
     flex-direction: row;
 }
 
 .mc-content-friends{
-    background: var(--dark-bg);
     height: 24.6em;
-}
-
-.mc-content-message-container{
-    display: flex;
-    flex-direction: column;
-    width: 17em;
     margin-left: .4em;
     margin-right: .4em;
 }

@@ -29,7 +29,7 @@ const Button = styled.button`
   }
 `
 
-const Multiplayer = ({loggedIn, accountInfo, inviteLobby, lobbyID, setLobbyID}) => {
+const Multiplayer = ({handleAddFriend, setAddFriend, loggedIn, accountInfo, openFAccount, inviteLobby, setInviteLobby, lobbyID, setLobbyID}) => {
 
   //Set lobby join state and update during button press
   const [joinLobby, setJoinLobby] = useState(false)
@@ -58,6 +58,7 @@ const Multiplayer = ({loggedIn, accountInfo, inviteLobby, lobbyID, setLobbyID}) 
 
     useEffect(() => {
       if(inviteLobby != 0) {
+        console.log("Going inside lobby", inviteLobby)
         setLobbyID(inviteLobby)
         setJoinLobby(true)
       }
@@ -153,6 +154,12 @@ const Multiplayer = ({loggedIn, accountInfo, inviteLobby, lobbyID, setLobbyID}) 
             setJoinLobby={setJoinLobby} 
             setShowModal={setShowModal} 
             setLobbyID={setLobbyID}
+            loggedIn={loggedIn}
+            accountInfo={accountInfo}
+            openFAccount={openFAccount}
+            handleAddFriend={handleAddFriend}
+            setAddFriend={setAddFriend}
+            setInviteLobby={setInviteLobby}
           /> 
           : null}
       </div>
