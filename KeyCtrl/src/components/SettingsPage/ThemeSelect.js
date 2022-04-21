@@ -179,6 +179,55 @@ const ThemeSelect = ({updateOptions}) => {
                     onClick={() => changeTheme('cobalt')}>
                     cobalt
                 </BaseThemeBox>
+                <BaseThemeBox
+                    background="#99582a"
+                    border="#6f1d1b"
+                    text="#ffe6a7"
+                    onClick={() => changeTheme('wood')}>
+                    wood
+                </BaseThemeBox>
+                <BaseThemeBox
+                    background="#53410e"
+                    border="#b67534"
+                    text="#c49515"
+                    onClick={() => changeTheme('bronze')}>
+                    bronze
+                </BaseThemeBox>
+                <BaseThemeBox
+                    background="#282828"
+                    border="#C0C0C0"
+                    text="#c0caf5"
+                    onClick={() => changeTheme('silver')}>
+                    silver
+                </BaseThemeBox>
+                <BaseThemeBox
+                    background="#464646"
+                    border="#fbc401"
+                    text="#fce981"
+                    onClick={() => changeTheme('gold')}>
+                    gold
+                </BaseThemeBox>
+                <BaseThemeBox
+                    background="#435a55"
+                    border="#00ffaa"
+                    text="#81fcc9"
+                    onClick={() => changeTheme('platinum')}>
+                    platinum
+                </BaseThemeBox>
+                <BaseThemeBox
+                    background="#7db6fa"
+                    border="#99d3ff"
+                    text="#2e6abe"
+                    onClick={() => changeTheme('diamond')}>
+                    diamond
+                </BaseThemeBox>
+                <BaseThemeBox
+                    background="#a4161a"
+                    border="#dbc858"
+                    text="#0b090a"
+                    onClick={() => changeTheme('champion')}>
+                    champion
+                </BaseThemeBox>
             </StyledPopup>
         </div>
     )
