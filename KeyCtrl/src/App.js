@@ -521,7 +521,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex} messages={messages} setMessages={setMessages} setMessagesOpen={setMessagesOpen} setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} lobbyID={lobbyID} />
+              <FriendsList handleAddFriend={handleAddFriend} currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex} messages={messages} setMessages={setMessages} setMessagesOpen={setMessagesOpen} setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} lobbyID={lobbyID} />
             </SlidingPane>
 
 
