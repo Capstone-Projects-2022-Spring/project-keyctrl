@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import io from "socket.io-client"
 import '../../styles/TypingTest.css'
-import '../../styles/MultiplayerGame.css'
 import '../../styles/MultiplayerPage.css'
 import { PropTypes } from 'prop-types'
 import { toast } from 'react-toastify'

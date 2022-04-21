@@ -2,6 +2,9 @@
     position: absolute;
     right: 0;
     bottom: 0;
+    border-style: solid;
+    border-width: 1px 1px 0 1px;
+    border-color: var(--selection-color);
 }
 
 .mc-header{
@@ -64,30 +67,24 @@
 }
 
 .mc-content-friends{
-    border-style: solid;
-    border-width: 0 0 0 .4em;
-    border-color: var(--bg-color);
-}
-
-.mc-content-message-container{
-    display: flex;
-    flex-direction: column;
-    width: 17em;
+    height: 24.6em;
+    margin-left: .4em;
+    margin-right: .4em;
 }
 
 .mc-content-messages{
-    border-style: solid;
-    border-width: 0 0 .4em 0;
-    border-color: var(--bg-color);
     height: 20em;
+    margin-bottom: .4em;
+    background: var(--dark-bg);
 }
 
 .mc-content-message-input{
     padding: .5em;
-    height: 3em;
+    height: 3.2em;
     outline: 0px;
     color: var(--text-color);
     text-align: start;
+    background: var(--dark-bg);
 }
 
 .mc-friend{
@@ -95,6 +92,10 @@
     padding-left: .6em;
     padding-right: .8em;
     padding-top: .3em;
+}
+
+.mc-friend:hover{
+    cursor: pointer;
 }
 
 .message-container{

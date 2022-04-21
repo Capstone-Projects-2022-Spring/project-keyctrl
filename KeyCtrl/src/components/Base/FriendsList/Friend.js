@@ -138,7 +138,7 @@ const friendProf = ({ }) => {//requests accountInfo from a friend/user then put 
   //throw info into Account()
 }
 
-const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite, setInviteLobby, lobbyID }) => {//object is current person
+const Friend = ({currentMessageIndex, setCurrentMessageIndex, messages, setMessages, setMessagesOpen, setOpenFriendList, friendsList, setState, setFriendsList, accountInfo, object, openFAccount, setSendInvite, setInviteLobby, lobbyID }) => {//object is current person
   const [anchorEl, setAnchorEl] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => setModalOpen(false);
@@ -150,19 +150,17 @@ const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, acco
 
   const handleMenuClick = async (item) => {
     setAnchorEl(null);
-    switch(item) {
-      case(0):
+    switch (item) {
+      case (0):
         openFAccount(object)
         break;
-      case(1):
+      case (1):
         sendGameInvite()
         break;
-      case(2):
-        //sendMessage()
+      case (2):
+        sendMessage()
         break;
-      case(3):
-        console.log(accountInfo)
-        console.log(object)
+      case (3):
         setModalOpen(true)
         break;
       default:
@@ -176,12 +174,12 @@ const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, acco
     //DETERMINE LOBBY ID VIA UI, PLACEHOLDER FOR NOW
     setSendInvite(true)
     var newLobbyID
-    if(lobbyID != 0) {
+    if (lobbyID != 0) {
       newLobbyID = lobbyID
     } else {
       newLobbyID = accountInfo.social_id
     }
-    if(socketRef.current == null) {
+    if (socketRef.current == null) {
       socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
     }
     setInviteLobby(newLobbyID)
@@ -192,6 +190,28 @@ const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, acco
   }
 
   function sendMessage() {
+    setMessagesOpen(true)
+    setOpenFriendList({ isPaneOpen: false })
+    if (messages.length === 0) {
+      var messages_object = messages
+      messages_object.push({
+        player: object,
+        messages: []
+      })
+      setMessages(messages_object)
+    } else {
+      messages.map(function (object, index) {
+        if (object.player === undefined) {
+          var messages_object = messages
+          messages_object.push({
+            player: object,
+            messages: []
+          })
+          setCurrentMessageIndex(index)
+          setMessages(messages_object)
+        }
+      })
+    }
 
   }
 
@@ -209,7 +229,6 @@ const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, acco
       tempList[0].splice(index, 1); // 2nd parameter means remove one item only
     }
 
-    console.log(tempList);
 
     setFriendsList(tempList)
     setState(o => !o);
@@ -273,7 +292,7 @@ const Friend = ({ setOpenFriendList, friendsList, setState, setFriendsList, acco
           >
             <MenuItem onClick={() => handleMenuClick(0)}>View Profile</MenuItem>
             <MenuItem onClick={() => handleMenuClick(1)}>Invite</MenuItem>
-            <MenuItem onClick={() => handleMenuClick(2)}>Message</MenuItem>
+            {/* <MenuItem onClick={() => handleMenuClick(2)}>Message</MenuItem> */}
             <MenuItem onClick={() => handleMenuClick(3)}>Remove Friend</MenuItem>
           </StyledMenu>
         </div>

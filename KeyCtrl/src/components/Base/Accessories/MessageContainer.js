@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { createRef, useEffect } from 'react'
 import { useState, useRef } from 'react'
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { MdClose } from 'react-icons/md'
@@ -6,32 +6,70 @@ import '../../../styles/MessageContainer.css'
 import { Avatar, Badge, TextField } from '@material-ui/core';
 import MessageContent from './MessageContent'
 import io from "socket.io-client"
+import Scrollbars from 'react-custom-scrollbars-2'
 
-const MessageContainer = ({ friendsList, closeMessages, accountInfo, loggedIn }) => {
-    const [messagesOpen, setMessagesOpen] = useState(false)
-    const [messageSent, setMessageSent] = useState(false)
+const MessageContainer = ({ update, sendMessage, messageSent, setMessageSent, currentMessageIndex, setCurrentMessageIndex, messages, setMessages, setMessagesRendered, friendsList, accountInfo, loggedIn }) => {
+    const [messagesOpen, setMessagesOpen] = useState(true)
 
-    const socketRef = useRef()
+    const scrollbars = createRef()
+
     useEffect(() => {
-        if(loggedIn) {
-            if(socketRef.current == null) {
-                socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
-                socketRef.current.emit('joinDefaultRoom', "MSG_"+accountInfo.account_id)
-            }
-    
-            socketRef.current.on('messageSent', function (message, senderID) {
-                //Place message contents in senderID's chat box
-            })
+        if (messages.length != 0) {
+            scrollbars.current.scrollToBottom()
         }
-    }, [messageSent, loggedIn])
-    
-    function sendMessage() {
-        var message = "testMessage" //get message value here
-        socketRef.current.emit('sendMessage', 'SenderID', 'Target', message) //add sender and target information here
-        setMessageSent(true)
+        
+    }, [])
+
+
+    useEffect(() => {
+        if (messages.length != 0) {
+            scrollbars.current.scrollToBottom()
+        }
+        console.log(messages)
+    }, [update])
+
+
+
+    useEffect(() => {
+
+        document.addEventListener('keydown', onKeyPress);
+
+        document.getElementById('mc-message-content').addEventListener('keypress', (evt) => {
+            if (evt.key === "Enter") {
+                evt.preventDefault();
+            }
+        });
+
+
+        return () => {
+            document.removeEventListener('keydown', onKeyPress);
+        };
+    }, [])
+
+    const onKeyPress = (event) => {
+
+        switch (event.key) {
+
+            case "Enter":
+                var message = document.getElementById("mc-message-content").innerHTML
+                console.log(message)
+
+                if (message !== "") {
+                    sendMessage(message)
+                }
+
+                document.getElementById("mc-message-content").innerHTML = ""
+                break;
+        }
     }
 
-    console.log(friendsList)
+    const closeMessages = () => {
+        setMessagesRendered(false)
+    }
+
+    const updateIndex = (index) => {
+        setCurrentMessageIndex(index)
+    }
 
     return (
         <div className='mc-container'>
@@ -49,56 +87,45 @@ const MessageContainer = ({ friendsList, closeMessages, accountInfo, loggedIn })
             </div>
             {messagesOpen ?
                 <div className='mc-content'>
-
                     <div className='mc-content-message-container'>
                         <div className='mc-content-messages'>
-                            <MessageContent type={0} name="KeyCtrl" photo={friendsList[0][1].photo} message="Want to hop in a game?" />
-                            <MessageContent type={1} name="" message="Yeah give me a few minutes" />
-                            <MessageContent type={0} name="KeyCtrl" photo={friendsList[0][1].photo} message="No problem, ill sent an invite in a bit" />
-                        </div>
-                        <div contenteditable="true" className='mc-content-message-input'>
+                            {messages.length == 0 ? null :
+                                <Scrollbars ref={scrollbars} autoHeight autoHeightMin={'20em'}>
+                                    {messages[currentMessageIndex].messages.map(function (object, index) {
+                                        var type = object.name == accountInfo.display_name ? 1 : 0
 
+                                        return (
+                                            <MessageContent type={type} photo={object.photo} name={object.name} message={object.message} />
+                                        )
+                                    })}
+                                </Scrollbars>
+                            }
+                        </div>
+                        <div id="mc-message-content" contentEditable="true" className='mc-content-message-input'>
                         </div>
                     </div>
                     <div className='mc-content-friends'>
-                        <div className='mc-friend'>
-                            <Badge color="primary" badgeContent={3} >
-                                <Avatar
-                                    src={friendsList[0][1].photo}
-                                    sx={{
-                                        width: '3em',
-                                        height: '3em',
-                                        borderColor: 'var(--selection-color)',
-                                        borderStyle: 'solid',
-                                        borderWidth: '2px'
-                                    }}
-                                />
-                            </Badge>
-                        </div>
-                        <div className='mc-friend'>
-                            <Badge color="primary" badgeContent={1} >
-                                <Avatar
-                                    sx={{
-                                        width: '3em',
-                                        height: '3em',
-                                        borderColor: 'var(--text-color)',
-                                        borderStyle: 'solid',
-                                        borderWidth: '2px'
-                                    }}
-                                />
-                            </Badge>
-                        </div>
-                        <div className='mc-friend'>
-                            <Avatar
-                                sx={{
-                                    width: '3em',
-                                    height: '3em',
-                                    borderColor: 'var(--text-color)',
-                                    borderStyle: 'solid',
-                                    borderWidth: '2px'
-                                }}
-                            />
-                        </div>
+
+                        <Scrollbars ref={scrollbars} autoHeight autoHeightMin={'24.5em'}>
+                            {messages.map(function (object, index) {
+                                return (
+                                    <div onClick={() => updateIndex(index)} className='mc-friend'>
+                                        <Badge color="primary" badgeContent={0} >
+                                            <Avatar
+                                                src={object.player.photo}
+                                                sx={{
+                                                    width: '3em',
+                                                    height: '3em',
+                                                    borderColor: 'var(--text-color)',
+                                                    borderStyle: 'solid',
+                                                    borderWidth: '2px'
+                                                }}
+                                            />
+                                        </Badge>
+                                    </div>
+                                )
+                            })}
+                        </ Scrollbars>
                     </div>
                 </div>
                 : null}

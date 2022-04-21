@@ -22,6 +22,8 @@ import styled from 'styled-components';
 import Popup from 'reactjs-popup'
 import io from "socket.io-client"
 import MessageContainer from './components/Base/Accessories/MessageContainer.js';
+import { FiMessageSquare } from 'react-icons/fi'
+import { Tooltip, Badge } from '@material-ui/core';
 import Unranked from './assets/unranked.png'
 import Wood from './assets/wood_rank.png'
 import Bronze from './assets/bronze_rank.png'
@@ -32,9 +34,31 @@ import Diamond from './assets/diamond_rank.png'
 import Champion from './assets/champion_rank.png'
 
 
+
 // Set default theme on first initialization
 document.documentElement.setAttribute('data-theme', 'default');
 
+const StyledPopup = styled(Popup)`
+    
+  // use your custom style for ".popup-overlay"
+  &-overlay {
+    backdrop-filter: blur(10px);
+  }
+  // use your custom style for ".popup-content"
+  &-content {
+    width: 95%;
+    height: 90%;
+    padding: 1em;
+    background: var(--bg-color);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-style: solid;
+    border-color: var(--selection-color);
+    color: var(--text-color);
+  } 
+`;
 
 function App() {
 
@@ -67,6 +91,16 @@ function App() {
   });
 
   const [showFriendList, setShowFriendList] = useState(false)
+
+  // Messaging variables and logic ------------
+  const [messages, setMessages] = useState([])
+  const [messagesOpen, setMessagesOpen] = useState(false)
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
+  const [messageSent, setMessageSent] = useState(false)
+  const [update, setUpdate] = useState(false)
+  const [unreadMessageCount, setUnreadMessageCount] = useState(0)
+  //--------------------------------
+
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -203,7 +237,67 @@ function App() {
         console.log("creating new connection")
         socketRef.current = io.connect(process.env.REACT_APP_KEYCTRL_MP)
         socketRef.current.emit('joinDefaultRoom', "GAME_" + accountInfo.account_id)
+        socketRef.current.emit('joinDefaultRoom', "MSG_" + accountInfo.account_id)
       }
+
+      // socketRef.current.on('messageSent', function (account_id, display_name, photo, social_id, message) {
+      //   console.log("On messageSent")
+      //   //Place message contents in senderID's chat box
+      //   if (messages.length === 0) {
+      //     var messages_object = messages
+      //     messages_object.push({
+      //       player: {
+      //         account_id: account_id,
+      //         display_name: display_name,
+      //         photo: photo,
+      //         social_id: social_id
+      //       },
+      //       messages: [{ name: display_name, message: message, photo: photo }]
+      //     })
+      //     setMessages(messages_object)
+      //   } else {
+      //     var obj = messages
+
+      //     // If current message is from current loaded person
+      //     if (obj[currentMessageIndex].player.display_name == display_name) {
+      //       obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo: photo })
+      //       console.log("push")
+      //     } else {
+      //       var newPerson = true;
+      //       obj.map(function (object, idx) {
+      //         // new message exists
+      //         if (object.player.display_name == display_name) {
+      //           obj[currentMessageIndex].messages.push({ name: display_name, message: message, photo: photo })
+      //           console.log("push")
+      //           newPerson = false
+      //         }
+      //       }
+      //       )
+      //     }
+
+      //     if (newPerson) {
+      //       // new message from new person
+      //       obj.push({
+      //         player: {
+      //           account_id: account_id,
+      //           display_name: display_name,
+      //           photo: photo,
+      //           social_id: social_id
+      //         },
+      //         messages: [{ name: display_name, message: message, photo: photo }]
+      //       })
+      //       console.log("push")
+      //     }
+
+      //     setMessages(obj)
+      //   }
+
+      //   if (!messagesOpen) {
+      //     setUnreadMessageCount((i) => i + 1)
+      //   }
+      //   setUpdate((o) => !o)
+      // })
+
 
       socketRef.current.on('joinFriendGame', (lobbyID, senderDisplay, senderPhoto) => {
         toast(<GameInviteToast setInviteLobby={setInviteLobby} lobbyID={lobbyID} senderName={senderDisplay} senderPhoto={senderPhoto} />, toastOptions)
@@ -228,9 +322,34 @@ function App() {
         alert(sender + ": " + message)
       })
     }
-  }, [loggedIn, setInviteLobby, setSendInvite])
+  }, [messageSent, loggedIn, setInviteLobby, setSendInvite])
 
+  const openMessageContainer = () => {
+    setUnreadMessageCount(0)
+    setMessagesOpen(true)
+  }
 
+  const sendMessage = (message) => {
+    var obj = messages
+    console.log("-------", obj, currentMessageIndex)
+    obj[currentMessageIndex].messages.push({ name: accountInfo.display_name, message: message, photo: accountInfo.photo })
+    socketRef.current.emit('sendMessage', accountInfo.account_id, accountInfo.display_name, accountInfo.photo, accountInfo.social_id, messages[currentMessageIndex].player.account_id, message) //add sender and target information here
+    setUpdate((o) => !o)
+    setMessageSent(true)
+  }
+
+  const toastOptions = {
+    position: 'top-right',
+    autoClose: 30000,
+    hideProgressBar: false,
+    closeOnClick: false,
+    pauseOnHover: false,
+    draggable: false,
+    hideProgressBar: false,
+    transition: Bounce,
+    rtl: false,
+    closeButton: false
+  }
   const StyledPopup = styled(Popup)`
     
   // use your custom style for ".popup-overlay"
@@ -253,18 +372,6 @@ function App() {
   } 
 `;
 
-  const toastOptions = {
-    position: 'top-right',
-    autoClose: 30000,
-    hideProgressBar: false,
-    closeOnClick: false,
-    pauseOnHover: false,
-    draggable: false,
-    hideProgressBar: false,
-    transition: Bounce,
-    rtl: false,
-    closeButton: false
-  }
 
   const [modalFOpen, setModalFOpen] = useState(false);
   const [friendAcc, setFriendAcc] = useState({});
@@ -414,7 +521,7 @@ function App() {
               width="300px"
               onRequestClose={() => setState({ isPaneOpen: false })}
             >
-              <FriendsList setOpenFriendList={setState} handleAddFriend={handleAddFriend} addFriend={addFriend} setAddFriend={setAddFriend} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} lobbyID={lobbyID}/>
+              <FriendsList currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex} messages={messages} setMessages={setMessages} setMessagesOpen={setMessagesOpen} setOpenFriendList={setState} accountInfo={accountInfo} setFriendsList={setFriendsList} friendsList={friendsList} openFAccount={openFAccount} setSendInvite={setSendInvite} setInviteLobby={setInviteLobby} lobbyID={lobbyID} />
             </SlidingPane>
 
 
@@ -437,8 +544,20 @@ function App() {
           </Scrollbars>
         </div>
       </StyledPopup>
-
-      {/* <MessageContainer friendsList={friendsList} accountInfo={accountInfo} loggedIn={loggedIn} /> */}
+{/* 
+      {loggedIn && messagesOpen ?
+        <MessageContainer update={update} sendMessage={sendMessage} messageSent={messageSent} setMessageSent={setMessageSent} currentMessageIndex={currentMessageIndex} setCurrentMessageIndex={setCurrentMessageIndex} messages={messages} setMessages={setMessages} setMessagesRendered={setMessagesOpen} friendsList={friendsList} accountInfo={accountInfo} loggedIn={loggedIn} />
+        : null}
+      {loggedIn && !messagesOpen ?
+        <Tooltip title='Open Messages'>
+          <div onClick={openMessageContainer} className='message-open-button'>
+            <Badge color="primary" badgeContent={unreadMessageCount} >
+              <FiMessageSquare className='message-open-button-inner' />
+            </Badge>
+          </div>
+        </Tooltip>
+        : null
+      } */}
     </div>
   );
 }
