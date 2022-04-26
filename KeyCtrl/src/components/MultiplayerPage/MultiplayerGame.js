@@ -406,6 +406,7 @@ const MultiplayerGame = (props) => {
           modal
         >
           <Leaderboard width={props.inRanked ? "38ch" : "32ch"}>
+            {props.inRanked ? 
             <div style={{ color: 'var(--selection-color)' }}>
               <span style={{ color: 'var(--text-color)', textDecoration: 'underline' }}>
                 New Rank
@@ -413,6 +414,7 @@ const MultiplayerGame = (props) => {
               <br />
               {newMMR}
             </div>
+            : null }
 
             {leaderboard.map(function (player, idx) {
               return (

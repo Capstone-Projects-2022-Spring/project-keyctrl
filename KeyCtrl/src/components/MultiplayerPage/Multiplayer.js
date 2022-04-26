@@ -69,7 +69,7 @@ const Multiplayer = ({ rankImage, rank, setAccountStats, accountStats, handleAdd
   //Enter lobby modal
   const [showModal, setShowModal] = useState(false)
   function determineName() {
-    if (typeof accountInfo.display_name !== 'undefined') {
+    if (loggedIn && typeof accountInfo.display_name !== 'undefined') {
       console.log(name)
       setName(accountInfo.display_name)
     }

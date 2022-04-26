@@ -10,7 +10,6 @@ const SortButton = styled.div`
   border-width: 1px;
   border-color: var(--selection-color);
   color: var(--text-color);
-  border-radius: 5%/20%;
   padding: .5em;
   padding-inline: 0;
 `
