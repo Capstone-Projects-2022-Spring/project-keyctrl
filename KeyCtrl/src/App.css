@@ -307,3 +307,77 @@
     --bg-color: #122738;
     --dark-bg: #193549;
 }
+
+[data-theme="wood"]{
+    --primary-color: #bb9457;
+    --text-container: #bb9457;
+    --secondary-color: #6688c1;
+    --text-color: #ffe6a7;
+    --next-up-text-color: #ffe6a7;
+    --selection-color: #6f1d1b;
+    --bg-color: #99582a;
+    --dark-bg: #432818;
+}
+
+[data-theme="bronze"]{
+    --primary-color: #806b27;
+    --text-container: #3a3b2d;
+    --secondary-color: #a47e1b;
+    --text-color: #c49515;
+    --next-up-text-color: #db9004;
+    --selection-color: #b67534;
+    --bg-color: #53410e;
+    --dark-bg: #413f23;
+}
+
+[data-theme="silver"]{
+    --primary-color: #464646;
+    --text-container: #444444;
+    --secondary-color: #c16666;
+    --text-color: #a7a5a5;
+    --next-up-text-color: #a5a6a7;
+    --selection-color: #C0C0C0;
+    --bg-color: #464646;
+    --dark-bg: #282828;
+}
+
+[data-theme="gold"]{
+    --primary-color: #464646;
+    --text-container: #444444;
+    --secondary-color: #c16666;
+    --text-color: #fce981;
+    --next-up-text-color: #ffe96d;
+    --selection-color: #FFD700;
+    --bg-color: #464646;
+    --dark-bg: #282828;
+}
+[data-theme="diamond"]{
+    --primary-color: #0b304a;
+    --text-container: #6d9dc2;
+    --secondary-color: #788cac;
+    --text-color: #2e6abe;
+    --next-up-text-color: #788cac;
+    --selection-color: #99d3ff;
+    --bg-color: #7db6fa;
+    --dark-bg: #243864;
+}
+[data-theme="platinum"]{
+    --primary-color: #464646;
+    --text-container: #444444;
+    --secondary-color: #66c1bc;
+    --text-color: #81fcc9;
+    --next-up-text-color: #6dffda;
+    --selection-color: #00ffaa;
+    --bg-color: #435a55;
+    --dark-bg: #2a383f;
+}
+[data-theme="champion"]{
+    --primary-color: #464646;
+    --text-container: #e5383b;
+    --secondary-color: #ba181b;
+    --text-color: #0b090a;
+    --next-up-text-color: #161a1d;
+    --selection-color: #dbc858;
+    --bg-color: #a4161a;
+    --dark-bg: #2c343a;
+}
